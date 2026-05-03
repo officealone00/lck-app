@@ -3,9 +3,9 @@ import { defineConfig } from "@apps-in-toss/web-framework/config";
 export default defineConfig({
   appName: "lck-app",
   brand: {
-    displayName: "앱 이름", // 화면에 노출될 앱의 한글 이름으로 바꿔주세요.
-    primaryColor: "#FF8A65", // 화면에 노출될 앱의 기본 색상으로 바꿔주세요.
-    icon: "", // 화면에 노출될 앱의 아이콘 이미지 주소로 바꿔주세요.
+    displayName: "LCK 순위",
+    primaryColor: "#F0C674", // 골드 (1위, 페이커, 강조 컬러)
+    icon: "", // 콘솔에서 업로드한 600x600 아이콘 URL을 여기 붙여넣기
   },
   web: {
     host: "localhost",
