@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import { showRewardedAd, preloadRewardedAd } from './utils/ads';
 
 const teams = [
   { rank: 1, abbr: 'KT', kor: 'KT 롤스터', wr: 89, w: 16, l: 2, gdm: 217, form: ['W','W','W','W','W'], color: '#FF0000' },
@@ -46,7 +47,6 @@ const upcomingMatches = [
   { date: '내일', time: '17:00', home: 'DK', away: 'NS', homeColor: '#0072CE', awayColor: '#F58220' },
 ];
 
-// 응원팀 선택 화면
 function TeamSelect({ onSelect }: { onSelect: (abbr: string) => void }) {
   return (
     <div className="select-page">
@@ -69,15 +69,27 @@ function TeamSelect({ onSelect }: { onSelect: (abbr: string) => void }) {
   );
 }
 
-// 내 팀 페이지
-function MyTeamPage({ myTeam, onChange }: { myTeam: string; onChange: () => void }) {
+function MyTeamPage({ myTeam, onChange, aiUnlocked, onUnlockAi }: {
+  myTeam: string;
+  onChange: () => void;
+  aiUnlocked: boolean;
+  onUnlockAi: () => void;
+}) {
+  const [adLoading, setAdLoading] = useState(false);
   const team = teams.find(t => t.abbr === myTeam);
+
+  const handleAiClick = async () => {
+    if (adLoading) return;
+    setAdLoading(true);
+    const ok = await showRewardedAd();
+    setAdLoading(false);
+    if (ok) onUnlockAi();
+  };
+
   if (!team) {
     return (
       <div className="page">
-        <header className="header">
-          <span className="season-badge">MY TEAM</span>
-        </header>
+        <header className="header"><span className="season-badge">MY TEAM</span></header>
         <div className="content empty-state">
           <div className="empty-icon">★</div>
           <div className="empty-title">응원팀을 선택해주세요</div>
@@ -87,6 +99,9 @@ function MyTeamPage({ myTeam, onChange }: { myTeam: string; onChange: () => void
     );
   }
   const nextMatch = upcomingMatches.find(m => m.home === team.abbr || m.away === team.abbr);
+  const recentWins = team.form.filter(f => f === 'W').length;
+  const aiPrediction = Math.min(95, Math.round(team.wr * 0.6 + recentWins * 8));
+
   return (
     <div className="page">
       <header className="header">
@@ -123,7 +138,6 @@ function MyTeamPage({ myTeam, onChange }: { myTeam: string; onChange: () => void
           </div>
         </div>
 
-        {/* 배너 광고 자리 */}
         <div className="ad-banner">
           <div className="ad-tag">AD</div>
           <div className="ad-text">광고 영역 · 320 x 50</div>
@@ -154,17 +168,25 @@ function MyTeamPage({ myTeam, onChange }: { myTeam: string; onChange: () => void
         <div className="ai-card">
           <div className="ai-icon">◆</div>
           <div className="ai-title">{team.kor}의 이번 주 승률</div>
-          <div className="ai-desc">AI가 분석한 예상 승률<br/>광고 시청 후 확인</div>
-          <button className="ad-btn small">
-            ▶ 30초 광고 보고 예측 보기
-          </button>
+          {aiUnlocked ? (
+            <>
+              <div className="ai-result">{aiPrediction}%</div>
+              <div className="ai-result-desc">최근 폼과 시즌 승률 기반</div>
+            </>
+          ) : (
+            <>
+              <div className="ai-desc">AI가 분석한 예상 승률<br/>광고 시청 후 확인</div>
+              <button className="ad-btn small" onClick={handleAiClick} disabled={adLoading}>
+                {adLoading ? '광고 로딩 중...' : '▶ 30초 광고 보고 예측 보기'}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-// 순위 페이지
 function HomePage() {
   const top = teams[0];
   const rest = teams.slice(1);
@@ -190,7 +212,6 @@ function HomePage() {
           </div>
         </div>
 
-        {/* 1위 아래 배너 광고 - 시선 집중 위치 */}
         <div className="ad-banner">
           <div className="ad-tag">AD</div>
           <div className="ad-text">광고 영역 · 320 x 50</div>
@@ -217,10 +238,23 @@ function HomePage() {
   );
 }
 
-// 스타 선수 페이지
-function StarsPage() {
+function StarsPage({ playersUnlocked, onUnlockPlayers }: {
+  playersUnlocked: boolean;
+  onUnlockPlayers: () => void;
+}) {
   const [active, setActive] = useState('faker');
+  const [adLoading, setAdLoading] = useState(false);
   const player = stars.find(s => s.id === active)!;
+  const isLockedNow = player.locked && !playersUnlocked;
+
+  const handleUnlockClick = async () => {
+    if (adLoading) return;
+    setAdLoading(true);
+    const ok = await showRewardedAd();
+    setAdLoading(false);
+    if (ok) onUnlockPlayers();
+  };
+
   return (
     <div className="page">
       <header className="header">
@@ -228,28 +262,27 @@ function StarsPage() {
         <span className="update-time">LCK CUP 2026</span>
       </header>
 
-      {/* 선수 선택 탭 */}
       <div className="player-tabs">
         {stars.map(s => (
           <button
             key={s.id}
-            className={`pt ${active === s.id ? 'active' : ''} ${s.locked ? 'locked' : ''}`}
+            className={`pt ${active === s.id ? 'active' : ''} ${s.locked && !playersUnlocked ? 'locked' : ''}`}
             onClick={() => setActive(s.id)}
           >
-            {s.locked && <span className="lock-mini">▼</span>}
+            {s.locked && !playersUnlocked && <span className="lock-mini">▼</span>}
             {s.kor}
           </button>
         ))}
       </div>
 
       <div className="content" style={{paddingTop: 0}}>
-        {player.locked ? (
+        {isLockedNow ? (
           <div className="player-lock">
             <div className="lock-icon">▼</div>
             <div className="lock-title">{player.kor} 통계 잠금</div>
             <div className="lock-desc">광고 시청 후 24시간<br/>모든 선수 통계 무제한</div>
-            <button className="ad-btn">
-              ▶ 30초 광고 보고 잠금 해제
+            <button className="ad-btn" onClick={handleUnlockClick} disabled={adLoading}>
+              {adLoading ? '광고 로딩 중...' : '▶ 30초 광고 보고 잠금 해제'}
             </button>
             <div className="ad-note">리워드 광고 · 앱 운영 후원</div>
           </div>
@@ -279,7 +312,6 @@ function StarsPage() {
               <span className="dim">14경기 · GPM 433</span>
             </div>
 
-            {/* 페이커 페이지 배너 광고 */}
             <div className="ad-banner" style={{margin: '12px'}}>
               <div className="ad-tag">AD</div>
               <div className="ad-text">광고 영역 · 320 x 50</div>
@@ -320,7 +352,6 @@ function StarsPage() {
   );
 }
 
-// 메타 챔프 페이지
 function MetaPage() {
   return (
     <div className="page">
@@ -357,7 +388,6 @@ function MetaPage() {
           </div>
         ))}
 
-        {/* 메타 페이지 하단 배너 */}
         <div className="ad-banner">
           <div className="ad-tag">AD</div>
           <div className="ad-text">광고 영역 · 320 x 50</div>
@@ -367,8 +397,78 @@ function MetaPage() {
   );
 }
 
-// 분석 리포트 페이지 (잠금)
-function ReportPage() {
+function ReportPage({ reportUnlocked, onUnlockReport }: {
+  reportUnlocked: boolean;
+  onUnlockReport: () => void;
+}) {
+  const [adLoading, setAdLoading] = useState(false);
+
+  const handleUnlockClick = async () => {
+    if (adLoading) return;
+    setAdLoading(true);
+    const ok = await showRewardedAd();
+    setAdLoading(false);
+    if (ok) onUnlockReport();
+  };
+
+  if (reportUnlocked) {
+    return (
+      <div className="page">
+        <header className="header">
+          <span className="season-badge">TEAM REPORT</span>
+          <span className="update-time">전팀 심층 분석</span>
+        </header>
+        <div className="content">
+          <h3 className="sec">메타 적합도 TOP 3</h3>
+          {teams.slice(0, 3).map((t, i) => (
+            <div className="card" key={t.rank}>
+              <div className="num">{i + 1}</div>
+              <div className="info">
+                <div className="abbr">{t.abbr}</div>
+                <div className="kor">{t.kor}</div>
+              </div>
+              <div className="right">
+                <div className="wr">{Math.round(t.wr * 0.95)}%</div>
+                <div className="rec">메타 점수</div>
+              </div>
+            </div>
+          ))}
+
+          <h3 className="sec">픽밴 인사이트</h3>
+          <div className="pb-card">
+            <div className="pb-row">
+              <span className="pb-label">선픽 1티어</span>
+              <span className="pb-val">바루스 (67%)</span>
+            </div>
+            <div className="pb-row">
+              <span className="pb-label">우선 밴</span>
+              <span className="pb-val">럼블 (50%)</span>
+            </div>
+            <div className="pb-row">
+              <span className="pb-label">시그니처</span>
+              <span className="pb-val">T1 / 라이즈</span>
+            </div>
+          </div>
+
+          <h3 className="sec">예상 플레이오프 진출</h3>
+          {teams.slice(0, 6).map((t, i) => (
+            <div className="card" key={t.rank}>
+              <div className="num">{i + 1}</div>
+              <div className="info">
+                <div className="abbr">{t.abbr}</div>
+                <div className="kor">{t.kor}</div>
+              </div>
+              <div className="right">
+                <div className="wr" style={{color: '#10B981'}}>{Math.round(95 - i * 8)}%</div>
+                <div className="rec">진출 확률</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page">
       <header className="header">
@@ -398,8 +498,8 @@ function ReportPage() {
             잘 쓰는 챔프 · 예상 순위<br/>
             10팀 모두 24시간 무제한
           </div>
-          <button className="ad-btn">
-            ▶ 30초 광고 보고 잠금 해제
+          <button className="ad-btn" onClick={handleUnlockClick} disabled={adLoading}>
+            {adLoading ? '광고 로딩 중...' : '▶ 30초 광고 보고 잠금 해제'}
           </button>
           <div className="ad-note">리워드 광고 · 앱 운영 후원</div>
         </div>
@@ -413,6 +513,10 @@ function App() {
   const [showSelect, setShowSelect] = useState(false);
   const [tab, setTab] = useState('myteam');
 
+  const [aiUnlocked, setAiUnlocked] = useState(false);
+  const [reportUnlocked, setReportUnlocked] = useState(false);
+  const [playersUnlocked, setPlayersUnlocked] = useState(false);
+
   useEffect(() => {
     const saved = localStorage.getItem('lck_my_team');
     if (saved !== null) {
@@ -420,6 +524,7 @@ function App() {
     } else {
       setShowSelect(true);
     }
+    preloadRewardedAd();
   }, []);
 
   const handleSelect = (abbr: string) => {
@@ -434,11 +539,28 @@ function App() {
 
   return (
     <div className="app">
-      {tab === 'myteam' && <MyTeamPage myTeam={myTeam || ''} onChange={() => setShowSelect(true)} />}
+      {tab === 'myteam' && (
+        <MyTeamPage
+          myTeam={myTeam || ''}
+          onChange={() => setShowSelect(true)}
+          aiUnlocked={aiUnlocked}
+          onUnlockAi={() => setAiUnlocked(true)}
+        />
+      )}
       {tab === 'home' && <HomePage />}
-      {tab === 'stars' && <StarsPage />}
+      {tab === 'stars' && (
+        <StarsPage
+          playersUnlocked={playersUnlocked}
+          onUnlockPlayers={() => setPlayersUnlocked(true)}
+        />
+      )}
       {tab === 'meta' && <MetaPage />}
-      {tab === 'report' && <ReportPage />}
+      {tab === 'report' && (
+        <ReportPage
+          reportUnlocked={reportUnlocked}
+          onUnlockReport={() => setReportUnlocked(true)}
+        />
+      )}
       <nav className="tabbar">
         <button className={tab === 'myteam' ? 'tab active' : 'tab'} onClick={() => setTab('myteam')}>내 팀</button>
         <button className={tab === 'home' ? 'tab active' : 'tab'} onClick={() => setTab('home')}>순위</button>
