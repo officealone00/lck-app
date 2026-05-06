@@ -239,3 +239,41 @@ body {
 
 .ai-result { font-size: 40px; font-weight: 900; color: #F0C674; letter-spacing: -1.5px; margin: 8px 0 4px; }
 .ai-result-desc { font-size: 12px; color: #B5BCD0; margin-bottom: 4px; }
+
+/* ============ 배너 광고 컨테이너 ============ */
+.banner-wrapper {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.banner-container {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px dashed rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-container.banner-shown {
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-height: auto;
+}
+
+.banner-container.banner-shown .banner-fallback {
+  display: none;
+}
+
+.banner-fallback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

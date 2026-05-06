@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { showRewardedAd, preloadRewardedAd } from './utils/ads';
+import { showRewardedAd, preloadRewardedAd, initTossAds } from './utils/ads';
+import { BannerAd } from './components/BannerAd';
 
 const teams = [
   { rank: 1, abbr: 'KT', kor: 'KT 롤스터', wr: 89, w: 16, l: 2, gdm: 217, form: ['W','W','W','W','W'], color: '#FF0000' },
@@ -124,7 +125,7 @@ function MyTeamPage({ myTeam, onChange, aiUnlocked, onUnlockAi }: {
               <div className="mtsl">전적</div>
             </div>
             <div className="mts">
-              <div className="mtsv" style={{color: team.gdm > 0 ? '#10B981' : '#EF4444'}}>
+              <div className="mtsv" style={{color: team.gdm > 0 ? '#34D399' : '#F87171'}}>
                 {team.gdm > 0 ? '+' : ''}{team.gdm}
               </div>
               <div className="mtsl">GDM</div>
@@ -138,10 +139,7 @@ function MyTeamPage({ myTeam, onChange, aiUnlocked, onUnlockAi }: {
           </div>
         </div>
 
-        <div className="ad-banner">
-          <div className="ad-tag">AD</div>
-          <div className="ad-text">광고 영역 · 320 x 50</div>
-        </div>
+        <BannerAd />
 
         {nextMatch && (
           <>
@@ -212,10 +210,7 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="ad-banner">
-          <div className="ad-tag">AD</div>
-          <div className="ad-text">광고 영역 · 320 x 50</div>
-        </div>
+        <BannerAd />
 
         {rest.map(t => (
           <div className="card" key={t.rank}>
@@ -312,9 +307,8 @@ function StarsPage({ playersUnlocked, onUnlockPlayers }: {
               <span className="dim">14경기 · GPM 433</span>
             </div>
 
-            <div className="ad-banner" style={{margin: '12px'}}>
-              <div className="ad-tag">AD</div>
-              <div className="ad-text">광고 영역 · 320 x 50</div>
+            <div style={{padding: '0 12px'}}>
+              <BannerAd />
             </div>
 
             <h3 className="sec">CHAMPION POOL</h3>
@@ -388,10 +382,7 @@ function MetaPage() {
           </div>
         ))}
 
-        <div className="ad-banner">
-          <div className="ad-tag">AD</div>
-          <div className="ad-text">광고 영역 · 320 x 50</div>
-        </div>
+        <BannerAd />
       </div>
     </div>
   );
@@ -450,6 +441,8 @@ function ReportPage({ reportUnlocked, onUnlockReport }: {
             </div>
           </div>
 
+          <BannerAd />
+
           <h3 className="sec">예상 플레이오프 진출</h3>
           {teams.slice(0, 6).map((t, i) => (
             <div className="card" key={t.rank}>
@@ -459,7 +452,7 @@ function ReportPage({ reportUnlocked, onUnlockReport }: {
                 <div className="kor">{t.kor}</div>
               </div>
               <div className="right">
-                <div className="wr" style={{color: '#10B981'}}>{Math.round(95 - i * 8)}%</div>
+                <div className="wr" style={{color: '#34D399'}}>{Math.round(95 - i * 8)}%</div>
                 <div className="rec">진출 확률</div>
               </div>
             </div>
@@ -525,6 +518,7 @@ function App() {
       setShowSelect(true);
     }
     preloadRewardedAd();
+    initTossAds();
   }, []);
 
   const handleSelect = (abbr: string) => {

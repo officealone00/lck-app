@@ -59,3 +59,103 @@ export function preloadRewardedAd(): void {
     console.error('[ads] preload error', e);
   }
 }
+
+// ============ 배너 광고 ============
+
+let tossAdsInitialized = false;
+let tossAdsInitializing = false;
+const initCallbacks: Array<() => void> = [];
+
+function getTossAds(): any {
+  if (typeof window === 'undefined') return null;
+  return (window as any).TossAds || null;
+}
+
+export function initTossAds(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (tossAdsInitialized) {
+      resolve(true);
+      return;
+    }
+    const TossAds = getTossAds();
+    if (!TossAds || typeof TossAds.initialize !== 'function') {
+      console.log('[banner] TossAds SDK not available');
+      resolve(false);
+      return;
+    }
+    if (typeof TossAds.initialize.isSupported === 'function' && !TossAds.initialize.isSupported()) {
+      console.log('[banner] TossAds.initialize not supported');
+      resolve(false);
+      return;
+    }
+    if (tossAdsInitializing) {
+      initCallbacks.push(() => resolve(true));
+      return;
+    }
+    tossAdsInitializing = true;
+    try {
+      TossAds.initialize({
+        callbacks: {
+          onInitialized: () => {
+            console.log('[banner] TossAds initialized');
+            tossAdsInitialized = true;
+            tossAdsInitializing = false;
+            initCallbacks.forEach((cb) => cb());
+            initCallbacks.length = 0;
+            resolve(true);
+          },
+          onInitializationFailed: (err: any) => {
+            console.error('[banner] init failed', err);
+            tossAdsInitializing = false;
+            resolve(false);
+          },
+        },
+      });
+    } catch (e) {
+      console.error('[banner] init exception', e);
+      tossAdsInitializing = false;
+      resolve(false);
+    }
+  });
+}
+
+export interface BannerHandle {
+  destroy: () => void;
+}
+
+export async function attachBanner(container: HTMLElement): Promise<BannerHandle | null> {
+  const ok = await initTossAds();
+  if (!ok) return null;
+  const TossAds = getTossAds();
+  if (!TossAds || typeof TossAds.attachBanner !== 'function') return null;
+  try {
+    const result = TossAds.attachBanner(AD_GROUP.BANNER, container, {
+      theme: 'dark',
+      tone: 'colorful',
+      variant: 'expanded',
+      callbacks: {
+        onAdRendered: () => {
+          console.log('[banner] rendered');
+          container.classList.add('banner-shown');
+        },
+        onAdImpression: () => console.log('[banner] impression'),
+        onAdClicked: () => console.log('[banner] clicked'),
+        onNoFill: () => {
+          console.log('[banner] no fill');
+          container.classList.remove('banner-shown');
+        },
+        onAdFailedToRender: (err: any) => {
+          console.error('[banner] render failed', err);
+          container.classList.remove('banner-shown');
+        },
+      },
+    });
+    if (result && typeof result.destroy === 'function') {
+      return { destroy: () => result.destroy() };
+    }
+    return { destroy: () => {} };
+  } catch (e) {
+    console.error('[banner] attach exception', e);
+    return null;
+  }
+}
