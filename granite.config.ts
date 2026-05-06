@@ -4,8 +4,8 @@ export default defineConfig({
   appName: "lck-app",
   brand: {
     displayName: "LCK 순위",
-    primaryColor: "#F0C674", // 골드 (1위, 페이커, 강조 컬러)
-    icon: "", // 콘솔에서 업로드한 600x600 아이콘 URL을 여기 붙여넣기
+    primaryColor: "#F0C674",
+    icon: "https://static.toss.im/appsintoss/24163/515aca25-30fb-48b7-bc95-0e21c9ca5584.png",
   },
   web: {
     host: "localhost",
@@ -13,6 +13,11 @@ export default defineConfig({
     commands: {
       dev: "vite dev",
       build: "vite build",
+    },
+    webViewProps: {
+      navigationBar: {
+        withBackButton: false,
+      },
     },
   },
   permissions: [],
