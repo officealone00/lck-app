@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
-import { showRewardedAd, preloadRewardedAd, initTossAds } from './utils/ads';
-import { BannerAd } from './components/BannerAd';
+import BannerAd from './components/BannerAd';
+import RewardedAd from './components/RewardedAd';
 
 const teams = [
   { rank: 1, abbr: 'KT', kor: 'KT 롤스터', wr: 89, w: 16, l: 2, gdm: 217, form: ['W','W','W','W','W'], color: '#FF0000' },
@@ -70,22 +70,13 @@ function TeamSelect({ onSelect }: { onSelect: (abbr: string) => void }) {
   );
 }
 
-function MyTeamPage({ myTeam, onChange, aiUnlocked, onUnlockAi }: {
+function MyTeamPage({ myTeam, onChange, aiUnlocked, onAdRequest }: {
   myTeam: string;
   onChange: () => void;
   aiUnlocked: boolean;
-  onUnlockAi: () => void;
+  onAdRequest: (purpose: 'ai') => void;
 }) {
-  const [adLoading, setAdLoading] = useState(false);
   const team = teams.find(t => t.abbr === myTeam);
-
-  const handleAiClick = async () => {
-    if (adLoading) return;
-    setAdLoading(true);
-    const ok = await showRewardedAd();
-    setAdLoading(false);
-    if (ok) onUnlockAi();
-  };
 
   if (!team) {
     return (
@@ -174,8 +165,8 @@ function MyTeamPage({ myTeam, onChange, aiUnlocked, onUnlockAi }: {
           ) : (
             <>
               <div className="ai-desc">AI가 분석한 예상 승률<br/>광고 시청 후 확인</div>
-              <button className="ad-btn small" onClick={handleAiClick} disabled={adLoading}>
-                {adLoading ? '광고 로딩 중...' : '▶ 30초 광고 보고 예측 보기'}
+              <button className="ad-btn small" onClick={() => onAdRequest('ai')}>
+                ▶ 30초 광고 보고 예측 보기
               </button>
             </>
           )}
@@ -233,22 +224,13 @@ function HomePage() {
   );
 }
 
-function StarsPage({ playersUnlocked, onUnlockPlayers }: {
+function StarsPage({ playersUnlocked, onAdRequest }: {
   playersUnlocked: boolean;
-  onUnlockPlayers: () => void;
+  onAdRequest: (purpose: 'players') => void;
 }) {
   const [active, setActive] = useState('faker');
-  const [adLoading, setAdLoading] = useState(false);
   const player = stars.find(s => s.id === active)!;
   const isLockedNow = player.locked && !playersUnlocked;
-
-  const handleUnlockClick = async () => {
-    if (adLoading) return;
-    setAdLoading(true);
-    const ok = await showRewardedAd();
-    setAdLoading(false);
-    if (ok) onUnlockPlayers();
-  };
 
   return (
     <div className="page">
@@ -276,8 +258,8 @@ function StarsPage({ playersUnlocked, onUnlockPlayers }: {
             <div className="lock-icon">▼</div>
             <div className="lock-title">{player.kor} 통계 잠금</div>
             <div className="lock-desc">광고 시청 후 24시간<br/>모든 선수 통계 무제한</div>
-            <button className="ad-btn" onClick={handleUnlockClick} disabled={adLoading}>
-              {adLoading ? '광고 로딩 중...' : '▶ 30초 광고 보고 잠금 해제'}
+            <button className="ad-btn" onClick={() => onAdRequest('players')}>
+              ▶ 30초 광고 보고 잠금 해제
             </button>
             <div className="ad-note">리워드 광고 · 앱 운영 후원</div>
           </div>
@@ -388,20 +370,10 @@ function MetaPage() {
   );
 }
 
-function ReportPage({ reportUnlocked, onUnlockReport }: {
+function ReportPage({ reportUnlocked, onAdRequest }: {
   reportUnlocked: boolean;
-  onUnlockReport: () => void;
+  onAdRequest: (purpose: 'report') => void;
 }) {
-  const [adLoading, setAdLoading] = useState(false);
-
-  const handleUnlockClick = async () => {
-    if (adLoading) return;
-    setAdLoading(true);
-    const ok = await showRewardedAd();
-    setAdLoading(false);
-    if (ok) onUnlockReport();
-  };
-
   if (reportUnlocked) {
     return (
       <div className="page">
@@ -491,8 +463,8 @@ function ReportPage({ reportUnlocked, onUnlockReport }: {
             잘 쓰는 챔프 · 예상 순위<br/>
             10팀 모두 24시간 무제한
           </div>
-          <button className="ad-btn" onClick={handleUnlockClick} disabled={adLoading}>
-            {adLoading ? '광고 로딩 중...' : '▶ 30초 광고 보고 잠금 해제'}
+          <button className="ad-btn" onClick={() => onAdRequest('report')}>
+            ▶ 30초 광고 보고 잠금 해제
           </button>
           <div className="ad-note">리워드 광고 · 앱 운영 후원</div>
         </div>
@@ -500,6 +472,8 @@ function ReportPage({ reportUnlocked, onUnlockReport }: {
     </div>
   );
 }
+
+type AdPurpose = 'ai' | 'players' | 'report' | null;
 
 function App() {
   const [myTeam, setMyTeam] = useState<string | null>(null);
@@ -510,6 +484,9 @@ function App() {
   const [reportUnlocked, setReportUnlocked] = useState(false);
   const [playersUnlocked, setPlayersUnlocked] = useState(false);
 
+  const [adPurpose, setAdPurpose] = useState<AdPurpose>(null);
+  const rewardEarnedRef = useRef(false);
+
   useEffect(() => {
     const saved = localStorage.getItem('lck_my_team');
     if (saved !== null) {
@@ -517,14 +494,28 @@ function App() {
     } else {
       setShowSelect(true);
     }
-    preloadRewardedAd();
-    initTossAds();
   }, []);
 
   const handleSelect = (abbr: string) => {
     localStorage.setItem('lck_my_team', abbr);
     setMyTeam(abbr);
     setShowSelect(false);
+  };
+
+  const handleAdRequest = (purpose: AdPurpose) => {
+    rewardEarnedRef.current = false;
+    setAdPurpose(purpose);
+  };
+
+  const handleReward = () => {
+    rewardEarnedRef.current = true;
+    if (adPurpose === 'ai') setAiUnlocked(true);
+    if (adPurpose === 'players') setPlayersUnlocked(true);
+    if (adPurpose === 'report') setReportUnlocked(true);
+  };
+
+  const handleAdClose = () => {
+    setAdPurpose(null);
   };
 
   if (showSelect) {
@@ -538,21 +529,21 @@ function App() {
           myTeam={myTeam || ''}
           onChange={() => setShowSelect(true)}
           aiUnlocked={aiUnlocked}
-          onUnlockAi={() => setAiUnlocked(true)}
+          onAdRequest={handleAdRequest}
         />
       )}
       {tab === 'home' && <HomePage />}
       {tab === 'stars' && (
         <StarsPage
           playersUnlocked={playersUnlocked}
-          onUnlockPlayers={() => setPlayersUnlocked(true)}
+          onAdRequest={handleAdRequest}
         />
       )}
       {tab === 'meta' && <MetaPage />}
       {tab === 'report' && (
         <ReportPage
           reportUnlocked={reportUnlocked}
-          onUnlockReport={() => setReportUnlocked(true)}
+          onAdRequest={handleAdRequest}
         />
       )}
       <nav className="tabbar">
@@ -562,6 +553,13 @@ function App() {
         <button className={tab === 'meta' ? 'tab active' : 'tab'} onClick={() => setTab('meta')}>메타</button>
         <button className={tab === 'report' ? 'tab active' : 'tab'} onClick={() => setTab('report')}>분석</button>
       </nav>
+
+      {adPurpose !== null && (
+        <RewardedAd
+          onReward={handleReward}
+          onClose={handleAdClose}
+        />
+      )}
     </div>
   );
 }
