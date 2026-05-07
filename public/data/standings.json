@@ -1,12 +1,172 @@
 [
-  { "rank": 1, "abbr": "KT", "kor": "KT 롤스터", "color": "#FF0000", "wr": 89, "w": 16, "l": 2, "gdm": 217, "form": ["W","W","W","W","W"] },
-  { "rank": 2, "abbr": "HLE", "kor": "한화생명", "color": "#F47B20", "wr": 78, "w": 14, "l": 4, "gdm": 233, "form": ["W","W","W","L","W"] },
-  { "rank": 3, "abbr": "GEN", "kor": "젠지", "color": "#AA8B56", "wr": 60, "w": 9, "l": 6, "gdm": 146, "form": ["W","L","W","W","L"] },
-  { "rank": 4, "abbr": "T1", "kor": "T1", "color": "#E2012D", "wr": 57, "w": 8, "l": 6, "gdm": -18, "form": ["L","W","L","W","W"] },
-  { "rank": 5, "abbr": "NS", "kor": "농심 레드포스", "color": "#F58220", "wr": 56, "w": 9, "l": 7, "gdm": 61, "form": ["W","W","L","L","W"] },
-  { "rank": 6, "abbr": "DK", "kor": "디플러스 기아", "color": "#0072CE", "wr": 56, "w": 9, "l": 7, "gdm": 45, "form": ["L","W","W","L","W"] },
-  { "rank": 7, "abbr": "BNK", "kor": "BNK 피어엑스", "color": "#E31837", "wr": 33, "w": 5, "l": 10, "gdm": -119, "form": ["L","L","W","L","L"] },
-  { "rank": 8, "abbr": "BRO", "kor": "한진 브리온", "color": "#102648", "wr": 24, "w": 4, "l": 13, "gdm": -149, "form": ["L","L","L","W","L"] },
-  { "rank": 9, "abbr": "DRX", "kor": "키움 DRX", "color": "#1A4DBA", "wr": 24, "w": 4, "l": 13, "gdm": -203, "form": ["L","W","L","L","L"] },
-  { "rank": 10, "abbr": "DN", "kor": "DN 숲퍼스", "color": "#FFC629", "wr": 14, "w": 2, "l": 12, "gdm": -285, "form": ["L","L","L","L","W"] }
+  {
+    "rank": 1,
+    "abbr": "HLE",
+    "kor": "한화생명e스포츠",
+    "color": "#F37021",
+    "wr": 80,
+    "w": 20,
+    "l": 5,
+    "gdm": 235,
+    "form": [
+      "W",
+      "L",
+      "W",
+      "W",
+      "W"
+    ]
+  },
+  {
+    "rank": 2,
+    "abbr": "KT",
+    "kor": "KT 롤스터",
+    "color": "#FF0000",
+    "wr": 73,
+    "w": 16,
+    "l": 6,
+    "gdm": 119,
+    "form": [
+      "W",
+      "L",
+      "L",
+      "L",
+      "L"
+    ]
+  },
+  {
+    "rank": 3,
+    "abbr": "GEN",
+    "kor": "젠지",
+    "color": "#AA8B56",
+    "wr": 68,
+    "w": 17,
+    "l": 8,
+    "gdm": 170,
+    "form": [
+      "W",
+      "L",
+      "W",
+      "W",
+      "W"
+    ]
+  },
+  {
+    "rank": 4,
+    "abbr": "T1",
+    "kor": "T1",
+    "color": "#E2012D",
+    "wr": 64,
+    "w": 14,
+    "l": 8,
+    "gdm": 51,
+    "form": [
+      "W",
+      "W",
+      "L",
+      "W",
+      "L"
+    ]
+  },
+  {
+    "rank": 5,
+    "abbr": "DPL",
+    "kor": "Dplus Kia",
+    "color": "#888888",
+    "wr": 61,
+    "w": 14,
+    "l": 9,
+    "gdm": 77,
+    "form": [
+      "W",
+      "W",
+      "L",
+      "W",
+      "L"
+    ]
+  },
+  {
+    "rank": 6,
+    "abbr": "NS",
+    "kor": "농심 레드포스",
+    "color": "#D62E36",
+    "wr": 38,
+    "w": 9,
+    "l": 15,
+    "gdm": -80,
+    "form": [
+      "L",
+      "L",
+      "L",
+      "L",
+      "L"
+    ]
+  },
+  {
+    "rank": 7,
+    "abbr": "HAN",
+    "kor": "HANJIN BRION",
+    "color": "#888888",
+    "wr": 36,
+    "w": 8,
+    "l": 14,
+    "gdm": -50,
+    "form": [
+      "L",
+      "W",
+      "W",
+      "W",
+      "W"
+    ]
+  },
+  {
+    "rank": 8,
+    "abbr": "BNK",
+    "kor": "BNK FEARX",
+    "color": "#888888",
+    "wr": 33,
+    "w": 7,
+    "l": 14,
+    "gdm": -114,
+    "form": [
+      "L",
+      "L",
+      "L",
+      "W",
+      "W"
+    ]
+  },
+  {
+    "rank": 9,
+    "abbr": "KIW",
+    "kor": "Kiwoom DRX",
+    "color": "#888888",
+    "wr": 32,
+    "w": 7,
+    "l": 15,
+    "gdm": -151,
+    "form": [
+      "L",
+      "W",
+      "L",
+      "W",
+      "W"
+    ]
+  },
+  {
+    "rank": 10,
+    "abbr": "DN ",
+    "kor": "DN SOOPers",
+    "color": "#888888",
+    "wr": 9,
+    "w": 2,
+    "l": 20,
+    "gdm": -313,
+    "form": [
+      "L",
+      "L",
+      "L",
+      "L",
+      "L"
+    ]
+  }
 ]

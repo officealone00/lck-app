@@ -1,8 +1,98 @@
 [
-  { "kor": "바루스", "eng": "Varus", "pickRate": 67, "banRate": 45, "wr": 58, "role": "원딜" },
-  { "kor": "아지르", "eng": "Azir", "pickRate": 54, "banRate": 32, "wr": 62, "role": "미드" },
-  { "kor": "오리아나", "eng": "Orianna", "pickRate": 48, "banRate": 38, "wr": 56, "role": "미드" },
-  { "kor": "럼블", "eng": "Rumble", "pickRate": 42, "banRate": 50, "wr": 51, "role": "탑" },
-  { "kor": "카르마", "eng": "Karma", "pickRate": 38, "banRate": 33, "wr": 54, "role": "서폿" },
-  { "kor": "나미", "eng": "Nami", "pickRate": 35, "banRate": 12, "wr": 60, "role": "서폿" }
+  {
+    "kor": "럼블",
+    "eng": "Rumble",
+    "pickRate": 10,
+    "banRate": 87,
+    "wr": 64,
+    "role": ""
+  },
+  {
+    "kor": "바루스",
+    "eng": "Varus",
+    "pickRate": 8,
+    "banRate": 81,
+    "wr": 33,
+    "role": ""
+  },
+  {
+    "kor": "오리아나",
+    "eng": "Orianna",
+    "pickRate": 14,
+    "banRate": 74,
+    "wr": 63,
+    "role": ""
+  },
+  {
+    "kor": "카르마",
+    "eng": "Karma",
+    "pickRate": 17,
+    "banRate": 65,
+    "wr": 53,
+    "role": ""
+  },
+  {
+    "kor": "바드",
+    "eng": "Bard",
+    "pickRate": 26,
+    "banRate": 44,
+    "wr": 63,
+    "role": ""
+  },
+  {
+    "kor": "판테온",
+    "eng": "Pantheon",
+    "pickRate": 30,
+    "banRate": 39,
+    "wr": 44,
+    "role": ""
+  },
+  {
+    "kor": "아지르",
+    "eng": "Azir",
+    "pickRate": 26,
+    "banRate": 39,
+    "wr": 50,
+    "role": ""
+  },
+  {
+    "kor": "자르반 4세",
+    "eng": "Jarvan IV",
+    "pickRate": 38,
+    "banRate": 23,
+    "wr": 56,
+    "role": ""
+  },
+  {
+    "kor": "제이스",
+    "eng": "Jayce",
+    "pickRate": 32,
+    "banRate": 27,
+    "wr": 51,
+    "role": ""
+  },
+  {
+    "kor": "라이즈",
+    "eng": "Ryze",
+    "pickRate": 27,
+    "banRate": 31,
+    "wr": 35,
+    "role": ""
+  },
+  {
+    "kor": "노틸러스",
+    "eng": "Nautilus",
+    "pickRate": 17,
+    "banRate": 40,
+    "wr": 26,
+    "role": ""
+  },
+  {
+    "kor": "신 짜오",
+    "eng": "Xin Zhao",
+    "pickRate": 39,
+    "banRate": 16,
+    "wr": 50,
+    "role": ""
+  }
 ]
