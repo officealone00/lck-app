@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// LCK 자동 스크래퍼 v2.0
+// LCK 자동 스크래퍼 v2.3
 // 데이터 소스: Leaguepedia Cargo API (lol.fandom.com/api.php)
 //
 // 4섹션 모두 자동화:
@@ -8,10 +8,15 @@
 //   3) faker.json     - Faker 선수 시즌 통계 + 챔피언 사용 기록
 //   4) meta.json      - 토너먼트 픽/밴 메타 챔피언 통계
 //
-// 각 섹션은 독립적. 한 섹션 실패해도 나머지는 진행, 기존 파일은 보존.
-// 출력 형식은 src/utils/api.ts의 인터페이스(abbr/kor/wr/w/l/gdm/form 등)와 100% 일치.
+// v2.3 변경점:
+//   - URL을 직접 빌드 (URLSearchParams 의존 제거 → 따옴표/공백 인코딩 일관)
+//   - 토너먼트 후보를 직접 probe해서 실데이터 있는 것 자동 채택
+//   - 첫 호출 본문을 그대로 출력 (Cargo 응답 직접 확인 가능)
 //
-// 시즌 변경 시: TOURNAMENT 한 줄만 수정하면 됨.
+// 토너먼트 결정 우선순위:
+//   1. 환경변수 LCK_TOURNAMENT
+//   2. TOURNAMENT_CANDIDATES 리스트를 순서대로 probe해서 데이터 있는 첫 항목
+//   3. Tournaments 테이블 자동 검색 (League="LCK" + 연도 필터)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import fs from 'fs';
@@ -21,15 +26,32 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ⚠️ 시즌 변경 시 여기만 수정 (Cargo의 OverviewPage 값. URL이 아닌 wiki 표시 제목.)
-//   현재 운영 중인 후보:
-//     'LCK 2026 Rounds 1-2'        ← 정규 시즌 전반기 (현재 진행 중)
-//     'LCK 2026 Rounds 3-4'        ← 정규 시즌 후반기 (예정)
-//     'LCK 2026 Road to MSI'       ← MSI 진출전
-//     'LCK 2026 Season Playoffs'   ← 시즌 결산
-//     'LCK Cup 2026'               ← 킥오프 대회 (시즌 시작 전)
-const TOURNAMENT = 'LCK 2026 Rounds 1-2';
+// 환경변수로 명시 지정 가능. 비어있으면 자동 해결.
+const MANUAL_TOURNAMENT = process.env.LCK_TOURNAMENT || '';
+const TARGET_YEAR = process.env.LCK_YEAR || '2026';
+
+let TOURNAMENT = MANUAL_TOURNAMENT;
 const FAKER_LINK = 'Faker'; // Leaguepedia 선수 페이지 링크 (보통 그냥 'Faker')
+
+// 토너먼트 후보 - 위에서부터 시도해서 실데이터 있는 첫 항목을 채택.
+// 시즌이 바뀌어도 이 리스트만 업데이트하면 됨.
+const TOURNAMENT_CANDIDATES = [
+  // 2026 Rounds 1-2 (현재 진행 중)
+  'LCK 2026 Rounds 1-2',
+  'LCK/2026 Season/Rounds 1-2',
+  // 2026 Rounds 3-4 (다음)
+  'LCK 2026 Rounds 3-4',
+  'LCK/2026 Season/Rounds 3-4',
+  // 2026 Road to MSI
+  'LCK 2026 Road to MSI',
+  'LCK/2026 Season/Road to MSI',
+  // 2026 Cup
+  'LCK Cup 2026',
+  'LCK/2026 Season/Cup',
+  // 2026 Playoffs
+  'LCK 2026 Season Playoffs',
+  'LCK/2026 Season/Season Playoffs',
+];
 
 const API_BASE = 'https://lol.fandom.com/api.php';
 const DATA_DIR = path.join(__dirname, '..', 'public', 'data');
@@ -104,47 +126,127 @@ function korChamp(eng) {
   return CHAMP_KOR[eng] || eng;
 }
 
-async function fetchJson(url, retries = 3) {
+// 글로벌 호출 간격 - 모든 fetchJson 사이 최소 2초 (rate limit 회피)
+let _lastFetchTime = 0;
+const MIN_CALL_GAP_MS = 2000;
+
+async function fetchJson(url, retries = 3, debug = false) {
+  // 직전 호출에서 최소 간격이 안 지났으면 그만큼 기다림
+  if (_lastFetchTime > 0) {
+    const elapsed = Date.now() - _lastFetchTime;
+    if (elapsed < MIN_CALL_GAP_MS) {
+      await new Promise((r) => setTimeout(r, MIN_CALL_GAP_MS - elapsed));
+    }
+  }
+  _lastFetchTime = Date.now();
+
   for (let i = 0; i < retries; i++) {
     try {
       const res = await fetch(url, {
         headers: {
-          'User-Agent': 'lck-app/2.0 (https://github.com/officealone00/lck-app)',
+          'User-Agent': 'lck-app/2.3 (https://github.com/officealone00/lck-app)',
           'Accept': 'application/json',
         },
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
+      if (debug) console.log(`    [debug] HTTP ${res.status} ${res.statusText}`);
+      if (!res.ok) {
+        const body = await res.text();
+        if (debug) console.log(`    [debug] body: ${body.slice(0, 300)}`);
+        throw new Error(`HTTP ${res.status}`);
+      }
+      const text = await res.text();
+      if (debug) console.log(`    [debug] body 앞부분: ${text.slice(0, 400)}`);
+      const data = JSON.parse(text);
+
+      // Leaguepedia rate limit 응답 처리 (HTTP 200으로 오는 application-level 에러)
+      if (data && data.error && data.error.code === 'ratelimited') {
+        const waitSec = 60;
+        console.log(`    ⏳ Cargo rate limit. ${waitSec}초 대기 후 재시도 (${i + 1}/${retries})`);
+        if (i === retries - 1) return data; // 마지막 시도면 에러 그대로 반환
+        await new Promise((r) => setTimeout(r, waitSec * 1000));
+        _lastFetchTime = Date.now();
+        continue;
+      }
+      return data;
     } catch (e) {
       console.log(`    재시도 ${i + 1}/${retries}: ${e.message}`);
       if (i === retries - 1) throw e;
-      await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+      await new Promise((r) => setTimeout(r, 2000 * (i + 1)));
     }
   }
 }
 
-// Cargo API 페이지네이션 헬퍼
-async function cargoQueryAll(table, fields, where, orderBy = '', perPage = 500, maxPages = 4) {
+// 호출 간 의도적 간격 (rate limit 회피 - 보조용)
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const CALL_DELAY_MS = 3000;
+
+// URL을 직접 빌드 - URLSearchParams의 따옴표/공백 인코딩 차이를 제거.
+// 모든 값을 명시적 encodeURIComponent로 처리.
+function buildCargoUrl(params) {
+  const parts = [];
+  for (const [k, v] of Object.entries(params)) {
+    if (v === undefined || v === null || v === '') continue;
+    parts.push(`${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`);
+  }
+  return `${API_BASE}?${parts.join('&')}`;
+}
+
+let _firstCallLogged = false;
+
+// Cargo API 페이지네이션 헬퍼 (rate limit 회피용 호출 간 sleep 포함)
+async function cargoQueryAll(table, fields, where, orderBy = '', perPage = 500, maxPages = 2) {
   const all = [];
   for (let page = 0; page < maxPages; page++) {
+    if (page > 0 || all.length > 0) await sleep(CALL_DELAY_MS);
+
     const offset = page * perPage;
-    const params = new URLSearchParams({
+    const url = buildCargoUrl({
       action: 'cargoquery',
       format: 'json',
       tables: table,
       fields,
       where,
+      order_by: orderBy,
       limit: String(perPage),
       offset: String(offset),
     });
-    if (orderBy) params.set('order_by', orderBy);
-    const url = `${API_BASE}?${params.toString()}`;
-    const data = await fetchJson(url);
+
+    // 첫 호출에 한해서 응답 본문 일부를 콘솔에 그대로 노출
+    const debug = !_firstCallLogged;
+    if (debug) {
+      _firstCallLogged = true;
+      console.log(`    [debug 첫 호출] ${url}`);
+    }
+
+    const data = await fetchJson(url, 3, debug);
+    if (data && data.error) {
+      console.log(`    Cargo API 에러: ${JSON.stringify(data.error).slice(0, 200)}`);
+      break;
+    }
     const rows = (data && data.cargoquery) || [];
     all.push(...rows.map((r) => r.title));
     if (rows.length < perPage) break;
   }
   return all;
+}
+
+// 후보 OverviewPage 값을 직접 시도해서 실데이터 있는 첫 항목 반환
+async function probeCandidate(candidate) {
+  const url = buildCargoUrl({
+    action: 'cargoquery',
+    format: 'json',
+    tables: 'Standings',
+    fields: 'OverviewPage,Team,Place',
+    where: `Standings.OverviewPage="${candidate}"`,
+    limit: '5',
+  });
+  try {
+    const data = await fetchJson(url, 2, false);
+    const rows = (data && data.cargoquery) || [];
+    return rows.length;
+  } catch (e) {
+    return -1; // 에러
+  }
 }
 
 // ─── 1. 순위 (form + GDM 포함) ─────────────────────────────────────────
@@ -495,34 +597,131 @@ async function scrapeMeta() {
   return champArr;
 }
 
-// ─── 자가 진단: 실패 시 가능한 토너먼트 후보 출력 ──────────────────────
-async function suggestTournamentNames() {
-  try {
-    const rows = await cargoQueryAll(
-      'Tournaments',
-      'Name,OverviewPage,DateStart,DateEnd',
-      'Tournaments.OverviewPage LIKE "LCK%2026%" OR Tournaments.OverviewPage LIKE "LCK 2026%"',
-      'Tournaments.DateStart DESC',
-      30,
-      1
-    );
-    if (rows.length === 0) return;
+// ─── 토너먼트 자동 해결 ─────────────────────────────────────────────────
+async function resolveTournament() {
+  if (TOURNAMENT) {
+    console.log(`📌 환경변수로 지정된 TOURNAMENT: "${TOURNAMENT}"`);
+    return true;
+  }
 
-    console.log('\n💡 사용 가능한 LCK 2026 토너먼트 OverviewPage 후보:');
-    rows.forEach((r) => {
-      const start = (r.DateStart || '').slice(0, 10);
-      const end = (r.DateEnd || '').slice(0, 10);
-      console.log(`     "${r.OverviewPage}"  (${start} ~ ${end})`);
-    });
-    console.log('\n   → 위 값 중 하나를 scraper/scrape.js의 TOURNAMENT 변수에 넣어주세요.');
+  console.log(`🔍 토너먼트 후보 probe (실데이터 있는 OverviewPage 자동 채택)`);
+
+  // 1단계: 후보 리스트를 순서대로 probe
+  for (const cand of TOURNAMENT_CANDIDATES) {
+    const n = await probeCandidate(cand);
+    const tag = n > 0 ? '✓' : (n === 0 ? '·' : 'x');
+    console.log(`   ${tag} "${cand}" → ${n >= 0 ? n + '건' : '에러'}`);
+    if (n > 0) {
+      TOURNAMENT = cand;
+      console.log(`\n✅ 채택: "${TOURNAMENT}"\n`);
+      return true;
+    }
+  }
+
+  // 2단계: Tournaments 테이블 동적 검색 (League 등호)
+  console.log('\n   후보 모두 실패. Tournaments 테이블 직접 검색...');
+  let rows = [];
+  try {
+    rows = await cargoQueryAll(
+      'Tournaments',
+      'OverviewPage,Year,Split,DateStart',
+      'Tournaments.League="LCK"',
+      'Tournaments.DateStart DESC',
+      30, 1
+    );
   } catch (e) {
-    console.log(`\n   (후보 자동 검색 실패: ${e.message})`);
+    console.log(`   League="LCK" 쿼리 에러: ${e.message}`);
+  }
+
+  if (rows.length > 0) {
+    // TARGET_YEAR과 매칭
+    const matching = rows.filter((r) => {
+      const y = String(r.Year || '');
+      const ds = String(r.DateStart || '');
+      return y === TARGET_YEAR || ds.startsWith(TARGET_YEAR);
+    });
+    console.log(`\n   Tournaments 테이블 LCK 항목: ${rows.length}개 (${TARGET_YEAR}: ${matching.length}개)`);
+    rows.slice(0, 15).forEach((r) => {
+      const start = (r.DateStart || '').slice(0, 10);
+      console.log(`     "${r.OverviewPage}"  Year=${r.Year}  ${start}`);
+    });
+
+    // 매칭된 것 중 가장 최근 시작된 것 시도
+    const target = matching[0] || rows[0];
+    if (target && target.OverviewPage) {
+      const n = await probeCandidate(target.OverviewPage);
+      console.log(`\n   "${target.OverviewPage}" probe → ${n >= 0 ? n + '건' : '에러'}`);
+      if (n > 0) {
+        TOURNAMENT = target.OverviewPage;
+        console.log(`\n✅ 채택: "${TOURNAMENT}"\n`);
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+// ─── 자가 진단 (resolveTournament 실패 시) ─────────────────────────────
+async function suggestTournamentNames() {
+  console.log('\n💡 디버깅: API 응답 직접 확인');
+
+  // Cargo API 자체 살아있는지 확인 (Champions 1건)
+  console.log('\n   [살아있음 체크] Champions 테이블 1건');
+  try {
+    const url = buildCargoUrl({
+      action: 'cargoquery', format: 'json',
+      tables: 'Champions', fields: 'Name', limit: '1',
+    });
+    const data = await fetchJson(url, 1, true);
+    const n = (data && data.cargoquery || []).length;
+    console.log(`   → ${n}건`);
+    if (n === 0) {
+      console.log('\n   ⚠️ Cargo API 자체가 빈 응답. 한국 IP 차단 또는 Leaguepedia 장애 가능.');
+      console.log('      대안: Liquipedia로 데이터 소스 변경 필요.');
+      return;
+    }
+  } catch (e) {
+    console.log(`   에러: ${e.message}`);
+    return;
+  }
+
+  // 최근 LCK 토너먼트 일반 조회
+  console.log('\n   [참고] Standings에 데이터가 있는 최근 LCK 토너먼트들');
+  try {
+    const url = buildCargoUrl({
+      action: 'cargoquery', format: 'json',
+      tables: 'Standings,Tournaments',
+      fields: 'Standings.OverviewPage=op,Standings.Team=team',
+      where: 'Tournaments.League="LCK"',
+      join_on: 'Standings.OverviewPage=Tournaments.OverviewPage',
+      group_by: 'Standings.OverviewPage',
+      order_by: 'Tournaments.DateStart DESC',
+      limit: '15',
+    });
+    const data = await fetchJson(url, 1, false);
+    const rows = (data && data.cargoquery) || [];
+    if (rows.length === 0) {
+      console.log('   결과 0건. League="LCK" 조건 자체가 매칭 안됨.');
+    } else {
+      rows.forEach((r) => console.log(`     "${r.title.op}"`));
+    }
+  } catch (e) {
+    console.log(`   에러: ${e.message}`);
   }
 }
 
 // ─── 메인 ──────────────────────────────────────────────────────────────
 (async () => {
-  console.log(`🏆 LCK Scraper v2.0 / 토너먼트: ${TOURNAMENT}`);
+  console.log(`🏆 LCK Scraper v2.3`);
+
+  // 1단계: TOURNAMENT 자동 해결 (수동 지정시 그대로 사용)
+  const resolved = await resolveTournament();
+  if (!resolved) {
+    console.log('\n❌ 토너먼트 자동 해결 실패');
+    await suggestTournamentNames();
+    process.exit(1);
+  }
 
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
