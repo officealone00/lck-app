@@ -1,0 +1,8 @@
+[
+  { "kor": "바루스", "eng": "Varus", "pickRate": 67, "banRate": 45, "wr": 58, "role": "원딜" },
+  { "kor": "아지르", "eng": "Azir", "pickRate": 54, "banRate": 32, "wr": 62, "role": "미드" },
+  { "kor": "오리아나", "eng": "Orianna", "pickRate": 48, "banRate": 38, "wr": 56, "role": "미드" },
+  { "kor": "럼블", "eng": "Rumble", "pickRate": 42, "banRate": 50, "wr": 51, "role": "탑" },
+  { "kor": "카르마", "eng": "Karma", "pickRate": 38, "banRate": 33, "wr": 54, "role": "서폿" },
+  { "kor": "나미", "eng": "Nami", "pickRate": 35, "banRate": 12, "wr": 60, "role": "서폿" }
+]

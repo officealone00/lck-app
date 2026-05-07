@@ -1,0 +1,5 @@
+[
+  { "date": "오늘", "time": "17:00", "home": "T1", "away": "KT", "homeColor": "#E2012D", "awayColor": "#FF0000" },
+  { "date": "오늘", "time": "20:00", "home": "GEN", "away": "HLE", "homeColor": "#AA8B56", "awayColor": "#F47B20" },
+  { "date": "내일", "time": "17:00", "home": "DK", "away": "NS", "homeColor": "#0072CE", "awayColor": "#F58220" }
+]

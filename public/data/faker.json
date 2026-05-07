@@ -1,0 +1,21 @@
+{
+  "name": "FAKER",
+  "kor": "페이커",
+  "team": "T1",
+  "pos": "MID",
+  "wr": 78.6,
+  "kda": 4.1,
+  "csm": 9.1,
+  "gpm": 433,
+  "games": 14,
+  "wins": 11,
+  "losses": 3,
+  "champions": [
+    { "kor": "라이즈", "eng": "Ryze", "games": 5, "wr": 60, "kda": 4.4 },
+    { "kor": "아지르", "eng": "Azir", "games": 3, "wr": 100, "kda": 3.5 },
+    { "kor": "갈리오", "eng": "Galio", "games": 2, "wr": 100, "kda": 3.0 },
+    { "kor": "실라스", "eng": "Sylas", "games": 1, "wr": 100, "kda": 7.5 },
+    { "kor": "오리아나", "eng": "Orianna", "games": 1, "wr": 100, "kda": 11.5 },
+    { "kor": "아우로라", "eng": "Aurora", "games": 1, "wr": 100, "kda": 6.3 }
+  ]
+}

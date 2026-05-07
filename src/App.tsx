@@ -2,53 +2,24 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import BannerAd from './components/BannerAd';
 import RewardedAd from './components/RewardedAd';
+import { api, type TeamStanding, type FakerStats, type MetaChamp, type UpcomingMatch } from './utils/api';
+import {
+  FALLBACK_STANDINGS,
+  FALLBACK_FAKER,
+  FALLBACK_META,
+  FALLBACK_MATCHES,
+} from './utils/fallback';
 
-const teams = [
-  { rank: 1, abbr: 'KT', kor: 'KT 롤스터', wr: 89, w: 16, l: 2, gdm: 217, form: ['W','W','W','W','W'], color: '#FF0000' },
-  { rank: 2, abbr: 'HLE', kor: '한화생명', wr: 78, w: 14, l: 4, gdm: 233, form: ['W','W','W','L','W'], color: '#F47B20' },
-  { rank: 3, abbr: 'GEN', kor: '젠지', wr: 60, w: 9, l: 6, gdm: 146, form: ['W','L','W','W','L'], color: '#AA8B56' },
-  { rank: 4, abbr: 'T1', kor: 'T1', wr: 57, w: 8, l: 6, gdm: -18, form: ['L','W','L','W','W'], color: '#E2012D' },
-  { rank: 5, abbr: 'NS', kor: '농심 레드포스', wr: 56, w: 9, l: 7, gdm: 61, form: ['W','W','L','L','W'], color: '#F58220' },
-  { rank: 6, abbr: 'DK', kor: '디플러스 기아', wr: 56, w: 9, l: 7, gdm: 45, form: ['L','W','W','L','W'], color: '#0072CE' },
-  { rank: 7, abbr: 'BNK', kor: 'BNK 피어엑스', wr: 33, w: 5, l: 10, gdm: -119, form: ['L','L','W','L','L'], color: '#E31837' },
-  { rank: 8, abbr: 'BRO', kor: '한진 브리온', wr: 24, w: 4, l: 13, gdm: -149, form: ['L','L','L','W','L'], color: '#102648' },
-  { rank: 9, abbr: 'DRX', kor: '키움 DRX', wr: 24, w: 4, l: 13, gdm: -203, form: ['L','W','L','L','L'], color: '#1A4DBA' },
-  { rank: 10, abbr: 'DN', kor: 'DN 숲퍼스', wr: 14, w: 2, l: 12, gdm: -285, form: ['L','L','L','L','W'], color: '#FFC629' },
-];
-
-const fakerChamps = [
-  { kor: '라이즈', eng: 'Ryze', games: 5, wr: 60, kda: 4.4 },
-  { kor: '아지르', eng: 'Azir', games: 3, wr: 100, kda: 3.5 },
-  { kor: '갈리오', eng: 'Galio', games: 2, wr: 100, kda: 3.0 },
-  { kor: '실라스', eng: 'Sylas', games: 1, wr: 100, kda: 7.5 },
-  { kor: '오리아나', eng: 'Orianna', games: 1, wr: 100, kda: 11.5 },
-  { kor: '아우로라', eng: 'Aurora', games: 1, wr: 100, kda: 6.3 },
-];
-
+// stars는 잠금 상태/포지션 메타라 하드코딩 유지
 const stars = [
-  { id: 'faker', name: 'FAKER', kor: '페이커', team: 'T1', pos: 'MID', wr: 78.6, kda: 4.1, locked: false },
-  { id: 'zeus', name: 'ZEUS', kor: '제우스', team: 'HLE', pos: 'TOP', wr: 72.5, kda: 3.8, locked: true },
-  { id: 'showmaker', name: 'SHOWMAKER', kor: '쇼메이커', team: 'DK', pos: 'MID', wr: 65.0, kda: 3.2, locked: true },
-  { id: 'canyon', name: 'CANYON', kor: '캐니언', team: 'GEN', pos: 'JUNGLE', wr: 68.3, kda: 4.5, locked: true },
-  { id: 'ruler', name: 'RULER', kor: '룰러', team: 'GEN', pos: 'BOT', wr: 64.7, kda: 5.1, locked: true },
+  { id: 'faker', name: 'FAKER', kor: '페이커', team: 'T1', pos: 'MID', locked: false },
+  { id: 'zeus', name: 'ZEUS', kor: '제우스', team: 'HLE', pos: 'TOP', locked: true },
+  { id: 'showmaker', name: 'SHOWMAKER', kor: '쇼메이커', team: 'DK', pos: 'MID', locked: true },
+  { id: 'canyon', name: 'CANYON', kor: '캐니언', team: 'GEN', pos: 'JUNGLE', locked: true },
+  { id: 'ruler', name: 'RULER', kor: '룰러', team: 'GEN', pos: 'BOT', locked: true },
 ];
 
-const metaChamps = [
-  { kor: '바루스', eng: 'Varus', pickRate: 67, banRate: 45, wr: 58, role: '원딜' },
-  { kor: '아지르', eng: 'Azir', pickRate: 54, banRate: 32, wr: 62, role: '미드' },
-  { kor: '오리아나', eng: 'Orianna', pickRate: 48, banRate: 38, wr: 56, role: '미드' },
-  { kor: '럼블', eng: 'Rumble', pickRate: 42, banRate: 50, wr: 51, role: '탑' },
-  { kor: '카르마', eng: 'Karma', pickRate: 38, banRate: 33, wr: 54, role: '서폿' },
-  { kor: '나미', eng: 'Nami', pickRate: 35, banRate: 12, wr: 60, role: '서폿' },
-];
-
-const upcomingMatches = [
-  { date: '오늘', time: '17:00', home: 'T1', away: 'KT', homeColor: '#E2012D', awayColor: '#FF0000' },
-  { date: '오늘', time: '20:00', home: 'GEN', away: 'HLE', homeColor: '#AA8B56', awayColor: '#F47B20' },
-  { date: '내일', time: '17:00', home: 'DK', away: 'NS', homeColor: '#0072CE', awayColor: '#F58220' },
-];
-
-function TeamSelect({ onSelect }: { onSelect: (abbr: string) => void }) {
+function TeamSelect({ teams, onSelect }: { teams: TeamStanding[]; onSelect: (abbr: string) => void }) {
   return (
     <div className="select-page">
       <div className="select-hero">
@@ -70,7 +41,9 @@ function TeamSelect({ onSelect }: { onSelect: (abbr: string) => void }) {
   );
 }
 
-function MyTeamPage({ myTeam, onChange, aiUnlocked, onAdRequest }: {
+function MyTeamPage({ teams, matches, myTeam, onChange, aiUnlocked, onAdRequest }: {
+  teams: TeamStanding[];
+  matches: UpcomingMatch[];
   myTeam: string;
   onChange: () => void;
   aiUnlocked: boolean;
@@ -90,7 +63,8 @@ function MyTeamPage({ myTeam, onChange, aiUnlocked, onAdRequest }: {
       </div>
     );
   }
-  const nextMatch = upcomingMatches.find(m => m.home === team.abbr || m.away === team.abbr);
+
+  const nextMatch = matches.find(m => m.home === team.abbr || m.away === team.abbr);
   const recentWins = team.form.filter(f => f === 'W').length;
   const aiPrediction = Math.min(95, Math.round(team.wr * 0.6 + recentWins * 8));
 
@@ -136,15 +110,15 @@ function MyTeamPage({ myTeam, onChange, aiUnlocked, onAdRequest }: {
           <>
             <h3 className="sec">NEXT MATCH</h3>
             <div className="match-card">
-              <div className="match-date">{nextMatch.date} · {nextMatch.time} KST</div>
+              <div className="match-date">{nextMatch.date}{nextMatch.time ? ` · ${nextMatch.time} KST` : ''}</div>
               <div className="match-teams">
                 <div className="mt-side">
-                  <div className="mt-color" style={{background: nextMatch.homeColor}} />
+                  <div className="mt-color" style={{background: nextMatch.homeColor || '#888'}} />
                   <div className="mt-abbr">{nextMatch.home}</div>
                 </div>
                 <div className="mt-vs">VS</div>
                 <div className="mt-side">
-                  <div className="mt-color" style={{background: nextMatch.awayColor}} />
+                  <div className="mt-color" style={{background: nextMatch.awayColor || '#888'}} />
                   <div className="mt-abbr">{nextMatch.away}</div>
                 </div>
               </div>
@@ -176,7 +150,8 @@ function MyTeamPage({ myTeam, onChange, aiUnlocked, onAdRequest }: {
   );
 }
 
-function HomePage() {
+function HomePage({ teams }: { teams: TeamStanding[] }) {
+  if (teams.length === 0) return null;
   const top = teams[0];
   const rest = teams.slice(1);
   return (
@@ -196,7 +171,7 @@ function HomePage() {
             <div className="wr-big">{top.wr}<span>%</span></div>
             <div className="record-stack">
               <div className="record-big">{top.w}W {top.l}L</div>
-              <div className="gdm">GDM +{top.gdm}</div>
+              <div className="gdm">GDM {top.gdm > 0 ? '+' : ''}{top.gdm}</div>
             </div>
           </div>
         </div>
@@ -224,7 +199,8 @@ function HomePage() {
   );
 }
 
-function StarsPage({ playersUnlocked, onAdRequest }: {
+function StarsPage({ faker, playersUnlocked, onAdRequest }: {
+  faker: FakerStats;
   playersUnlocked: boolean;
   onAdRequest: (purpose: 'players') => void;
 }) {
@@ -272,55 +248,59 @@ function StarsPage({ playersUnlocked, onAdRequest }: {
             </div>
             <div className="key-stats">
               <div className="ks">
-                <div className="ksv gold">{player.wr}%</div>
+                <div className="ksv gold">{player.id === 'faker' ? faker.wr : '-'}{player.id === 'faker' ? '%' : ''}</div>
                 <div className="ksl">WIN RATE</div>
               </div>
               <div className="ks">
-                <div className="ksv">{player.kda}</div>
+                <div className="ksv">{player.id === 'faker' ? faker.kda : '-'}</div>
                 <div className="ksl">KDA</div>
               </div>
               <div className="ks">
-                <div className="ksv">9.1</div>
+                <div className="ksv">{player.id === 'faker' ? faker.csm : '-'}</div>
                 <div className="ksl">CSM</div>
               </div>
             </div>
             <div className="record-line">
-              <span>11승 3패</span>
-              <span className="dim">14경기 · GPM 433</span>
+              <span>{player.id === 'faker' ? `${faker.wins}승 ${faker.losses}패` : '-'}</span>
+              <span className="dim">{player.id === 'faker' ? `${faker.games}경기 · GPM ${faker.gpm}` : '-'}</span>
             </div>
 
             <div style={{padding: '0 12px'}}>
               <BannerAd />
             </div>
 
-            <h3 className="sec">CHAMPION POOL</h3>
-            <div className="champ-grid">
-              {fakerChamps.map((c, i) => (
-                <div className={i === 0 ? 'champ featured' : 'champ'} key={i}>
-                  <div className="champ-kor">{c.kor}</div>
-                  <div className="champ-eng">{c.eng}</div>
-                  <div className="champ-bottom">
-                    <span className="games">{c.games}경기</span>
-                    <span className="kda-val">KDA {c.kda}</span>
+            {player.id === 'faker' && faker.champions.length > 0 && (
+              <>
+                <h3 className="sec">CHAMPION POOL</h3>
+                <div className="champ-grid">
+                  {faker.champions.map((c, i) => (
+                    <div className={i === 0 ? 'champ featured' : 'champ'} key={c.eng + i}>
+                      <div className="champ-kor">{c.kor}</div>
+                      <div className="champ-eng">{c.eng}</div>
+                      <div className="champ-bottom">
+                        <span className="games">{c.games}경기</span>
+                        <span className="kda-val">KDA {c.kda}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <h3 className="sec">PERSONAL BEST</h3>
+                <div className="pb-card">
+                  <div className="pb-row">
+                    <span className="pb-label">최고 KDA</span>
+                    <span className="pb-val">{faker.champions[0]?.kda || '-'} · {faker.champions[0]?.eng || '-'}</span>
+                  </div>
+                  <div className="pb-row">
+                    <span className="pb-label">총 게임수</span>
+                    <span className="pb-val">{faker.games}경기</span>
+                  </div>
+                  <div className="pb-row">
+                    <span className="pb-label">분당 골드</span>
+                    <span className="pb-val">{faker.gpm} GPM</span>
                   </div>
                 </div>
-              ))}
-            </div>
-            <h3 className="sec">PERSONAL BEST</h3>
-            <div className="pb-card">
-              <div className="pb-row">
-                <span className="pb-label">최고 KDA</span>
-                <span className="pb-val">5/0/5 · Ryze</span>
-              </div>
-              <div className="pb-row">
-                <span className="pb-label">상대</span>
-                <span className="pb-val">vs KT Rolster</span>
-              </div>
-              <div className="pb-row">
-                <span className="pb-label">최고 DPM</span>
-                <span className="pb-val">1205 · Ryze</span>
-              </div>
-            </div>
+              </>
+            )}
           </>
         )}
       </div>
@@ -328,7 +308,7 @@ function StarsPage({ playersUnlocked, onAdRequest }: {
   );
 }
 
-function MetaPage() {
+function MetaPage({ metaChamps }: { metaChamps: MetaChamp[] }) {
   const [sortBy, setSortBy] = useState<'pick' | 'ban' | 'wr'>('pick');
 
   const sortedChamps = [...metaChamps].sort((a, b) => {
@@ -366,11 +346,11 @@ function MetaPage() {
         </div>
 
         {sortedChamps.map((c, i) => (
-          <div className="meta-card" key={c.eng}>
+          <div className="meta-card" key={c.eng + i}>
             <div className="meta-rank">{i + 1}</div>
             <div className="meta-info">
               <div className="meta-name">{c.kor}</div>
-              <div className="meta-sub">{c.eng} · {c.role}</div>
+              <div className="meta-sub">{c.eng}{c.role ? ` · ${c.role}` : ''}</div>
             </div>
             <div className="meta-bars">
               {sortBy === 'wr' ? (
@@ -410,11 +390,16 @@ function MetaPage() {
   );
 }
 
-function ReportPage({ reportUnlocked, onAdRequest }: {
+function ReportPage({ teams, metaChamps, reportUnlocked, onAdRequest }: {
+  teams: TeamStanding[];
+  metaChamps: MetaChamp[];
   reportUnlocked: boolean;
   onAdRequest: (purpose: 'report') => void;
 }) {
   if (reportUnlocked) {
+    const topPick = [...metaChamps].sort((a, b) => b.pickRate - a.pickRate)[0];
+    const topBan = [...metaChamps].sort((a, b) => b.banRate - a.banRate)[0];
+
     return (
       <div className="page">
         <header className="header">
@@ -441,15 +426,15 @@ function ReportPage({ reportUnlocked, onAdRequest }: {
           <div className="pb-card">
             <div className="pb-row">
               <span className="pb-label">선픽 1티어</span>
-              <span className="pb-val">바루스 (67%)</span>
+              <span className="pb-val">{topPick ? `${topPick.kor} (${topPick.pickRate}%)` : '-'}</span>
             </div>
             <div className="pb-row">
               <span className="pb-label">우선 밴</span>
-              <span className="pb-val">럼블 (50%)</span>
+              <span className="pb-val">{topBan ? `${topBan.kor} (${topBan.banRate}%)` : '-'}</span>
             </div>
             <div className="pb-row">
               <span className="pb-label">시그니처</span>
-              <span className="pb-val">T1 / 라이즈</span>
+              <span className="pb-val">{teams[0]?.abbr || '-'} / {topPick?.kor || '-'}</span>
             </div>
           </div>
 
@@ -520,6 +505,12 @@ function App() {
   const [showSelect, setShowSelect] = useState(false);
   const [tab, setTab] = useState('myteam');
 
+  // ─── 실시간 데이터 state ───
+  const [teams, setTeams] = useState<TeamStanding[]>(FALLBACK_STANDINGS);
+  const [faker, setFaker] = useState<FakerStats>(FALLBACK_FAKER);
+  const [metaChamps, setMetaChamps] = useState<MetaChamp[]>(FALLBACK_META);
+  const [matches, setMatches] = useState<UpcomingMatch[]>(FALLBACK_MATCHES);
+
   const [aiUnlocked, setAiUnlocked] = useState(false);
   const [reportUnlocked, setReportUnlocked] = useState(false);
   const [playersUnlocked, setPlayersUnlocked] = useState(false);
@@ -528,12 +519,19 @@ function App() {
   const rewardEarnedRef = useRef(false);
 
   useEffect(() => {
+    // 응원팀 로드
     const saved = localStorage.getItem('lck_my_team');
     if (saved !== null) {
       setMyTeam(saved);
     } else {
       setShowSelect(true);
     }
+
+    // 실시간 데이터 fetch (병렬)
+    api.standings().then(setTeams).catch((e) => console.warn('[App] standings 로드 실패', e));
+    api.faker().then(setFaker).catch((e) => console.warn('[App] faker 로드 실패', e));
+    api.meta().then(setMetaChamps).catch((e) => console.warn('[App] meta 로드 실패', e));
+    api.matches().then(setMatches).catch((e) => console.warn('[App] matches 로드 실패', e));
   }, []);
 
   const handleSelect = (abbr: string) => {
@@ -559,29 +557,34 @@ function App() {
   };
 
   if (showSelect) {
-    return <TeamSelect onSelect={handleSelect} />;
+    return <TeamSelect teams={teams} onSelect={handleSelect} />;
   }
 
   return (
     <div className="app">
       {tab === 'myteam' && (
         <MyTeamPage
+          teams={teams}
+          matches={matches}
           myTeam={myTeam || ''}
           onChange={() => setShowSelect(true)}
           aiUnlocked={aiUnlocked}
           onAdRequest={handleAdRequest}
         />
       )}
-      {tab === 'home' && <HomePage />}
+      {tab === 'home' && <HomePage teams={teams} />}
       {tab === 'stars' && (
         <StarsPage
+          faker={faker}
           playersUnlocked={playersUnlocked}
           onAdRequest={handleAdRequest}
         />
       )}
-      {tab === 'meta' && <MetaPage />}
+      {tab === 'meta' && <MetaPage metaChamps={metaChamps} />}
       {tab === 'report' && (
         <ReportPage
+          teams={teams}
+          metaChamps={metaChamps}
           reportUnlocked={reportUnlocked}
           onAdRequest={handleAdRequest}
         />
