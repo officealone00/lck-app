@@ -2,8 +2,12 @@
 // LCK 데이터를 gol.gg에서 스크래핑 → public/data/*.json 저장
 // GitHub Actions cron으로 매일 KST 01:00 자동 실행
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ============ 시즌 설정 (스플릿/시즌 변경 시 여기만 수정) ============
 const TOURNAMENT_SLUG = 'LCK%202026%20Rounds%201-2';
