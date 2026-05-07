@@ -329,6 +329,14 @@ function StarsPage({ playersUnlocked, onAdRequest }: {
 }
 
 function MetaPage() {
+  const [sortBy, setSortBy] = useState<'pick' | 'ban' | 'wr'>('pick');
+
+  const sortedChamps = [...metaChamps].sort((a, b) => {
+    if (sortBy === 'pick') return b.pickRate - a.pickRate;
+    if (sortBy === 'ban') return b.banRate - a.banRate;
+    return b.wr - a.wr;
+  });
+
   return (
     <div className="page">
       <header className="header">
@@ -337,29 +345,61 @@ function MetaPage() {
       </header>
       <div className="content">
         <div className="meta-tabs">
-          <button className="meta-tab active">픽률 TOP</button>
-          <button className="meta-tab">밴률 TOP</button>
-          <button className="meta-tab">승률 TOP</button>
+          <button
+            className={`meta-tab ${sortBy === 'pick' ? 'active' : ''}`}
+            onClick={() => setSortBy('pick')}
+          >
+            픽률 TOP
+          </button>
+          <button
+            className={`meta-tab ${sortBy === 'ban' ? 'active' : ''}`}
+            onClick={() => setSortBy('ban')}
+          >
+            밴률 TOP
+          </button>
+          <button
+            className={`meta-tab ${sortBy === 'wr' ? 'active' : ''}`}
+            onClick={() => setSortBy('wr')}
+          >
+            승률 TOP
+          </button>
         </div>
 
-        {metaChamps.map((c, i) => (
-          <div className="meta-card" key={i}>
+        {sortedChamps.map((c, i) => (
+          <div className="meta-card" key={c.eng}>
             <div className="meta-rank">{i + 1}</div>
             <div className="meta-info">
               <div className="meta-name">{c.kor}</div>
               <div className="meta-sub">{c.eng} · {c.role}</div>
             </div>
             <div className="meta-bars">
-              <div className="meta-bar-row">
-                <span className="mbl">픽</span>
-                <div className="bar-bg"><div className="bar-fill gold" style={{width: `${c.pickRate}%`}} /></div>
-                <span className="mbv">{c.pickRate}%</span>
-              </div>
-              <div className="meta-bar-row">
-                <span className="mbl">밴</span>
-                <div className="bar-bg"><div className="bar-fill red" style={{width: `${c.banRate}%`}} /></div>
-                <span className="mbv">{c.banRate}%</span>
-              </div>
+              {sortBy === 'wr' ? (
+                <>
+                  <div className="meta-bar-row">
+                    <span className="mbl">승</span>
+                    <div className="bar-bg"><div className="bar-fill gold" style={{width: `${c.wr}%`}} /></div>
+                    <span className="mbv">{c.wr}%</span>
+                  </div>
+                  <div className="meta-bar-row">
+                    <span className="mbl">픽</span>
+                    <div className="bar-bg"><div className="bar-fill" style={{width: `${c.pickRate}%`, background: '#B5BCD0'}} /></div>
+                    <span className="mbv">{c.pickRate}%</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="meta-bar-row">
+                    <span className="mbl">픽</span>
+                    <div className="bar-bg"><div className="bar-fill gold" style={{width: `${c.pickRate}%`}} /></div>
+                    <span className="mbv">{c.pickRate}%</span>
+                  </div>
+                  <div className="meta-bar-row">
+                    <span className="mbl">밴</span>
+                    <div className="bar-bg"><div className="bar-fill red" style={{width: `${c.banRate}%`}} /></div>
+                    <span className="mbv">{c.banRate}%</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         ))}
