@@ -1,9 +1,10 @@
 name: Scrape LCK Data
 
+# Riot 공식 lolesports API 사용
+# 매일 KST 02:00 (UTC 17:00) 자동 갱신
 on:
   schedule:
-    # KST 01:00 = UTC 16:00 (전날)
-    - cron: '0 16 * * *'
+    - cron: '0 17 * * *'
   workflow_dispatch:
 
 permissions:
@@ -39,3 +40,11 @@ jobs:
             git pull --rebase origin main
             git push
           fi
+
+      - name: Purge jsdelivr cache
+        if: success()
+        run: |
+          curl -s "https://purge.jsdelivr.net/gh/officealone00/lck-app@main/public/data/standings.json"
+          curl -s "https://purge.jsdelivr.net/gh/officealone00/lck-app@main/public/data/matches.json"
+          curl -s "https://purge.jsdelivr.net/gh/officealone00/lck-app@main/public/data/updated.json"
+          echo "✓ jsdelivr cache purged"

@@ -1,0 +1,11 @@
+[
+  { "rank": 1, "name": "Chovy",   "kor": "초비",     "team": "GEN", "pos": "MID", "points": 600, "kda": 5.45, "kills": 113, "deaths": 55, "assists": 187, "kpRate": 0.67, "sets": 27 },
+  { "rank": 2, "name": "Zeka",    "kor": "제카",     "team": "HLE", "pos": "MID", "points": 400, "kda": 7.81, "kills": 143, "deaths": 42, "assists": 185, "kpRate": 0.72, "sets": 25 },
+  { "rank": 2, "name": "Teddy",   "kor": "테디",     "team": "BRO", "pos": "AD",  "points": 400, "kda": 4.26, "kills": 134, "deaths": 61, "assists": 126, "kpRate": 0.67, "sets": 26 },
+  { "rank": 4, "name": "Aiming",  "kor": "에이밍",   "team": "KT",  "pos": "AD",  "points": 300, "kda": 6.08, "kills": 140, "deaths": 50, "assists": 164, "kpRate": 0.71, "sets": 26 },
+  { "rank": 4, "name": "Keria",   "kor": "케리아",   "team": "T1",  "pos": "SPT", "points": 300, "kda": 5.18, "kills": 30,  "deaths": 55, "assists": 255, "kpRate": 0.74, "sets": 24 },
+  { "rank": 4, "name": "Bdd",     "kor": "비디디",   "team": "KT",  "pos": "MID", "points": 300, "kda": 5.03, "kills": 111, "deaths": 58, "assists": 181, "kpRate": 0.68, "sets": 26 },
+  { "rank": 4, "name": "Oner",    "kor": "오너",     "team": "T1",  "pos": "JGL", "points": 300, "kda": 3.93, "kills": 89,  "deaths": 68, "assists": 178, "kpRate": 0.70, "sets": 24 },
+  { "rank": 4, "name": "Taeyoon", "kor": "태윤",     "team": "BFX", "pos": "AD",  "points": 300, "kda": 3.35, "kills": 120, "deaths": 83, "assists": 158, "kpRate": 0.73, "sets": 26 },
+  { "rank": 9, "name": "Delight", "kor": "딜라이트", "team": "HLE", "pos": "SPT", "points": 200, "kda": 5.49, "kills": 30,  "deaths": 63, "assists": 316, "kpRate": 0.76, "sets": 25 }
+]

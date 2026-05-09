@@ -13,6 +13,7 @@ import {
   FALLBACK_META,
   FALLBACK_MATCHES,
   FALLBACK_UPDATED,
+  FALLBACK_PLAYERS,
 } from './fallback';
 
 const CONFIG = {
@@ -132,6 +133,21 @@ export interface UpdatedMeta {
   total: number;
 }
 
+export interface PlayerRanking {
+  rank: number;
+  name: string;        // 영문 닉 (e.g., 'Chovy')
+  kor: string;         // 한글 (e.g., '초비')
+  team: string;        // 팀 약자 (e.g., 'GEN')
+  pos: string;         // 포지션 (MID/AD/SPT/JGL/TOP)
+  points: number;      // 네이버 LEGENDS 포인트
+  kda: number;
+  kills: number;
+  deaths: number;
+  assists: number;
+  kpRate: number;      // 킬관여율 (0~1)
+  sets: number;        // 출전세트수
+}
+
 // ─── API ──────────────────────────────
 export const api = {
   standings: () =>
@@ -144,4 +160,6 @@ export const api = {
     fetchJsonWithRetry<UpcomingMatch[]>('public/data/matches.json', FALLBACK_MATCHES),
   updated: () =>
     fetchJsonWithRetry<UpdatedMeta>('public/data/updated.json', FALLBACK_UPDATED),
+  players: () =>
+    fetchJsonWithRetry<PlayerRanking[]>('public/data/players.json', FALLBACK_PLAYERS),
 };

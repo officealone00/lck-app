@@ -2,21 +2,27 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import BannerAd from './components/BannerAd';
 import RewardedAd from './components/RewardedAd';
-import { api, type TeamStanding, type FakerStats, type MetaChamp, type UpcomingMatch } from './utils/api';
+import { api, type TeamStanding, type FakerStats, type MetaChamp, type UpcomingMatch, type PlayerRanking } from './utils/api';
 import {
   FALLBACK_STANDINGS,
   FALLBACK_FAKER,
   FALLBACK_META,
   FALLBACK_MATCHES,
+  FALLBACK_PLAYERS,
 } from './utils/fallback';
 
-// stars는 잠금 상태/포지션 메타라 하드코딩 유지
+// 네이버 LCK 2026 LEGENDS TOP 8 + Faker (LCK Cup 2026)
+// 1번(Chovy)은 무료, 나머지는 광고 시청 후 잠금 해제
 const stars = [
-  { id: 'faker', name: 'FAKER', kor: '페이커', team: 'T1', pos: 'MID', locked: false },
-  { id: 'zeus', name: 'ZEUS', kor: '제우스', team: 'HLE', pos: 'TOP', locked: true },
-  { id: 'showmaker', name: 'SHOWMAKER', kor: '쇼메이커', team: 'DK', pos: 'MID', locked: true },
-  { id: 'canyon', name: 'CANYON', kor: '캐니언', team: 'GEN', pos: 'JUNGLE', locked: true },
-  { id: 'ruler', name: 'RULER', kor: '룰러', team: 'GEN', pos: 'BOT', locked: true },
+  { id: 'chovy',   name: 'Chovy',   kor: '초비',     team: 'GEN', pos: 'MID', locked: false },
+  { id: 'zeka',    name: 'Zeka',    kor: '제카',     team: 'HLE', pos: 'MID', locked: true },
+  { id: 'teddy',   name: 'Teddy',   kor: '테디',     team: 'BRO', pos: 'AD',  locked: true },
+  { id: 'aiming',  name: 'Aiming',  kor: '에이밍',   team: 'KT',  pos: 'AD',  locked: true },
+  { id: 'keria',   name: 'Keria',   kor: '케리아',   team: 'T1',  pos: 'SPT', locked: true },
+  { id: 'bdd',     name: 'Bdd',     kor: '비디디',   team: 'KT',  pos: 'MID', locked: true },
+  { id: 'oner',    name: 'Oner',    kor: '오너',     team: 'T1',  pos: 'JGL', locked: true },
+  { id: 'taeyoon', name: 'Taeyoon', kor: '태윤',     team: 'BFX', pos: 'AD',  locked: true },
+  { id: 'faker',   name: 'FAKER',   kor: '페이커',   team: 'T1',  pos: 'MID', locked: true },
 ];
 
 function TeamSelect({ teams, onSelect }: { teams: TeamStanding[]; onSelect: (abbr: string) => void }) {
@@ -199,20 +205,38 @@ function HomePage({ teams }: { teams: TeamStanding[] }) {
   );
 }
 
-function StarsPage({ faker, playersUnlocked, onAdRequest }: {
+function StarsPage({ faker, players, playersUnlocked, onAdRequest }: {
   faker: FakerStats;
+  players: PlayerRanking[];
   playersUnlocked: boolean;
   onAdRequest: (purpose: 'players') => void;
 }) {
-  const [active, setActive] = useState('faker');
+  const [active, setActive] = useState('chovy');
   const player = stars.find(s => s.id === active)!;
   const isLockedNow = player.locked && !playersUnlocked;
+
+  // 페이커 외엔 PlayerRanking에서 매칭, 페이커는 FakerStats 사용
+  const isFaker = player.id === 'faker';
+  const ranking = !isFaker ? players.find(p => p.name.toLowerCase() === player.name.toLowerCase()) : null;
+
+  // 표시용 stat (페이커는 wr/kda/csm, 다른 선수는 kda/킬관여율/세트수)
+  const displayWr = isFaker ? `${faker.wr}%` : (ranking ? `${(ranking.kpRate * 100).toFixed(0)}%` : '-');
+  const displayWrLabel = isFaker ? 'WIN RATE' : 'KILL %';
+  const displayKda = isFaker ? faker.kda : (ranking?.kda ?? '-');
+  const displayCs = isFaker ? faker.csm : (ranking?.sets ?? '-');
+  const displayCsLabel = isFaker ? 'CS/MIN' : 'SETS';
+  const displayRecord = isFaker
+    ? `${faker.wins}승 ${faker.losses}패`
+    : (ranking ? `${ranking.kills}K ${ranking.deaths}D ${ranking.assists}A` : '-');
+  const displaySub = isFaker
+    ? `${faker.games}경기 · GPM ${faker.gpm}`
+    : (ranking ? `LEGENDS ${ranking.points}P · ${ranking.rank}위` : '-');
 
   return (
     <div className="page">
       <header className="header">
         <span className="season-badge">PRO PLAYERS</span>
-        <span className="update-time">LCK CUP 2026</span>
+        <span className="update-time">LCK 2026 LEGENDS</span>
       </header>
 
       <div className="player-tabs">
@@ -248,28 +272,28 @@ function StarsPage({ faker, playersUnlocked, onAdRequest }: {
             </div>
             <div className="key-stats">
               <div className="ks">
-                <div className="ksv gold">{player.id === 'faker' ? faker.wr : '-'}{player.id === 'faker' ? '%' : ''}</div>
-                <div className="ksl">WIN RATE</div>
+                <div className="ksv gold">{displayWr}</div>
+                <div className="ksl">{displayWrLabel}</div>
               </div>
               <div className="ks">
-                <div className="ksv">{player.id === 'faker' ? faker.kda : '-'}</div>
+                <div className="ksv">{displayKda}</div>
                 <div className="ksl">KDA</div>
               </div>
               <div className="ks">
-                <div className="ksv">{player.id === 'faker' ? faker.csm : '-'}</div>
-                <div className="ksl">CSM</div>
+                <div className="ksv">{displayCs}</div>
+                <div className="ksl">{displayCsLabel}</div>
               </div>
             </div>
             <div className="record-line">
-              <span>{player.id === 'faker' ? `${faker.wins}승 ${faker.losses}패` : '-'}</span>
-              <span className="dim">{player.id === 'faker' ? `${faker.games}경기 · GPM ${faker.gpm}` : '-'}</span>
+              <span>{displayRecord}</span>
+              <span className="dim">{displaySub}</span>
             </div>
 
             <div style={{padding: '0 12px'}}>
               <BannerAd />
             </div>
 
-            {player.id === 'faker' && faker.champions.length > 0 && (
+            {isFaker && faker.champions.length > 0 && (
               <>
                 <h3 className="sec">CHAMPION POOL</h3>
                 <div className="champ-grid">
@@ -297,6 +321,34 @@ function StarsPage({ faker, playersUnlocked, onAdRequest }: {
                   <div className="pb-row">
                     <span className="pb-label">분당 골드</span>
                     <span className="pb-val">{faker.gpm} GPM</span>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {!isFaker && ranking && (
+              <>
+                <h3 className="sec">SEASON STATS</h3>
+                <div className="pb-card">
+                  <div className="pb-row">
+                    <span className="pb-label">LEGENDS 순위</span>
+                    <span className="pb-val">{ranking.rank}위 · {ranking.points}P</span>
+                  </div>
+                  <div className="pb-row">
+                    <span className="pb-label">킬 / 데스 / 어시</span>
+                    <span className="pb-val">{ranking.kills} / {ranking.deaths} / {ranking.assists}</span>
+                  </div>
+                  <div className="pb-row">
+                    <span className="pb-label">킬관여율</span>
+                    <span className="pb-val">{(ranking.kpRate * 100).toFixed(0)}%</span>
+                  </div>
+                  <div className="pb-row">
+                    <span className="pb-label">출전 세트</span>
+                    <span className="pb-val">{ranking.sets} 세트</span>
+                  </div>
+                  <div className="pb-row">
+                    <span className="pb-label">평균 KDA</span>
+                    <span className="pb-val">{ranking.kda}</span>
                   </div>
                 </div>
               </>
@@ -510,6 +562,7 @@ function App() {
   const [faker, setFaker] = useState<FakerStats>(FALLBACK_FAKER);
   const [metaChamps, setMetaChamps] = useState<MetaChamp[]>(FALLBACK_META);
   const [matches, setMatches] = useState<UpcomingMatch[]>(FALLBACK_MATCHES);
+  const [players, setPlayers] = useState<PlayerRanking[]>(FALLBACK_PLAYERS);
 
   const [aiUnlocked, setAiUnlocked] = useState(false);
   const [reportUnlocked, setReportUnlocked] = useState(false);
@@ -532,6 +585,7 @@ function App() {
     api.faker().then(setFaker).catch((e) => console.warn('[App] faker 로드 실패', e));
     api.meta().then(setMetaChamps).catch((e) => console.warn('[App] meta 로드 실패', e));
     api.matches().then(setMatches).catch((e) => console.warn('[App] matches 로드 실패', e));
+    api.players().then(setPlayers).catch((e) => console.warn('[App] players 로드 실패', e));
   }, []);
 
   const handleSelect = (abbr: string) => {
@@ -576,6 +630,7 @@ function App() {
       {tab === 'stars' && (
         <StarsPage
           faker={faker}
+          players={players}
           playersUnlocked={playersUnlocked}
           onAdRequest={handleAdRequest}
         />

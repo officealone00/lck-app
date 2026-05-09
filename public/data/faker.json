@@ -3,19 +3,18 @@
   "kor": "페이커",
   "team": "T1",
   "pos": "MID",
-  "wr": 78.6,
-  "kda": 4.1,
-  "csm": 9.1,
-  "gpm": 433,
-  "games": 14,
-  "wins": 11,
-  "losses": 3,
+  "wr": 64,
+  "kda": 4.12,
+  "csm": 9.2,
+  "gpm": 428,
+  "games": 11,
+  "wins": 7,
+  "losses": 4,
   "champions": [
-    { "kor": "라이즈", "eng": "Ryze", "games": 5, "wr": 60, "kda": 4.4 },
-    { "kor": "아지르", "eng": "Azir", "games": 3, "wr": 100, "kda": 3.5 },
-    { "kor": "갈리오", "eng": "Galio", "games": 2, "wr": 100, "kda": 3.0 },
-    { "kor": "실라스", "eng": "Sylas", "games": 1, "wr": 100, "kda": 7.5 },
-    { "kor": "오리아나", "eng": "Orianna", "games": 1, "wr": 100, "kda": 11.5 },
-    { "kor": "아우로라", "eng": "Aurora", "games": 1, "wr": 100, "kda": 6.3 }
+    { "kor": "아지르",   "eng": "Azir",     "games": 4, "wr": 75,  "kda": 5.2 },
+    { "kor": "오리아나", "eng": "Orianna",  "games": 3, "wr": 67,  "kda": 4.8 },
+    { "kor": "갈리오",   "eng": "Galio",    "games": 2, "wr": 50,  "kda": 3.1 },
+    { "kor": "실라스",   "eng": "Sylas",    "games": 1, "wr": 100, "kda": 6.0 },
+    { "kor": "아우로라", "eng": "Aurora",   "games": 1, "wr": 0,   "kda": 1.5 }
   ]
 }
