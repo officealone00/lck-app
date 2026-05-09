@@ -95,19 +95,25 @@ function MyTeamPage({ teams, matches, myTeam, onChange, aiUnlocked, onAdRequest 
               <div className="mtsv">{team.w}-{team.l}</div>
               <div className="mtsl">전적</div>
             </div>
-            <div className="mts">
-              <div className="mtsv" style={{color: team.gdm > 0 ? '#34D399' : '#F87171'}}>
-                {team.gdm > 0 ? '+' : ''}{team.gdm}
+            {team.gdm !== 0 && (
+              <div className="mts">
+                <div className="mtsv" style={{color: team.gdm > 0 ? '#34D399' : '#F87171'}}>
+                  {team.gdm > 0 ? '+' : ''}{team.gdm}
+                </div>
+                <div className="mtsl">GDM</div>
               </div>
-              <div className="mtsl">GDM</div>
-            </div>
+            )}
           </div>
-          <div className="myteam-form">
-            <span className="form-label">최근 5경기</span>
-            <div className="form">
-              {team.form.map((f, i) => <span key={i} className={`dot lg ${f === 'W' ? 'win' : 'loss'}`} />)}
+          {team.form.some(f => f === 'W' || f === 'L') && (
+            <div className="myteam-form">
+              <span className="form-label">최근 5경기</span>
+              <div className="form">
+                {team.form.map((f, i) => (
+                  <span key={i} className={`dot lg ${f === 'W' ? 'win' : f === 'L' ? 'loss' : 'unknown'}`} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <BannerAd />
@@ -177,7 +183,9 @@ function HomePage({ teams }: { teams: TeamStanding[] }) {
             <div className="wr-big">{top.wr}<span>%</span></div>
             <div className="record-stack">
               <div className="record-big">{top.w}W {top.l}L</div>
-              <div className="gdm">GDM {top.gdm > 0 ? '+' : ''}{top.gdm}</div>
+              {top.gdm !== 0 && (
+                <div className="gdm">GDM {top.gdm > 0 ? '+' : ''}{top.gdm}</div>
+              )}
             </div>
           </div>
         </div>
@@ -190,9 +198,13 @@ function HomePage({ teams }: { teams: TeamStanding[] }) {
             <div className="info">
               <div className="abbr">{t.abbr}</div>
               <div className="kor">{t.kor}</div>
-              <div className="form">
-                {t.form.map((f, i) => <span key={i} className={`dot ${f === 'W' ? 'win' : 'loss'}`} />)}
-              </div>
+              {t.form.some(f => f === 'W' || f === 'L') && (
+                <div className="form">
+                  {t.form.map((f, i) => (
+                    <span key={i} className={`dot ${f === 'W' ? 'win' : f === 'L' ? 'loss' : 'unknown'}`} />
+                  ))}
+                </div>
+              )}
             </div>
             <div className="right">
               <div className="wr">{t.wr}%</div>
