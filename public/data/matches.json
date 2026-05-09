@@ -1,6 +1,22 @@
 [
   {
-    "date": "5/13",
+    "date": "내일",
+    "time": "17:00",
+    "home": "T1",
+    "away": "DK",
+    "homeColor": "#E2012D",
+    "awayColor": "#1B1F3F"
+  },
+  {
+    "date": "내일",
+    "time": "19:00",
+    "home": "KRX",
+    "away": "HLE",
+    "homeColor": "#FECB00",
+    "awayColor": "#F37021"
+  },
+  {
+    "date": "4일 후",
     "time": "17:00",
     "home": "T1",
     "away": "NS",
@@ -8,59 +24,59 @@
     "awayColor": "#D62E36"
   },
   {
-    "date": "5/16",
-    "time": "17:00",
-    "home": "GEN",
-    "away": "T1",
-    "homeColor": "#AA8B56",
-    "awayColor": "#E2012D"
-  },
-  {
-    "date": "5/17",
-    "time": "17:00",
-    "home": "HLE",
-    "away": "KT",
-    "homeColor": "#F37021",
-    "awayColor": "#FF0000"
-  },
-  {
-    "date": "5/20",
+    "date": "4일 후",
     "time": "19:00",
-    "home": "NS",
-    "away": "KT",
-    "homeColor": "#D62E36",
-    "awayColor": "#FF0000"
+    "home": "DNS",
+    "away": "DK",
+    "homeColor": "#0099CC",
+    "awayColor": "#1B1F3F"
   },
   {
-    "date": "5/22",
-    "time": "19:00",
-    "home": "KT",
+    "date": "5일 후",
+    "time": "17:00",
+    "home": "BFX",
     "away": "GEN",
-    "homeColor": "#FF0000",
+    "homeColor": "#FFCC00",
     "awayColor": "#AA8B56"
   },
   {
-    "date": "5/23",
+    "date": "5일 후",
     "time": "19:00",
-    "home": "NS",
-    "away": "HLE",
-    "homeColor": "#D62E36",
-    "awayColor": "#F37021"
+    "home": "KRX",
+    "away": "KT",
+    "homeColor": "#FECB00",
+    "awayColor": "#FF0000"
   },
   {
-    "date": "5/27",
+    "date": "6일 후",
+    "time": "17:00",
+    "home": "HLE",
+    "away": "DK",
+    "homeColor": "#F37021",
+    "awayColor": "#1B1F3F"
+  },
+  {
+    "date": "6일 후",
+    "time": "19:00",
+    "home": "BRO",
+    "away": "DNS",
+    "homeColor": "#2D5F3F",
+    "awayColor": "#0099CC"
+  },
+  {
+    "date": "7일 후",
     "time": "17:00",
     "home": "GEN",
-    "away": "HLE",
+    "away": "T1",
     "homeColor": "#AA8B56",
-    "awayColor": "#F37021"
+    "awayColor": "#E2012D"
   },
   {
-    "date": "5/28",
+    "date": "7일 후",
     "time": "19:00",
-    "home": "KT",
-    "away": "T1",
-    "homeColor": "#FF0000",
-    "awayColor": "#E2012D"
+    "home": "BFX",
+    "away": "NS",
+    "homeColor": "#FFCC00",
+    "awayColor": "#D62E36"
   }
 ]
