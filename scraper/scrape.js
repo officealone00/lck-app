@@ -1,18 +1,37 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// LCK 데이터 자동 스크래퍼 v2 (Riot 공식 lolesports API)
+// LCK 자동 스크래핑 v3
+// Riot 공식 lolesports API 사용
+// 변경사항(v2 → v3):
+//   1. CODE_MAP 추가: lolesports API 약자(DPL/HAN/BNK/KIW/DN) → 우리 약자(DK/BRO/BFX/KRX/DNS)
+//   2. 매치 보강 항상 실행: form/gdm 데이터 채우기
 // ─────────────────────────────────────────────────────────────────────────────
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
-const ROOT       = path.resolve(__dirname, '..');
-const DATA_DIR   = path.join(ROOT, 'public', 'data');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = path.resolve(__dirname, '../public/data');
+fs.mkdirSync(DATA_DIR, { recursive: true });
 
 const API = 'https://esports-api.lolesports.com/persisted/gw';
 const KEY = '0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z';
 const LCK_LEAGUE_ID = '98767991310872058';
+
+// lolesports API 약자 → 우리 앱 약자 변환
+const CODE_MAP = {
+  'DPL': 'DK',
+  'HAN': 'BRO',
+  'BNK': 'BFX',
+  'KIW': 'KRX',
+  'DN':  'DNS',
+};
+
+function normalizeCode(code) {
+  if (!code) return code;
+  const trimmed = String(code).trim();
+  return CODE_MAP[trimmed] || trimmed;
+}
 
 const TEAM_KO = {
   'HLE': '한화생명e스포츠', 'GEN': '젠지', 'KT': 'KT 롤스터', 'T1': 'T1',
@@ -72,7 +91,6 @@ async function scrapeStandings() {
     const data = await fetchAPI('getStandings', { tournamentId: t.id });
     const stages = data?.data?.standings?.[0]?.stages || [];
 
-    // 디버그: 첫 ranking 응답 구조 일부
     const firstRanking = stages?.[0]?.sections?.[0]?.rankings?.[0];
     if (firstRanking) {
       console.log(`  [DEBUG] sample ranking:`, JSON.stringify(firstRanking).slice(0, 500));
@@ -85,12 +103,14 @@ async function scrapeStandings() {
       let rank = 1;
       for (const ranking of rankings) {
         for (const team of (ranking.teams || [])) {
+          const code = normalizeCode(team.code);
+          if (!code) continue;
           const record = extractRecord(team, ranking);
           baseList.push({
             rank: rank++,
-            abbr: team.code,
-            kor:  TEAM_KO[team.code] || team.name || team.code,
-            color: TEAM_COLOR[team.code] || '#999999',
+            abbr: code,
+            kor:  TEAM_KO[code] || team.name || code,
+            color: TEAM_COLOR[code] || '#999999',
             wr: 0, w: 0, l: 0, gdm: 0,
             form: ['?','?','?','?','?'],
             ...(record ? { w: record.w, l: record.l, wr: Math.round(record.w / (record.w + record.l) * 100) } : {}),
@@ -104,38 +124,41 @@ async function scrapeStandings() {
     console.warn(`  ⚠ getStandings 실패: ${e.message}`);
   }
 
-  // 2단계: 매치 결과로 W/L 보강
-  const needsEnrich = baseList.filter(t => t.w + t.l === 0);
-  if (needsEnrich.length > 0 || baseList.length === 0) {
-    console.log(`  → 매치 결과로 보강 시도 (${needsEnrich.length}팀)`);
-    const stats = await collectMatchStats((await getCurrentTournament()).id);
+  // 2단계: 매치 결과로 form/gdm 채우기 (항상 실행)
+  console.log(`  → 매치 결과로 form/gdm 보강`);
+  const stats = await collectMatchStats(t.id);
 
-    if (Object.keys(stats).length > 0) {
-      if (baseList.length === 0) {
-        baseList = Object.entries(stats).map(([code, s]) => ({
-          rank: 0, abbr: code, kor: TEAM_KO[code] || code,
-          color: TEAM_COLOR[code] || '#999999',
-          w: s.w, l: s.l,
-          wr: (s.w + s.l > 0) ? Math.round(s.w / (s.w + s.l) * 100) : 0,
-          gdm: s.gdm, form: s.form.slice(-5),
-        }));
-        baseList.sort((a, b) => (b.w - a.w) || (b.gdm - a.gdm));
-        baseList.forEach((t, i) => t.rank = i + 1);
-      } else {
-        for (const t of baseList) {
-          const s = stats[t.abbr];
-          if (s) {
+  if (Object.keys(stats).length > 0) {
+    if (baseList.length === 0) {
+      // standings 실패 → 매치만으로 standings 빌드
+      baseList = Object.entries(stats).map(([code, s]) => ({
+        rank: 0, abbr: code,
+        kor: TEAM_KO[code] || code,
+        color: TEAM_COLOR[code] || '#999999',
+        w: s.w, l: s.l,
+        wr: (s.w + s.l > 0) ? Math.round(s.w / (s.w + s.l) * 100) : 0,
+        gdm: s.gdm, form: s.form.slice(-5),
+      }));
+      baseList.sort((a, b) => (b.w - a.w) || (b.gdm - a.gdm));
+      baseList.forEach((t, i) => t.rank = i + 1);
+    } else {
+      // standings 있음 → form/gdm만 보강 (W/L은 API 값 유지: 시즌 누적)
+      for (const t of baseList) {
+        const s = stats[t.abbr];
+        if (s) {
+          t.gdm = s.gdm;
+          t.form = s.form.slice(-5);
+          // W/L이 비어있으면 매치 데이터로 채움
+          if (t.w + t.l === 0) {
             t.w = s.w; t.l = s.l;
             t.wr = (s.w + s.l > 0) ? Math.round(s.w / (s.w + s.l) * 100) : 0;
-            t.gdm = s.gdm;
-            t.form = s.form.slice(-5);
           }
         }
       }
-      console.log(`  ✓ 매치 보강 완료 (${Object.keys(stats).length}팀)`);
-    } else {
-      console.warn(`  ⚠ 매치 결과 0건`);
     }
+    console.log(`  ✓ 매치 보강 완료 (${Object.keys(stats).length}팀)`);
+  } else {
+    console.warn(`  ⚠ 매치 결과 0건`);
   }
 
   return baseList;
@@ -145,10 +168,6 @@ async function collectMatchStats(tournamentId) {
   const data = await fetchAPI('getCompletedEvents', { tournamentId });
   const events = data?.data?.schedule?.events || [];
   console.log(`  [DEBUG] completed events: ${events.length}건`);
-
-  if (events.length > 0) {
-    console.log(`  [DEBUG] sample event:`, JSON.stringify(events[0]).slice(0, 700));
-  }
 
   const stats = {};
   events.sort((a, b) => (a.startTime || '').localeCompare(b.startTime || ''));
@@ -171,7 +190,8 @@ async function collectMatchStats(tournamentId) {
     else if (bOutcome === 'win') { winner = b; loser = a; }
     else continue;
 
-    const wKey = winner.code, lKey = loser.code;
+    const wKey = normalizeCode(winner.code);
+    const lKey = normalizeCode(loser.code);
     if (!wKey || !lKey) continue;
 
     stats[wKey] = stats[wKey] || { w: 0, l: 0, gw: 0, gl: 0, form: [] };
@@ -206,6 +226,8 @@ async function scrapeMatches() {
     const teams = e.match?.teams || [];
     const home = teams[0] || {};
     const away = teams[1] || {};
+    const homeCode = normalizeCode(home.code) || '';
+    const awayCode = normalizeCode(away.code) || '';
     const date = new Date(e.startTime);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -223,16 +245,16 @@ async function scrapeMatches() {
       time: date.toLocaleTimeString('ko-KR', {
         hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Seoul'
       }),
-      home: home.code || '',
-      away: away.code || '',
-      homeColor: TEAM_COLOR[home.code] || '#999',
-      awayColor: TEAM_COLOR[away.code] || '#999',
+      home: homeCode,
+      away: awayCode,
+      homeColor: TEAM_COLOR[homeCode] || '#999',
+      awayColor: TEAM_COLOR[awayCode] || '#999',
     };
   });
 }
 
 async function main() {
-  console.log('▶ Run lolesports API scraper v2\n');
+  console.log('▶ Run lolesports API scraper v3 (CODE_MAP 적용)\n');
 
   let standings = [], matches = [];
   let success = 0, total = 2;
@@ -245,6 +267,7 @@ async function main() {
       const top = standings[0];
       console.log(`\n  ✓ standings.json 저장 (${standings.length}팀)`);
       console.log(`    1위: ${top.kor} (${top.w}W ${top.l}L, ${top.wr}%, gdm ${top.gdm})`);
+      console.log(`    약자: ${standings.map(t => t.abbr).join(', ')}`);
     } else {
       console.warn(`  ⚠ standings 부족 (${standings.length}팀)`);
     }
