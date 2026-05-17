@@ -1,22 +1,6 @@
 [
   {
-    "date": "내일",
-    "time": "17:00",
-    "home": "HLE",
-    "away": "KT",
-    "homeColor": "#F37021",
-    "awayColor": "#FF0000"
-  },
-  {
-    "date": "내일",
-    "time": "19:00",
-    "home": "KRX",
-    "away": "BRO",
-    "homeColor": "#FECB00",
-    "awayColor": "#2D5F3F"
-  },
-  {
-    "date": "4일 후",
+    "date": "3일 후",
     "time": "17:00",
     "home": "T1",
     "away": "KRX",
@@ -24,7 +8,7 @@
     "awayColor": "#FECB00"
   },
   {
-    "date": "4일 후",
+    "date": "3일 후",
     "time": "19:00",
     "home": "NS",
     "away": "KT",
@@ -32,7 +16,7 @@
     "awayColor": "#FF0000"
   },
   {
-    "date": "5일 후",
+    "date": "4일 후",
     "time": "17:00",
     "home": "BFX",
     "away": "HLE",
@@ -40,7 +24,7 @@
     "awayColor": "#F37021"
   },
   {
-    "date": "5일 후",
+    "date": "4일 후",
     "time": "19:00",
     "home": "DK",
     "away": "BRO",
@@ -48,7 +32,7 @@
     "awayColor": "#2D5F3F"
   },
   {
-    "date": "6일 후",
+    "date": "5일 후",
     "time": "17:00",
     "home": "DNS",
     "away": "KRX",
@@ -56,7 +40,7 @@
     "awayColor": "#FECB00"
   },
   {
-    "date": "6일 후",
+    "date": "5일 후",
     "time": "19:00",
     "home": "KT",
     "away": "GEN",
@@ -64,7 +48,7 @@
     "awayColor": "#AA8B56"
   },
   {
-    "date": "7일 후",
+    "date": "6일 후",
     "time": "17:00",
     "home": "DK",
     "away": "BFX",
@@ -72,11 +56,27 @@
     "awayColor": "#FFCC00"
   },
   {
-    "date": "7일 후",
+    "date": "6일 후",
     "time": "19:00",
     "home": "NS",
     "away": "HLE",
     "homeColor": "#D62E36",
     "awayColor": "#F37021"
+  },
+  {
+    "date": "7일 후",
+    "time": "17:00",
+    "home": "DNS",
+    "away": "GEN",
+    "homeColor": "#0099CC",
+    "awayColor": "#AA8B56"
+  },
+  {
+    "date": "7일 후",
+    "time": "19:00",
+    "home": "BRO",
+    "away": "T1",
+    "homeColor": "#2D5F3F",
+    "awayColor": "#E2012D"
   }
 ]
