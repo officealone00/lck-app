@@ -1,9 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// LCK 자동 스크래핑 v3
+// LCK 자동 스크래핑 v4
 // Riot 공식 lolesports API 사용
-// 변경사항(v2 → v3):
-//   1. CODE_MAP 추가: lolesports API 약자(DPL/HAN/BNK/KIW/DN) → 우리 약자(DK/BRO/BFX/KRX/DNS)
-//   2. 매치 보강 항상 실행: form/gdm 데이터 채우기
+// 변경사항(v3 → v4):
+//   1. 매치 일정 라벨: 상대 라벨("오늘/내일/N일 후") → 절대 날짜("5/21(목)")
+//      이유: GitHub Actions 갱신이 밀리면 상대 라벨이 거짓말함
+//   2. updated.json에 다음 자동 갱신 예정 시각도 함께 기록 (참고용)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import fs from 'fs';
@@ -44,6 +45,25 @@ const TEAM_COLOR = {
   'NS': '#D62E36', 'KRX': '#FECB00', 'DNS': '#0099CC',
 };
 
+const WEEKDAY_KR = ['일', '월', '화', '수', '목', '금', '토'];
+
+// KST 기준 절대 날짜 라벨 ("5/21(목)") 생성
+function formatDateLabelKST(d) {
+  // d는 Date 객체. KST(UTC+9)로 month/day/weekday 추출
+  const kst = new Date(d.getTime() + 9 * 60 * 60 * 1000);
+  const m = kst.getUTCMonth() + 1;
+  const day = kst.getUTCDate();
+  const w = WEEKDAY_KR[kst.getUTCDay()];
+  return `${m}/${day}(${w})`;
+}
+
+function formatTimeLabelKST(d) {
+  const kst = new Date(d.getTime() + 9 * 60 * 60 * 1000);
+  const hh = String(kst.getUTCHours()).padStart(2, '0');
+  const mm = String(kst.getUTCMinutes()).padStart(2, '0');
+  return `${hh}:${mm}`;
+}
+
 async function fetchAPI(endpoint, params = {}) {
   const url = new URL(`${API}/${endpoint}`);
   url.searchParams.set('hl', 'ko-KR');
@@ -66,7 +86,6 @@ async function getCurrentTournament() {
   return tournaments[0];
 }
 
-// 다양한 필드명으로 W/L 추출
 function extractRecord(team, ranking) {
   const candidates = [team?.record, team?.results, team?.stats, ranking?.record, ranking?.stats, team, ranking];
   for (const c of candidates) {
@@ -86,16 +105,9 @@ async function scrapeStandings() {
 
   let baseList = [];
 
-  // 1단계: getStandings
   try {
     const data = await fetchAPI('getStandings', { tournamentId: t.id });
     const stages = data?.data?.standings?.[0]?.stages || [];
-
-    const firstRanking = stages?.[0]?.sections?.[0]?.rankings?.[0];
-    if (firstRanking) {
-      console.log(`  [DEBUG] sample ranking:`, JSON.stringify(firstRanking).slice(0, 500));
-    }
-
     const sections = stages.flatMap(s => s.sections || []);
     const rankings = sections.flatMap(s => s.rankings || []);
 
@@ -124,13 +136,11 @@ async function scrapeStandings() {
     console.warn(`  ⚠ getStandings 실패: ${e.message}`);
   }
 
-  // 2단계: 매치 결과로 form/gdm 채우기 (항상 실행)
   console.log(`  → 매치 결과로 form/gdm 보강`);
   const stats = await collectMatchStats(t.id);
 
   if (Object.keys(stats).length > 0) {
     if (baseList.length === 0) {
-      // standings 실패 → 매치만으로 standings 빌드
       baseList = Object.entries(stats).map(([code, s]) => ({
         rank: 0, abbr: code,
         kor: TEAM_KO[code] || code,
@@ -142,13 +152,11 @@ async function scrapeStandings() {
       baseList.sort((a, b) => (b.w - a.w) || (b.gdm - a.gdm));
       baseList.forEach((t, i) => t.rank = i + 1);
     } else {
-      // standings 있음 → form/gdm만 보강 (W/L은 API 값 유지: 시즌 누적)
       for (const t of baseList) {
         const s = stats[t.abbr];
         if (s) {
           t.gdm = s.gdm;
           t.form = s.form.slice(-5);
-          // W/L이 비어있으면 매치 데이터로 채움
           if (t.w + t.l === 0) {
             t.w = s.w; t.l = s.l;
             t.wr = (s.w + s.l > 0) ? Math.round(s.w / (s.w + s.l) * 100) : 0;
@@ -229,22 +237,13 @@ async function scrapeMatches() {
     const homeCode = normalizeCode(home.code) || '';
     const awayCode = normalizeCode(away.code) || '';
     const date = new Date(e.startTime);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const target = new Date(date);
-    target.setHours(0, 0, 0, 0);
-    const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
-    let dateLabel = '';
-    if (diffDays === 0) dateLabel = '오늘';
-    else if (diffDays === 1) dateLabel = '내일';
-    else if (diffDays > 1 && diffDays <= 7) dateLabel = `${diffDays}일 후`;
-    else dateLabel = `${date.getMonth() + 1}/${date.getDate()}`;
 
     return {
-      date: dateLabel,
-      time: date.toLocaleTimeString('ko-KR', {
-        hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Seoul'
-      }),
+      // v4: 절대 날짜 ("5/21(목)") — 갱신 밀려도 거짓말 안 함
+      date: formatDateLabelKST(date),
+      time: formatTimeLabelKST(date),
+      // 정렬/필터용 ISO (앱에서 "지난 경기 자동 숨김" 등에 활용 가능)
+      startTime: date.toISOString(),
       home: homeCode,
       away: awayCode,
       homeColor: TEAM_COLOR[homeCode] || '#999',
@@ -254,7 +253,7 @@ async function scrapeMatches() {
 }
 
 async function main() {
-  console.log('▶ Run lolesports API scraper v3 (CODE_MAP 적용)\n');
+  console.log('▶ Run lolesports API scraper v4 (절대 날짜)\n');
 
   let standings = [], matches = [];
   let success = 0, total = 2;
@@ -267,7 +266,6 @@ async function main() {
       const top = standings[0];
       console.log(`\n  ✓ standings.json 저장 (${standings.length}팀)`);
       console.log(`    1위: ${top.kor} (${top.w}W ${top.l}L, ${top.wr}%, gdm ${top.gdm})`);
-      console.log(`    약자: ${standings.map(t => t.abbr).join(', ')}`);
     } else {
       console.warn(`  ⚠ standings 부족 (${standings.length}팀)`);
     }
@@ -283,6 +281,7 @@ async function main() {
       fs.writeFileSync(path.join(DATA_DIR, 'matches.json'), JSON.stringify(matches, null, 2));
       success++;
       console.log(`  ✓ matches.json 저장 (${matches.length}경기)`);
+      console.log(`    첫 경기: ${matches[0].date} ${matches[0].time} ${matches[0].home} vs ${matches[0].away}`);
     } else {
       console.warn(`  ⚠ matches 없음`);
     }

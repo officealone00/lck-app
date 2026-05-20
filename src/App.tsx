@@ -2,14 +2,33 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import BannerAd from './components/BannerAd';
 import RewardedAd from './components/RewardedAd';
-import { api, type TeamStanding, type FakerStats, type MetaChamp, type UpcomingMatch, type PlayerRanking } from './utils/api';
+import { api, type TeamStanding, type FakerStats, type MetaChamp, type UpcomingMatch, type PlayerRanking, type UpdatedMeta } from './utils/api';
 import {
   FALLBACK_STANDINGS,
   FALLBACK_FAKER,
   FALLBACK_META,
   FALLBACK_MATCHES,
   FALLBACK_PLAYERS,
+  FALLBACK_UPDATED,
 } from './utils/fallback';
+
+// "2026-05-21 11:00" 같은 KST 시각 → "5/21 11:00 갱신" 형식
+function formatUpdatedLabel(updated: UpdatedMeta | null): string {
+  if (!updated) return '갱신 정보 없음';
+  // updatedAt(ISO) 우선, 없으면 updatedAtKST 그대로
+  if (updated.updatedAt) {
+    const d = new Date(updated.updatedAt);
+    if (!isNaN(d.getTime())) {
+      const kst = new Date(d.getTime() + 9 * 60 * 60 * 1000);
+      const m = kst.getUTCMonth() + 1;
+      const day = kst.getUTCDate();
+      const hh = String(kst.getUTCHours()).padStart(2, '0');
+      const mm = String(kst.getUTCMinutes()).padStart(2, '0');
+      return `${m}/${day} ${hh}:${mm} 갱신`;
+    }
+  }
+  return `${updated.updatedAtKST || ''} 갱신`;
+}
 
 // 네이버 LCK 2026 LEGENDS TOP 8 + Faker (LCK Cup 2026)
 // 1번(Chovy)은 무료, 나머지는 광고 시청 후 잠금 해제
@@ -162,7 +181,7 @@ function MyTeamPage({ teams, matches, myTeam, onChange, aiUnlocked, onAdRequest 
   );
 }
 
-function HomePage({ teams }: { teams: TeamStanding[] }) {
+function HomePage({ teams, updatedLabel }: { teams: TeamStanding[]; updatedLabel: string }) {
   if (teams.length === 0) return null;
   const top = teams[0];
   const rest = teams.slice(1);
@@ -170,7 +189,7 @@ function HomePage({ teams }: { teams: TeamStanding[] }) {
     <div className="page">
       <header className="header">
         <span className="season-badge">2026 ROUNDS 1-2</span>
-        <span className="update-time">방금 업데이트</span>
+        <span className="update-time">{updatedLabel}</span>
       </header>
       <div className="content">
         <div className="card-first">
@@ -575,6 +594,7 @@ function App() {
   const [metaChamps, setMetaChamps] = useState<MetaChamp[]>(FALLBACK_META);
   const [matches, setMatches] = useState<UpcomingMatch[]>(FALLBACK_MATCHES);
   const [players, setPlayers] = useState<PlayerRanking[]>(FALLBACK_PLAYERS);
+  const [updated, setUpdated] = useState<UpdatedMeta | null>(FALLBACK_UPDATED);
 
   const [aiUnlocked, setAiUnlocked] = useState(false);
   const [reportUnlocked, setReportUnlocked] = useState(false);
@@ -598,7 +618,10 @@ function App() {
     api.meta().then(setMetaChamps).catch((e) => console.warn('[App] meta 로드 실패', e));
     api.matches().then(setMatches).catch((e) => console.warn('[App] matches 로드 실패', e));
     api.players().then(setPlayers).catch((e) => console.warn('[App] players 로드 실패', e));
+    api.updated().then(setUpdated).catch((e) => console.warn('[App] updated 로드 실패', e));
   }, []);
+
+  const updatedLabel = formatUpdatedLabel(updated);
 
   const handleSelect = (abbr: string) => {
     localStorage.setItem('lck_my_team', abbr);
@@ -638,7 +661,7 @@ function App() {
           onAdRequest={handleAdRequest}
         />
       )}
-      {tab === 'home' && <HomePage teams={teams} />}
+      {tab === 'home' && <HomePage teams={teams} updatedLabel={updatedLabel} />}
       {tab === 'stars' && (
         <StarsPage
           faker={faker}

@@ -1,7 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// LCK 폴백 데이터 (네이버 e스포츠 공식 데이터 기반 - 2026 시즌 Rounds 1-2)
+// LCK 폴백 데이터 (네이버 e스포츠 공식 데이터 기반 - 2026 시즌)
 // 출처: https://game.naver.com/esports/record/lck/
 // 정기적으로(주 1회) 손으로 업데이트하면 좋음.
+//
+// v4 변경: matches.date는 절대 날짜("5/21(목)") 형식. 상대 라벨 더 이상 사용 안 함.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type {
@@ -13,7 +15,7 @@ import type {
   PlayerRanking,
 } from './api';
 
-// 네이버 e스포츠 LCK 2026 정규시즌 Rounds 1-2 (10팀 풀리그)
+// 네이버 e스포츠 LCK 2026 정규시즌 2R (10팀 풀리그) — 5/21 기준
 export const FALLBACK_STANDINGS: TeamStanding[] = [
   { rank: 1,  abbr: 'HLE', kor: '한화생명e스포츠',  color: '#F37021', wr: 91, w: 10, l: 1,  gdm: 15,  form: ['W','W','W','W','W'] },
   { rank: 2,  abbr: 'GEN', kor: '젠지',             color: '#AA8B56', wr: 75, w: 9,  l: 3,  gdm: 11,  form: ['W','W','L','W','W'] },
@@ -27,20 +29,17 @@ export const FALLBACK_STANDINGS: TeamStanding[] = [
   { rank: 10, abbr: 'DNS', kor: 'DN SOOPers',       color: '#0099CC', wr: 8,  w: 1,  l: 11, gdm: -20, form: ['L','L','L','L','L'] },
 ];
 
-// 네이버 e스포츠 LCK 2026 LEGENDS TOP 선수 랭킹
+// 네이버 e스포츠 LCK 2026 LEGENDS TOP 선수 랭킹 — 2026-05-21 캡처 기반
 export const FALLBACK_PLAYERS: PlayerRanking[] = [
-  { rank: 1, name: 'Chovy',   kor: '초비',     team: 'GEN', pos: 'MID', points: 600, kda: 5.45, kills: 113, deaths: 55, assists: 187, kpRate: 0.67, sets: 27 },
-  { rank: 2, name: 'Zeka',    kor: '제카',     team: 'HLE', pos: 'MID', points: 400, kda: 7.81, kills: 143, deaths: 42, assists: 185, kpRate: 0.72, sets: 25 },
-  { rank: 2, name: 'Teddy',   kor: '테디',     team: 'BRO', pos: 'AD',  points: 400, kda: 4.26, kills: 134, deaths: 61, assists: 126, kpRate: 0.67, sets: 26 },
-  { rank: 4, name: 'Aiming',  kor: '에이밍',   team: 'KT',  pos: 'AD',  points: 300, kda: 6.08, kills: 140, deaths: 50, assists: 164, kpRate: 0.71, sets: 26 },
-  { rank: 4, name: 'Keria',   kor: '케리아',   team: 'T1',  pos: 'SPT', points: 300, kda: 5.18, kills: 30,  deaths: 55, assists: 255, kpRate: 0.74, sets: 24 },
-  { rank: 4, name: 'Bdd',     kor: '비디디',   team: 'KT',  pos: 'MID', points: 300, kda: 5.03, kills: 111, deaths: 58, assists: 181, kpRate: 0.68, sets: 26 },
-  { rank: 4, name: 'Oner',    kor: '오너',     team: 'T1',  pos: 'JGL', points: 300, kda: 3.93, kills: 89,  deaths: 68, assists: 178, kpRate: 0.70, sets: 24 },
-  { rank: 4, name: 'Taeyoon', kor: '태윤',     team: 'BFX', pos: 'AD',  points: 300, kda: 3.35, kills: 120, deaths: 83, assists: 158, kpRate: 0.73, sets: 26 },
-  { rank: 9, name: 'Delight', kor: '딜라이트', team: 'HLE', pos: 'SPT', points: 200, kda: 5.49, kills: 30,  deaths: 63, assists: 316, kpRate: 0.76, sets: 25 },
+  { rank: 1, name: 'Chovy',   kor: '초비',     team: 'GEN', pos: 'MID', points: 700, kda: 5.59, kills: 142, deaths: 68, assists: 238, kpRate: 0.69, sets: 32 },
+  { rank: 2, name: 'Zeka',    kor: '제카',     team: 'HLE', pos: 'MID', points: 500, kda: 7.14, kills: 180, deaths: 57, assists: 227, kpRate: 0.68, sets: 33 },
+  { rank: 3, name: 'Teddy',   kor: '테디',     team: 'BRO', pos: 'AD',  points: 400, kda: 4.30, kills: 156, deaths: 73, assists: 158, kpRate: 0.67, sets: 31 },
+  { rank: 3, name: 'Taeyoon', kor: '태윤',     team: 'BFX', pos: 'AD',  points: 400, kda: 3.46, kills: 134, deaths: 91, assists: 181, kpRate: 0.68, sets: 30 },
+  { rank: 5, name: 'Aiming',  kor: '에이밍',   team: 'KT',  pos: 'AD',  points: 300, kda: 5.56, kills: 171, deaths: 70, assists: 218, kpRate: 0.67, sets: 32 },
+  { rank: 5, name: 'Keria',   kor: '케리아',   team: 'T1',  pos: 'SPT', points: 300, kda: 4.69, kills: 44,  deaths: 90, assists: 378, kpRate: 0.73, sets: 34 },
 ];
 
-// 페이커 LCK CUP 2026 통계 (네이버 LEGENDS 정규시즌 외)
+// 페이커 LCK CUP 2026 통계 (LEGENDS 정규시즌 외 — 수동 보정용)
 export const FALLBACK_FAKER: FakerStats = {
   name: 'FAKER',
   kor: '페이커',
@@ -71,10 +70,12 @@ export const FALLBACK_META: MetaChamp[] = [
   { kor: '나미',     eng: 'Nami',     pickRate: 35, banRate: 12, wr: 60, role: '서폿' },
 ];
 
+// v4: 절대 날짜 형식 — 갱신이 밀려도 화면이 거짓말 안 함
 export const FALLBACK_MATCHES: UpcomingMatch[] = [
-  { date: '오늘',  time: '17:00', home: 'HLE', away: 'GEN', homeColor: '#F37021', awayColor: '#AA8B56' },
-  { date: '오늘',  time: '20:00', home: 'T1',  away: 'KT',  homeColor: '#E2012D', awayColor: '#FF0000' },
-  { date: '내일',  time: '17:00', home: 'DK',  away: 'BRO', homeColor: '#1B1F3F', awayColor: '#2D5F3F' },
+  { date: '5/21(목)', time: '17:00', home: 'BFX', away: 'HLE', homeColor: '#FFCC00', awayColor: '#F37021' },
+  { date: '5/21(목)', time: '19:00', home: 'DK',  away: 'BRO', homeColor: '#1B1F3F', awayColor: '#2D5F3F' },
+  { date: '5/22(금)', time: '17:00', home: 'DNS', away: 'KRX', homeColor: '#0099CC', awayColor: '#FECB00' },
+  { date: '5/22(금)', time: '19:00', home: 'KT',  away: 'GEN', homeColor: '#FF0000', awayColor: '#AA8B56' },
 ];
 
 export const FALLBACK_UPDATED: UpdatedMeta = {
@@ -82,5 +83,5 @@ export const FALLBACK_UPDATED: UpdatedMeta = {
   updatedAtKST: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
   tournament: 'LCK 2026 정규시즌',
   success: 0,
-  total: 5,
+  total: 2,
 };
