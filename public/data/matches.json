@@ -1,23 +1,5 @@
 [
   {
-    "date": "5/24(일)",
-    "time": "17:00",
-    "startTime": "2026-05-24T08:00:00.000Z",
-    "home": "DNS",
-    "away": "GEN",
-    "homeColor": "#0099CC",
-    "awayColor": "#AA8B56"
-  },
-  {
-    "date": "5/24(일)",
-    "time": "19:00",
-    "startTime": "2026-05-24T10:00:00.000Z",
-    "home": "BRO",
-    "away": "T1",
-    "homeColor": "#2D5F3F",
-    "awayColor": "#E2012D"
-  },
-  {
     "date": "5/27(수)",
     "time": "17:00",
     "startTime": "2026-05-27T08:00:00.000Z",
@@ -88,5 +70,23 @@
     "away": "T1",
     "homeColor": "#FFCC00",
     "awayColor": "#E2012D"
+  },
+  {
+    "date": "5/31(일)",
+    "time": "17:00",
+    "startTime": "2026-05-31T08:00:00.000Z",
+    "home": "BRO",
+    "away": "HLE",
+    "homeColor": "#2D5F3F",
+    "awayColor": "#F37021"
+  },
+  {
+    "date": "5/31(일)",
+    "time": "19:00",
+    "startTime": "2026-05-31T10:00:00.000Z",
+    "home": "NS",
+    "away": "DK",
+    "homeColor": "#D62E36",
+    "awayColor": "#1B1F3F"
   }
 ]
