@@ -1,23 +1,5 @@
 [
   {
-    "date": "5/30(토)",
-    "time": "17:00",
-    "startTime": "2026-05-30T08:00:00.000Z",
-    "home": "KT",
-    "away": "DNS",
-    "homeColor": "#FF0000",
-    "awayColor": "#0099CC"
-  },
-  {
-    "date": "5/30(토)",
-    "time": "19:00",
-    "startTime": "2026-05-30T10:00:00.000Z",
-    "home": "BFX",
-    "away": "T1",
-    "homeColor": "#FFCC00",
-    "awayColor": "#E2012D"
-  },
-  {
     "date": "5/31(일)",
     "time": "17:00",
     "startTime": "2026-05-31T08:00:00.000Z",
