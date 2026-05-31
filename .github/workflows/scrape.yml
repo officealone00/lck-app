@@ -1,9 +1,16 @@
 name: Scrape LCK Data
 
 # Riot 공식 lolesports API 사용
-# 매일 KST 02:00 (UTC 17:00) 자동 갱신
+# 경기 결과 반영을 위해 하루 여러 번 자동 갱신 (cron은 UTC 기준)
+#   - '0 11 * * *'  → KST 20:00 (1경기 종료 후)
+#   - '30 13 * * *' → KST 22:30 (2경기 종료 후)
+#   - '30 15 * * *' → KST 00:30 (늦게 끝나는 경기 대비)
+#   - '0 17 * * *'  → KST 02:00 (마감 안전망)
 on:
   schedule:
+    - cron: '0 11 * * *'
+    - cron: '30 13 * * *'
+    - cron: '30 15 * * *'
     - cron: '0 17 * * *'
   workflow_dispatch:
 
