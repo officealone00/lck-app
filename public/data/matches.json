@@ -1,23 +1,5 @@
 [
   {
-    "date": "5/31(일)",
-    "time": "17:00",
-    "startTime": "2026-05-31T08:00:00.000Z",
-    "home": "BRO",
-    "away": "HLE",
-    "homeColor": "#2D5F3F",
-    "awayColor": "#F37021"
-  },
-  {
-    "date": "5/31(일)",
-    "time": "19:00",
-    "startTime": "2026-05-31T10:00:00.000Z",
-    "home": "NS",
-    "away": "DK",
-    "homeColor": "#D62E36",
-    "awayColor": "#1B1F3F"
-  },
-  {
     "date": "6/6(토)",
     "time": "17:00",
     "startTime": "2026-06-06T08:00:00.000Z",
