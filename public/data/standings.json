@@ -18,9 +18,9 @@
   },
   {
     "rank": 2,
-    "abbr": "GEN",
-    "kor": "젠지",
-    "color": "#AA8B56",
+    "abbr": "T1",
+    "kor": "T1",
+    "color": "#E2012D",
     "wr": 78,
     "w": 14,
     "l": 4,
@@ -35,9 +35,9 @@
   },
   {
     "rank": 3,
-    "abbr": "T1",
-    "kor": "T1",
-    "color": "#E2012D",
+    "abbr": "GEN",
+    "kor": "젠지",
+    "color": "#AA8B56",
     "wr": 78,
     "w": 14,
     "l": 4,
@@ -86,23 +86,6 @@
   },
   {
     "rank": 6,
-    "abbr": "BFX",
-    "kor": "BNK FearX",
-    "color": "#FFCC00",
-    "wr": 33,
-    "w": 6,
-    "l": 12,
-    "gdm": 0,
-    "form": [
-      "?",
-      "?",
-      "?",
-      "?",
-      "?"
-    ]
-  },
-  {
-    "rank": 7,
     "abbr": "BRO",
     "kor": "한진 브리온",
     "color": "#2D5F3F",
@@ -119,10 +102,27 @@
     ]
   },
   {
+    "rank": 7,
+    "abbr": "BFX",
+    "kor": "BNK FearX",
+    "color": "#FFCC00",
+    "wr": 33,
+    "w": 6,
+    "l": 12,
+    "gdm": 0,
+    "form": [
+      "?",
+      "?",
+      "?",
+      "?",
+      "?"
+    ]
+  },
+  {
     "rank": 8,
-    "abbr": "NS",
-    "kor": "농심 레드포스",
-    "color": "#D62E36",
+    "abbr": "KRX",
+    "kor": "키움 DRX",
+    "color": "#FECB00",
     "wr": 28,
     "w": 5,
     "l": 13,
@@ -137,9 +137,9 @@
   },
   {
     "rank": 9,
-    "abbr": "KRX",
-    "kor": "키움 DRX",
-    "color": "#FECB00",
+    "abbr": "NS",
+    "kor": "농심 레드포스",
+    "color": "#D62E36",
     "wr": 28,
     "w": 5,
     "l": 13,
