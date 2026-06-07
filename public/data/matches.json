@@ -1,14 +1,5 @@
 [
   {
-    "date": "6/7(일)",
-    "time": "17:00",
-    "startTime": "2026-06-07T08:00:00.000Z",
-    "home": "DK",
-    "away": "KT",
-    "homeColor": "#1B1F3F",
-    "awayColor": "#FF0000"
-  },
-  {
     "date": "6/12(금)",
     "time": "17:00",
     "startTime": "2026-06-12T08:00:00.000Z",
