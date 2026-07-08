@@ -1,11 +1,92 @@
 [
   {
-    "date": "6/14(일)",
-    "time": "15:00",
-    "startTime": "2026-06-14T06:00:00.000Z",
+    "date": "7/29(수)",
+    "time": "17:00",
+    "startTime": "2026-07-29T08:00:00.000Z",
+    "home": "KRX",
+    "away": "NS",
+    "homeColor": "#FECB00",
+    "awayColor": "#D62E36"
+  },
+  {
+    "date": "7/29(수)",
+    "time": "19:00",
+    "startTime": "2026-07-29T10:00:00.000Z",
+    "home": "T1",
+    "away": "KT",
+    "homeColor": "#E2012D",
+    "awayColor": "#FF0000"
+  },
+  {
+    "date": "7/30(목)",
+    "time": "17:00",
+    "startTime": "2026-07-30T08:00:00.000Z",
+    "home": "DNS",
+    "away": "BFX",
+    "homeColor": "#0099CC",
+    "awayColor": "#FFCC00"
+  },
+  {
+    "date": "7/30(목)",
+    "time": "19:00",
+    "startTime": "2026-07-30T10:00:00.000Z",
+    "home": "HLE",
+    "away": "DK",
+    "homeColor": "#F37021",
+    "awayColor": "#1B1F3F"
+  },
+  {
+    "date": "7/31(금)",
+    "time": "17:00",
+    "startTime": "2026-07-31T08:00:00.000Z",
     "home": "GEN",
     "away": "T1",
     "homeColor": "#AA8B56",
     "awayColor": "#E2012D"
+  },
+  {
+    "date": "7/31(금)",
+    "time": "19:00",
+    "startTime": "2026-07-31T10:00:00.000Z",
+    "home": "BRO",
+    "away": "KRX",
+    "homeColor": "#2D5F3F",
+    "awayColor": "#FECB00"
+  },
+  {
+    "date": "8/1(토)",
+    "time": "17:00",
+    "startTime": "2026-08-01T08:00:00.000Z",
+    "home": "NS",
+    "away": "BFX",
+    "homeColor": "#D62E36",
+    "awayColor": "#FFCC00"
+  },
+  {
+    "date": "8/1(토)",
+    "time": "19:00",
+    "startTime": "2026-08-01T10:00:00.000Z",
+    "home": "GEN",
+    "away": "DK",
+    "homeColor": "#AA8B56",
+    "awayColor": "#1B1F3F"
+  },
+  {
+    "date": "8/2(일)",
+    "time": "17:00",
+    "startTime": "2026-08-02T08:00:00.000Z",
+    "home": "DNS",
+    "away": "BRO",
+    "homeColor": "#0099CC",
+    "awayColor": "#2D5F3F"
+  },
+  {
+    "date": "8/2(일)",
+    "time": "19:00",
+    "startTime": "2026-08-02T10:00:00.000Z",
+    "home": "KT",
+    "away": "HLE",
+    "homeColor": "#FF0000",
+    "awayColor": "#F37021"
   }
 ]
