@@ -21,10 +21,10 @@
     "date": "7/30(목)",
     "time": "17:00",
     "startTime": "2026-07-30T08:00:00.000Z",
-    "home": "DNS",
-    "away": "BFX",
-    "homeColor": "#0099CC",
-    "awayColor": "#FFCC00"
+    "home": "BFX",
+    "away": "DNS",
+    "homeColor": "#FFCC00",
+    "awayColor": "#0099CC"
   },
   {
     "date": "7/30(목)",
