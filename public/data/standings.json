@@ -86,11 +86,11 @@
   },
   {
     "rank": 6,
-    "abbr": "BFX",
-    "kor": "BNK FearX",
-    "color": "#FFCC00",
+    "abbr": "NS",
+    "kor": "농심 레드포스",
+    "color": "#D62E36",
     "wr": 100,
-    "w": 1,
+    "w": 2,
     "l": 0,
     "gdm": 0,
     "form": [
@@ -103,12 +103,12 @@
   },
   {
     "rank": 7,
-    "abbr": "NS",
-    "kor": "농심 레드포스",
-    "color": "#D62E36",
-    "wr": 100,
+    "abbr": "BFX",
+    "kor": "BNK FearX",
+    "color": "#FFCC00",
+    "wr": 50,
     "w": 1,
-    "l": 0,
+    "l": 1,
     "gdm": 0,
     "form": [
       "?",
