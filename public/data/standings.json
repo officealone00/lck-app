@@ -120,6 +120,23 @@
   },
   {
     "rank": 8,
+    "abbr": "DNS",
+    "kor": "DN SOOPers",
+    "color": "#0099CC",
+    "wr": 50,
+    "w": 1,
+    "l": 1,
+    "gdm": 0,
+    "form": [
+      "?",
+      "?",
+      "?",
+      "?",
+      "?"
+    ]
+  },
+  {
+    "rank": 9,
     "abbr": "KRX",
     "kor": "키움 DRX",
     "color": "#FECB00",
@@ -136,30 +153,13 @@
     ]
   },
   {
-    "rank": 9,
+    "rank": 10,
     "abbr": "BRO",
     "kor": "한진 브리온",
     "color": "#2D5F3F",
     "wr": 0,
     "w": 0,
-    "l": 1,
-    "gdm": 0,
-    "form": [
-      "?",
-      "?",
-      "?",
-      "?",
-      "?"
-    ]
-  },
-  {
-    "rank": 10,
-    "abbr": "DNS",
-    "kor": "DN SOOPers",
-    "color": "#0099CC",
-    "wr": 0,
-    "w": 0,
-    "l": 1,
+    "l": 2,
     "gdm": 0,
     "form": [
       "?",
