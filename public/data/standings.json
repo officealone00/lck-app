@@ -1,23 +1,6 @@
 [
   {
     "rank": 1,
-    "abbr": "DK",
-    "kor": "디플러스 기아",
-    "color": "#1B1F3F",
-    "wr": 100,
-    "w": 2,
-    "l": 0,
-    "gdm": 0,
-    "form": [
-      "?",
-      "?",
-      "?",
-      "?",
-      "?"
-    ]
-  },
-  {
-    "rank": 2,
     "abbr": "KT",
     "kor": "KT 롤스터",
     "color": "#FF0000",
@@ -34,12 +17,29 @@
     ]
   },
   {
+    "rank": 2,
+    "abbr": "DK",
+    "kor": "디플러스 기아",
+    "color": "#1B1F3F",
+    "wr": 67,
+    "w": 2,
+    "l": 1,
+    "gdm": 0,
+    "form": [
+      "?",
+      "?",
+      "?",
+      "?",
+      "?"
+    ]
+  },
+  {
     "rank": 3,
     "abbr": "T1",
     "kor": "T1",
     "color": "#E2012D",
-    "wr": 50,
-    "w": 1,
+    "wr": 67,
+    "w": 2,
     "l": 1,
     "gdm": 0,
     "form": [
@@ -103,6 +103,23 @@
   },
   {
     "rank": 7,
+    "abbr": "KRX",
+    "kor": "키움 DRX",
+    "color": "#FECB00",
+    "wr": 67,
+    "w": 2,
+    "l": 1,
+    "gdm": 0,
+    "form": [
+      "?",
+      "?",
+      "?",
+      "?",
+      "?"
+    ]
+  },
+  {
+    "rank": 8,
     "abbr": "BFX",
     "kor": "BNK FearX",
     "color": "#FFCC00",
@@ -119,30 +136,13 @@
     ]
   },
   {
-    "rank": 8,
-    "abbr": "DNS",
-    "kor": "DN SOOPers",
-    "color": "#0099CC",
-    "wr": 50,
-    "w": 1,
-    "l": 1,
-    "gdm": 0,
-    "form": [
-      "?",
-      "?",
-      "?",
-      "?",
-      "?"
-    ]
-  },
-  {
     "rank": 9,
-    "abbr": "KRX",
-    "kor": "키움 DRX",
-    "color": "#FECB00",
-    "wr": 50,
+    "abbr": "BRO",
+    "kor": "한진 브리온",
+    "color": "#2D5F3F",
+    "wr": 33,
     "w": 1,
-    "l": 1,
+    "l": 2,
     "gdm": 0,
     "form": [
       "?",
@@ -154,9 +154,9 @@
   },
   {
     "rank": 10,
-    "abbr": "BRO",
-    "kor": "한진 브리온",
-    "color": "#2D5F3F",
+    "abbr": "DNS",
+    "kor": "DN SOOPers",
+    "color": "#0099CC",
     "wr": 33,
     "w": 1,
     "l": 2,
