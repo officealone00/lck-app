@@ -1,23 +1,5 @@
 [
   {
-    "date": "8/7(금)",
-    "time": "17:00",
-    "startTime": "2026-08-07T08:00:00.000Z",
-    "home": "KT",
-    "away": "GEN",
-    "homeColor": "#FF0000",
-    "awayColor": "#AA8B56"
-  },
-  {
-    "date": "8/7(금)",
-    "time": "19:00",
-    "startTime": "2026-08-07T10:00:00.000Z",
-    "home": "BFX",
-    "away": "BRO",
-    "homeColor": "#FFCC00",
-    "awayColor": "#2D5F3F"
-  },
-  {
     "date": "8/8(토)",
     "time": "17:00",
     "startTime": "2026-08-08T08:00:00.000Z",
@@ -88,5 +70,23 @@
     "away": "HLE",
     "homeColor": "#AA8B56",
     "awayColor": "#F37021"
+  },
+  {
+    "date": "8/14(금)",
+    "time": "17:00",
+    "startTime": "2026-08-14T08:00:00.000Z",
+    "home": "T1",
+    "away": "DK",
+    "homeColor": "#E2012D",
+    "awayColor": "#1B1F3F"
+  },
+  {
+    "date": "8/14(금)",
+    "time": "19:00",
+    "startTime": "2026-08-14T10:00:00.000Z",
+    "home": "NS",
+    "away": "BRO",
+    "homeColor": "#D62E36",
+    "awayColor": "#2D5F3F"
   }
 ]
