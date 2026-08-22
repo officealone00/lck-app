@@ -86,6 +86,23 @@
   },
   {
     "rank": 6,
+    "abbr": "DNS",
+    "kor": "DN SOOPers",
+    "color": "#0099CC",
+    "wr": 63,
+    "w": 5,
+    "l": 3,
+    "gdm": 0,
+    "form": [
+      "?",
+      "?",
+      "?",
+      "?",
+      "?"
+    ]
+  },
+  {
+    "rank": 7,
     "abbr": "BFX",
     "kor": "BNK FearX",
     "color": "#FFCC00",
@@ -102,27 +119,10 @@
     ]
   },
   {
-    "rank": 7,
+    "rank": 8,
     "abbr": "NS",
     "kor": "농심 레드포스",
     "color": "#D62E36",
-    "wr": 57,
-    "w": 4,
-    "l": 3,
-    "gdm": 0,
-    "form": [
-      "?",
-      "?",
-      "?",
-      "?",
-      "?"
-    ]
-  },
-  {
-    "rank": 8,
-    "abbr": "DNS",
-    "kor": "DN SOOPers",
-    "color": "#0099CC",
     "wr": 57,
     "w": 4,
     "l": 3,
@@ -157,9 +157,9 @@
     "abbr": "KRX",
     "kor": "키움 DRX",
     "color": "#FECB00",
-    "wr": 29,
+    "wr": 25,
     "w": 2,
-    "l": 5,
+    "l": 6,
     "gdm": 0,
     "form": [
       "?",
