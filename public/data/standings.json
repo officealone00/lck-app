@@ -1,11 +1,11 @@
 [
   {
     "rank": 1,
-    "abbr": "GEN",
-    "kor": "젠지",
-    "color": "#AA8B56",
-    "wr": 71,
-    "w": 5,
+    "abbr": "DK",
+    "kor": "디플러스 기아",
+    "color": "#1B1F3F",
+    "wr": 75,
+    "w": 6,
     "l": 2,
     "gdm": 0,
     "form": [
@@ -18,12 +18,12 @@
   },
   {
     "rank": 2,
-    "abbr": "DK",
-    "kor": "디플러스 기아",
-    "color": "#1B1F3F",
-    "wr": 71,
+    "abbr": "GEN",
+    "kor": "젠지",
+    "color": "#AA8B56",
+    "wr": 63,
     "w": 5,
-    "l": 2,
+    "l": 3,
     "gdm": 0,
     "form": [
       "?",
