@@ -1,20 +1,11 @@
 [
   {
-    "date": "9/6(일)",
-    "time": "17:00",
-    "startTime": "2026-09-06T08:00:00.000Z",
-    "home": "DK",
-    "away": "T1",
-    "homeColor": "#1B1F3F",
-    "awayColor": "#E2012D"
-  },
-  {
     "date": "9/12(토)",
     "time": "14:00",
     "startTime": "2026-09-12T05:00:00.000Z",
-    "home": "TBD",
+    "home": "T1",
     "away": "HLE",
-    "homeColor": "#999",
+    "homeColor": "#E2012D",
     "awayColor": "#F37021"
   },
   {
