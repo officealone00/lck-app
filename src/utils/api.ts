@@ -188,6 +188,9 @@ export interface WorldsInfo {
   next: WorldsMatch | null;
   lckTeams: string[];
   lckMatches: WorldsMatch[];
+  /** 실시간 조회일 때만: 전체 경기와 팀별 현재 전적 (2026-10-18) */
+  allMatches?: WorldsMatch[];
+  records?: Record<string, { w: number; l: number; name: string }>;
 }
 
 // ─── 월즈 실시간 (Riot 공식 lolesports API, 무료·CORS 허용) ──────────────
@@ -196,7 +199,7 @@ const LOL_API = 'https://esports-api.lolesports.com/persisted/gw';
 const LOL_KEY = '0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z';
 const WORLDS_LEAGUE_ID = '98767975604431411';
 const CODE_MAP: Record<string, string> = { DPL: 'DK', HAN: 'BRO', BNK: 'BFX', KIW: 'KRX', DN: 'DNS' };
-const LCK = new Set(['HLE', 'GEN', 'KT', 'T1', 'DK', 'BRO', 'BFX', 'NS', 'KRX', 'DNS']);
+export const LCK_CODES = new Set(['HLE', 'GEN', 'KT', 'T1', 'DK', 'BRO', 'BFX', 'NS', 'KRX', 'DNS']);
 const norm = (c?: string) => (c ? CODE_MAP[c] || c : 'TBD');
 
 async function getLiveWorlds(base: WorldsInfo): Promise<WorldsInfo> {
@@ -227,6 +230,15 @@ async function getLiveWorlds(base: WorldsInfo): Promise<WorldsInfo> {
         awayScore: b?.result?.gameWins ?? null,
       };
     });
+    // 팀별 현재 전적 — 가장 최근 경기의 record 값 (스위스 스테이지 승패)
+    const records: Record<string, { w: number; l: number; name: string }> = {};
+    for (const e of events) {
+      for (const t of e.match?.teams || []) {
+        const code = norm(t?.code);
+        if (code === 'TBD' || !t?.record) continue;
+        records[code] = { w: t.record.wins ?? 0, l: t.record.losses ?? 0, name: t.name || code };
+      }
+    }
     const now = Date.now();
     const stages: { name: string; start: string }[] = [];
     for (const m of all) if (!stages.find((s) => s.name === m.stage)) stages.push({ name: m.stage, start: m.startTime });
@@ -234,8 +246,10 @@ async function getLiveWorlds(base: WorldsInfo): Promise<WorldsInfo> {
       ...base,
       stages,
       next: all.find((m) => m.state !== 'completed' && new Date(m.startTime).getTime() > now - 3 * 3600e3) || null,
-      lckTeams: [...new Set(all.flatMap((m) => [m.home, m.away]).filter((c) => LCK.has(c)))],
-      lckMatches: all.filter((m) => LCK.has(m.home) || LCK.has(m.away)),
+      lckTeams: [...new Set(all.flatMap((m) => [m.home, m.away]).filter((c) => LCK_CODES.has(c)))],
+      lckMatches: all.filter((m) => LCK_CODES.has(m.home) || LCK_CODES.has(m.away)),
+      allMatches: all,
+      records,
     };
   } finally {
     clearTimeout(timer);

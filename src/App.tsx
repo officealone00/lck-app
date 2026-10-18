@@ -3,6 +3,9 @@ import './App.css';
 import BannerAd from './components/BannerAd';
 import RewardedAd, { preloadReportAd } from './components/RewardedAd';
 import { useTossBackEvent } from './hooks/useTossBackEvent';
+import WorldsPage from './components/WorldsPage';
+import { ConfirmSheet } from './components/Sheet';
+import { closeTopSheet } from './lib/sheetStack';
 import { logEvent, requestReviewOnce, shareWithTossLink } from './utils/tossGrowth';
 import {
   api,
@@ -34,8 +37,8 @@ import {
  * - 광고: 보상형은 미리 불러 두고 버튼을 눌렀을 때만 재생
  * ───────────────────────────────────────────────────────────── */
 
-type Tab = 'rank' | 'myteam' | 'players' | 'meta';
-type AdPurpose = 'report' | 'players' | null;
+type Tab = 'rank' | 'worlds' | 'myteam' | 'players' | 'meta';
+type AdPurpose = 'report' | 'players' | 'worlds' | null;
 
 const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 function kstLabel(iso?: string, withTime = true): string {
@@ -578,7 +581,14 @@ function App() {
 
   const [reportUnlocked, setReportUnlocked] = useState(() => isUnlocked('lck_unlock_report'));
   const [playersUnlocked, setPlayersUnlocked] = useState(() => isUnlocked('lck_unlock_players'));
+  const [worldsUnlocked, setWorldsUnlocked] = useState(() => isUnlocked('lck_unlock_worlds'));
   const [adPurpose, setAdPurpose] = useState<AdPurpose>(null);
+  // 광고 전에 꼭 물어보기 (2026-10-18): 버튼 → "짧은 광고를 볼까요?" → [광고 보기]를 눌러야만 광고
+  const [askPurpose, setAskPurpose] = useState<AdPurpose>(null);
+  const requestAd = (p: AdPurpose) => {
+    preloadReportAd();
+    setAskPurpose(p);
+  };
 
   useEffect(() => {
     // 새 형식(setW 포함)일 때만 반영 — CDN에 남은 예전 형식 데이터로 덮어쓰지 않도록
@@ -590,6 +600,11 @@ function App() {
     api.season().then((d) => d?.year && Array.isArray(d.playoffs) && setSeason(d)).catch(() => {});
     api.worlds().then((d) => d?.year && Array.isArray(d.stages) && setWorlds(d)).catch(() => {});
   }, []);
+
+  // 월즈 탭에 들어오면 보상형 광고를 미리 불러 둬요
+  useEffect(() => {
+    if (tab === 'worlds' && !worldsUnlocked) preloadReportAd();
+  }, [tab, worldsUnlocked]);
 
   // 탭 이동 기록 — 뒤로가기 시 이전 탭으로
   const historyRef = useRef<Tab[]>([]);
@@ -603,6 +618,7 @@ function App() {
   // 토스 내비게이션 바 뒤로가기 / 안드로이드 뒤로가기
   useTossBackEvent(() => {
     if (adPurpose) return true; // 광고 진행 중에는 무시
+    if (closeTopSheet()) return true; // 열린 시트부터 닫기
     if (picking) {
       setPicking(false);
       return true;
@@ -638,6 +654,11 @@ function App() {
       setPlayersUnlocked(true);
       logEvent('report_unlocked', { kind: 'players' });
     }
+    if (adPurpose === 'worlds') {
+      saveUnlock('lck_unlock_worlds');
+      setWorldsUnlocked(true);
+      logEvent('report_unlocked', { kind: 'worlds' });
+    }
     setTimeout(() => requestReviewOnce('lck-review-asked'), 4000);
   };
 
@@ -662,17 +683,21 @@ function App() {
               myTeam={myTeam}
               reportUnlocked={reportUnlocked}
               onChangeTeam={() => setPicking(true)}
-              onAdRequest={setAdPurpose}
+              onAdRequest={requestAd}
             />
           )}
-          {tab === 'players' && <PlayersPage players={players} teams={teams} unlocked={playersUnlocked} onAdRequest={setAdPurpose} />}
+          {tab === 'players' && <PlayersPage players={players} teams={teams} unlocked={playersUnlocked} onAdRequest={requestAd} />}
           {tab === 'meta' && <MetaPage meta={meta} />}
+          {tab === 'worlds' && (
+            <WorldsPage worlds={worlds} teams={teams} players={players} unlocked={worldsUnlocked} onAdRequest={() => requestAd('worlds')} />
+          )}
         </>
       )}
 
       <nav className="tabbar" aria-label="메뉴">
         {([
           ['rank', '순위'],
+          ['worlds', '월즈'],
           ['myteam', '내 팀'],
           ['players', '선수'],
           ['meta', '챔피언'],
@@ -690,6 +715,23 @@ function App() {
           </button>
         ))}
       </nav>
+
+      <ConfirmSheet
+        open={askPurpose !== null}
+        desc={
+          askPurpose === 'worlds'
+            ? '짧은 광고를 끝까지 보면\nLCK 대표팀 상세를 24시간 동안 볼 수 있어요.'
+            : askPurpose === 'players'
+              ? '짧은 광고를 끝까지 보면\n선수 전체 순위를 24시간 동안 볼 수 있어요.'
+              : '짧은 광고를 끝까지 보면\n우리 팀 전체 기록을 24시간 동안 볼 수 있어요.'
+        }
+        onClose={() => setAskPurpose(null)}
+        onConfirm={() => {
+          const p = askPurpose;
+          setAskPurpose(null);
+          setAdPurpose(p);
+        }}
+      />
 
       {adPurpose !== null && <RewardedAd onReward={handleReward} onClose={() => setAdPurpose(null)} />}
     </div>
