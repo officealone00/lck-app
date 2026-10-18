@@ -1,698 +1,697 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import BannerAd from './components/BannerAd';
-import RewardedAd from './components/RewardedAd';
-import { api, type TeamStanding, type FakerStats, type MetaChamp, type UpcomingMatch, type PlayerRanking, type UpdatedMeta } from './utils/api';
+import RewardedAd, { preloadReportAd } from './components/RewardedAd';
+import { useTossBackEvent } from './hooks/useTossBackEvent';
+import { logEvent, requestReviewOnce, shareWithTossLink } from './utils/tossGrowth';
+import {
+  api,
+  type TeamStanding,
+  type MetaChamp,
+  type UpcomingMatch,
+  type PlayerStat,
+  type UpdatedMeta,
+  type SeasonSummary,
+  type WorldsInfo,
+  type WorldsMatch,
+} from './utils/api';
 import {
   FALLBACK_STANDINGS,
-  FALLBACK_FAKER,
   FALLBACK_META,
   FALLBACK_MATCHES,
   FALLBACK_PLAYERS,
   FALLBACK_UPDATED,
+  FALLBACK_SEASON,
+  FALLBACK_WORLDS,
 } from './utils/fallback';
 
-// "2026-05-21 11:00" 같은 KST 시각 → "5/21 11:00 갱신" 형식
-function formatUpdatedLabel(updated: UpdatedMeta | null): string {
-  if (!updated) return '갱신 정보 없음';
-  // updatedAt(ISO) 우선, 없으면 updatedAtKST 그대로
-  if (updated.updatedAt) {
-    const d = new Date(updated.updatedAt);
-    if (!isNaN(d.getTime())) {
-      const kst = new Date(d.getTime() + 9 * 60 * 60 * 1000);
-      const m = kst.getUTCMonth() + 1;
-      const day = kst.getUTCDate();
-      const hh = String(kst.getUTCHours()).padStart(2, '0');
-      const mm = String(kst.getUTCMinutes()).padStart(2, '0');
-      return `${m}/${day} ${hh}:${mm} 갱신`;
-    }
-  }
-  return `${updated.updatedAtKST || ''} 갱신`;
+/* ─────────────────────────────────────────────────────────────
+ * LCK 순위 v2 (2026-10-18)
+ * - 첫 화면 = 순위 (응원팀 선택 화면을 억지로 띄우지 않아요)
+ * - 순위: 1~5라운드 누적 전적, 레전드/라이즈 그룹 구분
+ * - 시즌 결산(우승·준우승·3위) + 월즈 일정/결과
+ * - 선수·메타: 실제 경기 기록으로 계산한 값
+ * - 광고: 보상형은 미리 불러 두고 버튼을 눌렀을 때만 재생
+ * ───────────────────────────────────────────────────────────── */
+
+type Tab = 'rank' | 'myteam' | 'players' | 'meta';
+type AdPurpose = 'report' | 'players' | null;
+
+const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
+function kstLabel(iso?: string, withTime = true): string {
+  if (!iso) return '';
+  const d = new Date(new Date(iso).getTime() + 9 * 3600 * 1000);
+  if (isNaN(d.getTime())) return '';
+  const base = `${d.getUTCMonth() + 1}/${d.getUTCDate()}(${WEEK[d.getUTCDay()]})`;
+  if (!withTime) return base;
+  return `${base} ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+}
+function updatedLabel(u: UpdatedMeta | null): string {
+  if (!u?.updatedAt) return '';
+  return `${kstLabel(u.updatedAt)} 기준`;
 }
 
-// 네이버 LCK 2026 LEGENDS TOP 8 + Faker (LCK Cup 2026)
-// 1번(Chovy)은 무료, 나머지는 광고 시청 후 잠금 해제
-const stars = [
-  { id: 'chovy',   name: 'Chovy',   kor: '초비',     team: 'GEN', pos: 'MID', locked: false },
-  { id: 'zeka',    name: 'Zeka',    kor: '제카',     team: 'HLE', pos: 'MID', locked: true },
-  { id: 'teddy',   name: 'Teddy',   kor: '테디',     team: 'BRO', pos: 'AD',  locked: true },
-  { id: 'aiming',  name: 'Aiming',  kor: '에이밍',   team: 'KT',  pos: 'AD',  locked: true },
-  { id: 'keria',   name: 'Keria',   kor: '케리아',   team: 'T1',  pos: 'SPT', locked: true },
-  { id: 'bdd',     name: 'Bdd',     kor: '비디디',   team: 'KT',  pos: 'MID', locked: true },
-  { id: 'oner',    name: 'Oner',    kor: '오너',     team: 'T1',  pos: 'JGL', locked: true },
-  { id: 'taeyoon', name: 'Taeyoon', kor: '태윤',     team: 'BFX', pos: 'AD',  locked: true },
-  { id: 'faker',   name: 'FAKER',   kor: '페이커',   team: 'T1',  pos: 'MID', locked: true },
-];
+const UNLOCK_MS = 24 * 3600 * 1000;
+function isUnlocked(key: string): boolean {
+  try {
+    const t = Number(localStorage.getItem(key) || 0);
+    return Date.now() - t < UNLOCK_MS;
+  } catch {
+    return false;
+  }
+}
+function saveUnlock(key: string) {
+  try {
+    localStorage.setItem(key, String(Date.now()));
+  } catch {
+    /* noop */
+  }
+}
 
-function TeamSelect({ teams, onSelect }: { teams: TeamStanding[]; onSelect: (abbr: string) => void }) {
+const teamName = (teams: TeamStanding[], abbr?: string | null) =>
+  (abbr && teams.find((t) => t.abbr === abbr)?.kor) || abbr || '';
+const teamColor = (teams: TeamStanding[], abbr?: string | null) =>
+  (abbr && teams.find((t) => t.abbr === abbr)?.color) || '#5B6178';
+
+function FormDots({ form, large = false }: { form: string[]; large?: boolean }) {
+  if (!form.some((f) => f === 'W' || f === 'L')) return null;
   return (
-    <div className="select-page">
-      <div className="select-hero">
-        <div className="select-badge">WELCOME</div>
-        <h1 className="select-title">응원하는 팀을<br/>선택해주세요</h1>
-        <p className="select-desc">선택한 팀의 경기 일정과 분석을<br/>가장 먼저 받아보세요</p>
+    <span className={`form ${large ? 'lg' : ''}`} aria-label={`최근 5경기 ${form.join(' ')}`}>
+      {form.map((f, i) => (
+        <span key={i} className={`dot ${f === 'W' ? 'win' : f === 'L' ? 'loss' : 'unknown'}`}>
+          {large ? (f === 'W' ? '승' : f === 'L' ? '패' : '') : ''}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* ───────────── 시즌 결산 / 월즈 카드 ───────────── */
+function SeasonCard({ season, teams }: { season: SeasonSummary; teams: TeamStanding[] }) {
+  if (season.status !== 'ended' || !season.champion) return null;
+  return (
+    <section className="season-card" style={{ ['--champ' as string]: teamColor(teams, season.champion) }}>
+      <div className="sc-label">{season.year} LCK 시즌 종료</div>
+      <div className="sc-champ">
+        <span className="sc-trophy" aria-hidden>🏆</span>
+        {teamName(teams, season.champion)} 우승
       </div>
-      <div className="select-grid">
-        {teams.map(t => (
-          <button key={t.abbr} className="select-team" onClick={() => onSelect(t.abbr)}>
-            <div className="select-color" style={{background: t.color}} />
-            <div className="select-abbr">{t.abbr}</div>
-            <div className="select-kor">{t.kor}</div>
-          </button>
-        ))}
+      <div className="sc-sub">
+        결승 {teamName(teams, season.champion)} {season.finalScore} {teamName(teams, season.runnerUp)}
+        {season.third ? ` · 3위 ${teamName(teams, season.third)}` : ''}
       </div>
-      <button className="select-skip" onClick={() => onSelect('')}>나중에 선택하기</button>
+    </section>
+  );
+}
+
+function WorldsCard({ worlds, teams, myTeam }: { worlds: WorldsInfo; teams: TeamStanding[]; myTeam?: string }) {
+  if (worlds.status === 'ended') return null;
+  const now = Date.now();
+  const upcomingStage = worlds.stages.find((s) => new Date(s.start).getTime() > now);
+  const currentStage = [...worlds.stages].reverse().find((s) => new Date(s.start).getTime() <= now);
+  const lck = worlds.lckMatches;
+  const recent = lck.filter((m) => m.state === 'completed').slice(-3).reverse();
+  const upcoming = lck.filter((m) => m.state !== 'completed').slice(0, 4);
+  const mine = myTeam ? lck.filter((m) => m.home === myTeam || m.away === myTeam) : [];
+
+  return (
+    <section className="worlds-card">
+      <div className="wc-head">
+        <span className="wc-title">🌏 {worlds.title}</span>
+        <span className="wc-state">{worlds.status === 'upcoming' ? '개막 전' : '진행 중'}</span>
+      </div>
+      {currentStage && worlds.status === 'ongoing' && <div className="wc-line">지금: {currentStage.name}</div>}
+      {upcomingStage && (
+        <div className="wc-line strong">
+          다음: {upcomingStage.name} · {kstLabel(upcomingStage.start)} 시작
+        </div>
+      )}
+      {lck.length === 0 ? (
+        <div className="wc-note">LCK 팀 대진은 조 추첨이 끝나면 여기에 바로 표시돼요.</div>
+      ) : (
+        <div className="wc-list">
+          {(mine.length ? mine.slice(-4) : [...recent, ...upcoming]).map((m) => (
+            <WorldsRow key={m.id + m.startTime} m={m} teams={teams} />
+          ))}
+        </div>
+      )}
+      <div className="wc-foot">시간은 한국 시간이에요. 경기가 끝나면 결과가 바로 반영돼요.</div>
+    </section>
+  );
+}
+
+function WorldsRow({ m, teams }: { m: WorldsMatch; teams: TeamStanding[] }) {
+  const done = m.state === 'completed';
+  const live = m.state === 'inProgress';
+  const label = (c: string, n: string) => (teams.find((t) => t.abbr === c) ? c : n || c);
+  return (
+    <div className="wc-row">
+      <span className="wc-date">{done ? kstLabel(m.startTime, false) : kstLabel(m.startTime)}</span>
+      <span className="wc-teams">
+        <b style={{ color: teamColor(teams, m.home) }}>{label(m.home, m.homeName)}</b>
+        {done || live ? ` ${m.homeScore ?? 0} : ${m.awayScore ?? 0} ` : ' vs '}
+        <b style={{ color: teamColor(teams, m.away) }}>{label(m.away, m.awayName)}</b>
+      </span>
+      <span className={`wc-badge ${live ? 'live' : ''}`}>{live ? '진행 중' : m.stage}</span>
     </div>
   );
 }
 
-function MyTeamPage({ teams, matches, myTeam, onChange, aiUnlocked, onAdRequest }: {
+/* ───────────── 순위 탭 ───────────── */
+function RankPage({
+  teams, season, worlds, updated, myTeam, onPickTeam,
+}: {
   teams: TeamStanding[];
+  season: SeasonSummary;
+  worlds: WorldsInfo;
+  updated: UpdatedMeta | null;
+  myTeam: string;
+  onPickTeam: () => void;
+}) {
+  const groups = useMemo(() => {
+    const g: { name: string; rows: TeamStanding[] }[] = [];
+    for (const t of teams) {
+      const name = t.group || '';
+      let cur = g.find((x) => x.name === name);
+      if (!cur) g.push((cur = { name, rows: [] }));
+      cur.rows.push(t);
+    }
+    return g;
+  }, [teams]);
+
+  return (
+    <div className="page">
+      <div className="page-title">
+        <h1>{season.year} LCK 순위</h1>
+        <span className="updated">{updatedLabel(updated)}</span>
+      </div>
+
+      <SeasonCard season={season} teams={teams} />
+      <WorldsCard worlds={worlds} teams={teams} myTeam={myTeam} />
+
+      {!myTeam && (
+        <button className="pick-cta" onClick={onPickTeam}>
+          <span>
+            <b>응원팀을 골라 보세요</b>
+            <br />
+            우리 팀 시즌 성적과 선수 기록을 모아 볼 수 있어요
+          </span>
+          <span className="pick-arrow" aria-hidden>›</span>
+        </button>
+      )}
+
+      {groups.map((g, gi) => (
+        <section key={g.name || gi} className="group">
+          {g.name && (
+            <div className="group-head">
+              <span className={`group-tag ${g.name === '레전드' ? 'legend' : 'rise'}`}>{g.name} 그룹</span>
+            </div>
+          )}
+          <div className="rank-list">
+            {g.rows.map((t) => (
+              <div className={`rank-row ${t.abbr === myTeam ? 'mine' : ''}`} key={t.abbr}>
+                <span className="r-num">{t.rank}</span>
+                <span className="r-bar" style={{ background: t.color }} />
+                <span className="r-info">
+                  <span className="r-name">
+                    {t.kor}
+                    {season.champion === t.abbr && <span className="r-crown">우승</span>}
+                    {t.abbr === myTeam && <span className="r-mine">내 팀</span>}
+                  </span>
+                  <FormDots form={t.form} />
+                </span>
+                <span className="r-right">
+                  <span className="r-rec">{t.w}승 {t.l}패</span>
+                  <span className={`r-gd ${t.gdm > 0 ? 'pos' : t.gdm < 0 ? 'neg' : ''}`}>
+                    세트 {t.gdm > 0 ? '+' : ''}{t.gdm}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
+          {gi === 0 && <BannerAd />}
+        </section>
+      ))}
+
+      <p className="foot-note">
+        1~5라운드 누적 전적이에요. 3라운드부터 레전드·라이즈 그룹으로 나뉘어요.
+        <br />
+        최근 5경기는 플레이오프까지 포함해요. 출처: LoL Esports 공식 데이터
+      </p>
+    </div>
+  );
+}
+
+/* ───────────── 팀 선택 ───────────── */
+function TeamPicker({ teams, current, onSelect, onClose }: {
+  teams: TeamStanding[]; current: string; onSelect: (abbr: string) => void; onClose?: () => void;
+}) {
+  return (
+    <div className="picker">
+      <h2 className="picker-title">응원하는 팀을 골라 주세요</h2>
+      <p className="picker-desc">언제든 다시 바꿀 수 있어요</p>
+      <div className="picker-grid">
+        {teams.map((t) => (
+          <button key={t.abbr} className={`picker-team ${current === t.abbr ? 'on' : ''}`} onClick={() => onSelect(t.abbr)}>
+            <span className="pt-bar" style={{ background: t.color }} />
+            <span className="pt-abbr">{t.abbr}</span>
+            <span className="pt-kor">{t.kor}</span>
+          </button>
+        ))}
+      </div>
+      {onClose && (
+        <button className="text-btn" onClick={onClose}>
+          닫기
+        </button>
+      )}
+    </div>
+  );
+}
+
+/* ───────────── 내 팀 탭 ───────────── */
+function teamSeasonResult(abbr: string, season: SeasonSummary): string {
+  if (season.status !== 'ended') return '';
+  if (season.champion === abbr) return '🏆 우승';
+  if (season.runnerUp === abbr) return '🥈 준우승';
+  if (season.third === abbr) return '🥉 3위';
+  const mine = season.playoffs.filter((m) => m.home === abbr || m.away === abbr);
+  if (!mine.length) return '포스트시즌 진출 실패';
+  const last = mine[mine.length - 1];
+  const won = (last.home === abbr ? last.homeScore : last.awayScore) > (last.home === abbr ? last.awayScore : last.homeScore);
+  return won ? `${last.stage} 진출` : `${last.stage}에서 탈락`;
+}
+
+function MyTeamPage({
+  teams, players, season, worlds, matches, myTeam, reportUnlocked, onChangeTeam, onAdRequest,
+}: {
+  teams: TeamStanding[];
+  players: PlayerStat[];
+  season: SeasonSummary;
+  worlds: WorldsInfo;
   matches: UpcomingMatch[];
   myTeam: string;
-  onChange: () => void;
-  aiUnlocked: boolean;
-  onAdRequest: (purpose: 'ai') => void;
-}) {
-  const team = teams.find(t => t.abbr === myTeam);
-
-  if (!team) {
-    return (
-      <div className="page">
-        <header className="header"><span className="season-badge">MY TEAM</span></header>
-        <div className="content empty-state">
-          <div className="empty-icon">★</div>
-          <div className="empty-title">응원팀을 선택해주세요</div>
-          <button className="select-cta" onClick={onChange}>팀 선택하기</button>
-        </div>
-      </div>
-    );
-  }
-
-  const nextMatch = matches.find(m => m.home === team.abbr || m.away === team.abbr);
-  const recentWins = team.form.filter(f => f === 'W').length;
-  const aiPrediction = Math.min(95, Math.round(team.wr * 0.6 + recentWins * 8));
-
-  return (
-    <div className="page">
-      <header className="header">
-        <span className="season-badge">MY TEAM</span>
-        <button className="change-btn" onClick={onChange}>변경</button>
-      </header>
-      <div className="content">
-        <div className="myteam-hero" style={{borderColor: team.color}}>
-          <div className="myteam-color-bar" style={{background: team.color}} />
-          <div className="myteam-rank">현재 {team.rank}위</div>
-          <div className="myteam-abbr">{team.abbr}</div>
-          <div className="myteam-kor">{team.kor}</div>
-          <div className="myteam-stats">
-            <div className="mts">
-              <div className="mtsv gold">{team.wr}%</div>
-              <div className="mtsl">승률</div>
-            </div>
-            <div className="mts">
-              <div className="mtsv">{team.w}-{team.l}</div>
-              <div className="mtsl">전적</div>
-            </div>
-            {team.gdm !== 0 && (
-              <div className="mts">
-                <div className="mtsv" style={{color: team.gdm > 0 ? '#34D399' : '#F87171'}}>
-                  {team.gdm > 0 ? '+' : ''}{team.gdm}
-                </div>
-                <div className="mtsl">GDM</div>
-              </div>
-            )}
-          </div>
-          {team.form.some(f => f === 'W' || f === 'L') && (
-            <div className="myteam-form">
-              <span className="form-label">최근 5경기</span>
-              <div className="form">
-                {team.form.map((f, i) => (
-                  <span key={i} className={`dot lg ${f === 'W' ? 'win' : f === 'L' ? 'loss' : 'unknown'}`} />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <BannerAd />
-
-        {nextMatch && (
-          <>
-            <h3 className="sec">NEXT MATCH</h3>
-            <div className="match-card">
-              <div className="match-date">{nextMatch.date}{nextMatch.time ? ` · ${nextMatch.time} KST` : ''}</div>
-              <div className="match-teams">
-                <div className="mt-side">
-                  <div className="mt-color" style={{background: nextMatch.homeColor || '#888'}} />
-                  <div className="mt-abbr">{nextMatch.home}</div>
-                </div>
-                <div className="mt-vs">VS</div>
-                <div className="mt-side">
-                  <div className="mt-color" style={{background: nextMatch.awayColor || '#888'}} />
-                  <div className="mt-abbr">{nextMatch.away}</div>
-                </div>
-              </div>
-              <div className="match-broadcast">치지직 · SOOP 중계</div>
-            </div>
-          </>
-        )}
-
-        <h3 className="sec">AI 우승 예측</h3>
-        <div className="ai-card">
-          <div className="ai-icon">◆</div>
-          <div className="ai-title">{team.kor}의 이번 주 승률</div>
-          {aiUnlocked ? (
-            <>
-              <div className="ai-result">{aiPrediction}%</div>
-              <div className="ai-result-desc">최근 폼과 시즌 승률 기반</div>
-            </>
-          ) : (
-            <>
-              <div className="ai-desc">AI가 분석한 예상 승률<br/>광고 시청 후 확인</div>
-              <button className="ad-btn small" onClick={() => onAdRequest('ai')}>
-                ▶ 30초 광고 보고 예측 보기
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HomePage({ teams, updatedLabel }: { teams: TeamStanding[]; updatedLabel: string }) {
-  if (teams.length === 0) return null;
-  const top = teams[0];
-  const rest = teams.slice(1);
-  return (
-    <div className="page">
-      <header className="header">
-        <span className="season-badge">2026 ROUNDS 1-2</span>
-        <span className="update-time">{updatedLabel}</span>
-      </header>
-      <div className="content">
-        <div className="card-first">
-          <div className="crown">★ 1ST PLACE</div>
-          <div className="team-big">
-            <div className="abbr-big">{top.abbr}</div>
-            <div className="kor-big">{top.kor}</div>
-          </div>
-          <div className="first-stats">
-            <div className="wr-big">{top.wr}<span>%</span></div>
-            <div className="record-stack">
-              <div className="record-big">{top.w}W {top.l}L</div>
-              {top.gdm !== 0 && (
-                <div className="gdm">GDM {top.gdm > 0 ? '+' : ''}{top.gdm}</div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <BannerAd />
-
-        {rest.map(t => (
-          <div className="card" key={t.rank}>
-            <div className="num">{t.rank}</div>
-            <div className="info">
-              <div className="abbr">{t.abbr}</div>
-              <div className="kor">{t.kor}</div>
-              {t.form.some(f => f === 'W' || f === 'L') && (
-                <div className="form">
-                  {t.form.map((f, i) => (
-                    <span key={i} className={`dot ${f === 'W' ? 'win' : f === 'L' ? 'loss' : 'unknown'}`} />
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="right">
-              <div className="wr">{t.wr}%</div>
-              <div className="rec">{t.w}W {t.l}L</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function StarsPage({ faker, players, playersUnlocked, onAdRequest }: {
-  faker: FakerStats;
-  players: PlayerRanking[];
-  playersUnlocked: boolean;
-  onAdRequest: (purpose: 'players') => void;
-}) {
-  const [active, setActive] = useState('chovy');
-  const player = stars.find(s => s.id === active)!;
-  const isLockedNow = player.locked && !playersUnlocked;
-
-  // 페이커 외엔 PlayerRanking에서 매칭, 페이커는 FakerStats 사용
-  const isFaker = player.id === 'faker';
-  const ranking = !isFaker ? players.find(p => p.name.toLowerCase() === player.name.toLowerCase()) : null;
-
-  // 표시용 stat (페이커는 wr/kda/csm, 다른 선수는 kda/킬관여율/세트수)
-  const displayWr = isFaker ? `${faker.wr}%` : (ranking ? `${(ranking.kpRate * 100).toFixed(0)}%` : '-');
-  const displayWrLabel = isFaker ? 'WIN RATE' : 'KILL %';
-  const displayKda = isFaker ? faker.kda : (ranking?.kda ?? '-');
-  const displayCs = isFaker ? faker.csm : (ranking?.sets ?? '-');
-  const displayCsLabel = isFaker ? 'CS/MIN' : 'SETS';
-  const displayRecord = isFaker
-    ? `${faker.wins}승 ${faker.losses}패`
-    : (ranking ? `${ranking.kills}K ${ranking.deaths}D ${ranking.assists}A` : '-');
-  const displaySub = isFaker
-    ? `${faker.games}경기 · GPM ${faker.gpm}`
-    : (ranking ? `LEGENDS ${ranking.points}P · ${ranking.rank}위` : '-');
-
-  return (
-    <div className="page">
-      <header className="header">
-        <span className="season-badge">PRO PLAYERS</span>
-        <span className="update-time">LCK 2026 LEGENDS</span>
-      </header>
-
-      <div className="player-tabs">
-        {stars.map(s => (
-          <button
-            key={s.id}
-            className={`pt ${active === s.id ? 'active' : ''} ${s.locked && !playersUnlocked ? 'locked' : ''}`}
-            onClick={() => setActive(s.id)}
-          >
-            {s.locked && !playersUnlocked && <span className="lock-mini">▼</span>}
-            {s.kor}
-          </button>
-        ))}
-      </div>
-
-      <div className="content" style={{paddingTop: 0}}>
-        {isLockedNow ? (
-          <div className="player-lock">
-            <div className="lock-icon">▼</div>
-            <div className="lock-title">{player.kor} 통계 잠금</div>
-            <div className="lock-desc">광고 시청 후 24시간<br/>모든 선수 통계 무제한</div>
-            <button className="ad-btn" onClick={() => onAdRequest('players')}>
-              ▶ 30초 광고 보고 잠금 해제
-            </button>
-            <div className="ad-note">리워드 광고 · 앱 운영 후원</div>
-          </div>
-        ) : (
-          <>
-            <div className="hero">
-              <div className="team-tag">{player.team} · {player.pos} LANE</div>
-              <div className="hero-name">{player.name}</div>
-              <div className="real-name">{player.kor}</div>
-            </div>
-            <div className="key-stats">
-              <div className="ks">
-                <div className="ksv gold">{displayWr}</div>
-                <div className="ksl">{displayWrLabel}</div>
-              </div>
-              <div className="ks">
-                <div className="ksv">{displayKda}</div>
-                <div className="ksl">KDA</div>
-              </div>
-              <div className="ks">
-                <div className="ksv">{displayCs}</div>
-                <div className="ksl">{displayCsLabel}</div>
-              </div>
-            </div>
-            <div className="record-line">
-              <span>{displayRecord}</span>
-              <span className="dim">{displaySub}</span>
-            </div>
-
-            <div style={{padding: '0 12px'}}>
-              <BannerAd />
-            </div>
-
-            {isFaker && faker.champions.length > 0 && (
-              <>
-                <h3 className="sec">CHAMPION POOL</h3>
-                <div className="champ-grid">
-                  {faker.champions.map((c, i) => (
-                    <div className={i === 0 ? 'champ featured' : 'champ'} key={c.eng + i}>
-                      <div className="champ-kor">{c.kor}</div>
-                      <div className="champ-eng">{c.eng}</div>
-                      <div className="champ-bottom">
-                        <span className="games">{c.games}경기</span>
-                        <span className="kda-val">KDA {c.kda}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <h3 className="sec">PERSONAL BEST</h3>
-                <div className="pb-card">
-                  <div className="pb-row">
-                    <span className="pb-label">최고 KDA</span>
-                    <span className="pb-val">{faker.champions[0]?.kda || '-'} · {faker.champions[0]?.eng || '-'}</span>
-                  </div>
-                  <div className="pb-row">
-                    <span className="pb-label">총 게임수</span>
-                    <span className="pb-val">{faker.games}경기</span>
-                  </div>
-                  <div className="pb-row">
-                    <span className="pb-label">분당 골드</span>
-                    <span className="pb-val">{faker.gpm} GPM</span>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {!isFaker && ranking && (
-              <>
-                <h3 className="sec">SEASON STATS</h3>
-                <div className="pb-card">
-                  <div className="pb-row">
-                    <span className="pb-label">LEGENDS 순위</span>
-                    <span className="pb-val">{ranking.rank}위 · {ranking.points}P</span>
-                  </div>
-                  <div className="pb-row">
-                    <span className="pb-label">킬 / 데스 / 어시</span>
-                    <span className="pb-val">{ranking.kills} / {ranking.deaths} / {ranking.assists}</span>
-                  </div>
-                  <div className="pb-row">
-                    <span className="pb-label">킬관여율</span>
-                    <span className="pb-val">{(ranking.kpRate * 100).toFixed(0)}%</span>
-                  </div>
-                  <div className="pb-row">
-                    <span className="pb-label">출전 세트</span>
-                    <span className="pb-val">{ranking.sets} 세트</span>
-                  </div>
-                  <div className="pb-row">
-                    <span className="pb-label">평균 KDA</span>
-                    <span className="pb-val">{ranking.kda}</span>
-                  </div>
-                </div>
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function MetaPage({ metaChamps }: { metaChamps: MetaChamp[] }) {
-  const [sortBy, setSortBy] = useState<'pick' | 'ban' | 'wr'>('pick');
-
-  const sortedChamps = [...metaChamps].sort((a, b) => {
-    if (sortBy === 'pick') return b.pickRate - a.pickRate;
-    if (sortBy === 'ban') return b.banRate - a.banRate;
-    return b.wr - a.wr;
-  });
-
-  return (
-    <div className="page">
-      <header className="header">
-        <span className="season-badge">META CHAMPIONS</span>
-        <span className="update-time">이번 시즌</span>
-      </header>
-      <div className="content">
-        <div className="meta-tabs">
-          <button
-            className={`meta-tab ${sortBy === 'pick' ? 'active' : ''}`}
-            onClick={() => setSortBy('pick')}
-          >
-            픽률 TOP
-          </button>
-          <button
-            className={`meta-tab ${sortBy === 'ban' ? 'active' : ''}`}
-            onClick={() => setSortBy('ban')}
-          >
-            밴률 TOP
-          </button>
-          <button
-            className={`meta-tab ${sortBy === 'wr' ? 'active' : ''}`}
-            onClick={() => setSortBy('wr')}
-          >
-            승률 TOP
-          </button>
-        </div>
-
-        {sortedChamps.map((c, i) => (
-          <div className="meta-card" key={c.eng + i}>
-            <div className="meta-rank">{i + 1}</div>
-            <div className="meta-info">
-              <div className="meta-name">{c.kor}</div>
-              <div className="meta-sub">{c.eng}{c.role ? ` · ${c.role}` : ''}</div>
-            </div>
-            <div className="meta-bars">
-              {sortBy === 'wr' ? (
-                <>
-                  <div className="meta-bar-row">
-                    <span className="mbl">승</span>
-                    <div className="bar-bg"><div className="bar-fill gold" style={{width: `${c.wr}%`}} /></div>
-                    <span className="mbv">{c.wr}%</span>
-                  </div>
-                  <div className="meta-bar-row">
-                    <span className="mbl">픽</span>
-                    <div className="bar-bg"><div className="bar-fill" style={{width: `${c.pickRate}%`, background: '#B5BCD0'}} /></div>
-                    <span className="mbv">{c.pickRate}%</span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="meta-bar-row">
-                    <span className="mbl">픽</span>
-                    <div className="bar-bg"><div className="bar-fill gold" style={{width: `${c.pickRate}%`}} /></div>
-                    <span className="mbv">{c.pickRate}%</span>
-                  </div>
-                  <div className="meta-bar-row">
-                    <span className="mbl">밴</span>
-                    <div className="bar-bg"><div className="bar-fill red" style={{width: `${c.banRate}%`}} /></div>
-                    <span className="mbv">{c.banRate}%</span>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        ))}
-
-        <BannerAd />
-      </div>
-    </div>
-  );
-}
-
-function ReportPage({ teams, metaChamps, reportUnlocked, onAdRequest }: {
-  teams: TeamStanding[];
-  metaChamps: MetaChamp[];
   reportUnlocked: boolean;
-  onAdRequest: (purpose: 'report') => void;
+  onChangeTeam: () => void;
+  onAdRequest: (p: AdPurpose) => void;
 }) {
-  if (reportUnlocked) {
-    const topPick = [...metaChamps].sort((a, b) => b.pickRate - a.pickRate)[0];
-    const topBan = [...metaChamps].sort((a, b) => b.banRate - a.banRate)[0];
-
-    return (
-      <div className="page">
-        <header className="header">
-          <span className="season-badge">TEAM REPORT</span>
-          <span className="update-time">전팀 심층 분석</span>
-        </header>
-        <div className="content">
-          <h3 className="sec">메타 적합도 TOP 3</h3>
-          {teams.slice(0, 3).map((t, i) => (
-            <div className="card" key={t.rank}>
-              <div className="num">{i + 1}</div>
-              <div className="info">
-                <div className="abbr">{t.abbr}</div>
-                <div className="kor">{t.kor}</div>
-              </div>
-              <div className="right">
-                <div className="wr">{Math.round(t.wr * 0.95)}%</div>
-                <div className="rec">메타 점수</div>
-              </div>
-            </div>
-          ))}
-
-          <h3 className="sec">픽밴 인사이트</h3>
-          <div className="pb-card">
-            <div className="pb-row">
-              <span className="pb-label">선픽 1티어</span>
-              <span className="pb-val">{topPick ? `${topPick.kor} (${topPick.pickRate}%)` : '-'}</span>
-            </div>
-            <div className="pb-row">
-              <span className="pb-label">우선 밴</span>
-              <span className="pb-val">{topBan ? `${topBan.kor} (${topBan.banRate}%)` : '-'}</span>
-            </div>
-            <div className="pb-row">
-              <span className="pb-label">시그니처</span>
-              <span className="pb-val">{teams[0]?.abbr || '-'} / {topPick?.kor || '-'}</span>
-            </div>
-          </div>
-
-          <BannerAd />
-
-          <h3 className="sec">예상 플레이오프 진출</h3>
-          {teams.slice(0, 6).map((t, i) => (
-            <div className="card" key={t.rank}>
-              <div className="num">{i + 1}</div>
-              <div className="info">
-                <div className="abbr">{t.abbr}</div>
-                <div className="kor">{t.kor}</div>
-              </div>
-              <div className="right">
-                <div className="wr" style={{color: '#34D399'}}>{Math.round(95 - i * 8)}%</div>
-                <div className="rec">진출 확률</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="page">
-      <header className="header">
-        <span className="season-badge">TEAM REPORT</span>
-        <span className="update-time">전팀 심층 분석</span>
-      </header>
-      <div className="lock-content">
-        <div className="lock-blur">
-          <div className="content">
-            <div className="card-first">
-              <div className="crown">▣ ANALYSIS</div>
-              <div className="abbr-big">T1</div>
-              <div className="first-stats">
-                <div className="wr-big">57<span>%</span></div>
-              </div>
-            </div>
-            <div className="card"><div className="num">M1</div><div className="info"><div className="abbr">VARUS</div></div></div>
-            <div className="card"><div className="num">M2</div><div className="info"><div className="abbr">RUMBLE</div></div></div>
-            <div className="card"><div className="num">M3</div><div className="info"><div className="abbr">ASHE</div></div></div>
-          </div>
-        </div>
-        <div className="lock-overlay">
-          <div className="lock-icon">▼</div>
-          <div className="lock-title">팀 분석 리포트</div>
-          <div className="lock-desc">
-            메타 챔프 · 픽밴 패턴<br/>
-            잘 쓰는 챔프 · 예상 순위<br/>
-            10팀 모두 24시간 무제한
-          </div>
-          <button className="ad-btn" onClick={() => onAdRequest('report')}>
-            ▶ 30초 광고 보고 잠금 해제
-          </button>
-          <div className="ad-note">리워드 광고 · 앱 운영 후원</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-type AdPurpose = 'ai' | 'players' | 'report' | null;
-
-function App() {
-  const [myTeam, setMyTeam] = useState<string | null>(null);
-  const [showSelect, setShowSelect] = useState(false);
-  const [tab, setTab] = useState('myteam');
-
-  // ─── 실시간 데이터 state ───
-  const [teams, setTeams] = useState<TeamStanding[]>(FALLBACK_STANDINGS);
-  const [faker, setFaker] = useState<FakerStats>(FALLBACK_FAKER);
-  const [metaChamps, setMetaChamps] = useState<MetaChamp[]>(FALLBACK_META);
-  const [matches, setMatches] = useState<UpcomingMatch[]>(FALLBACK_MATCHES);
-  const [players, setPlayers] = useState<PlayerRanking[]>(FALLBACK_PLAYERS);
-  const [updated, setUpdated] = useState<UpdatedMeta | null>(FALLBACK_UPDATED);
-
-  const [aiUnlocked, setAiUnlocked] = useState(false);
-  const [reportUnlocked, setReportUnlocked] = useState(false);
-  const [playersUnlocked, setPlayersUnlocked] = useState(false);
-
-  const [adPurpose, setAdPurpose] = useState<AdPurpose>(null);
-  const rewardEarnedRef = useRef(false);
-
+  const team = teams.find((t) => t.abbr === myTeam);
   useEffect(() => {
-    // 응원팀 로드
-    const saved = localStorage.getItem('lck_my_team');
-    if (saved !== null) {
-      setMyTeam(saved);
-    } else {
-      setShowSelect(true);
-    }
+    if (team && !reportUnlocked) preloadReportAd();
+  }, [team, reportUnlocked]);
 
-    // 실시간 데이터 fetch (병렬)
-    api.standings().then(setTeams).catch((e) => console.warn('[App] standings 로드 실패', e));
-    api.faker().then(setFaker).catch((e) => console.warn('[App] faker 로드 실패', e));
-    api.meta().then(setMetaChamps).catch((e) => console.warn('[App] meta 로드 실패', e));
-    api.matches().then(setMatches).catch((e) => console.warn('[App] matches 로드 실패', e));
-    api.players().then(setPlayers).catch((e) => console.warn('[App] players 로드 실패', e));
-    api.updated().then(setUpdated).catch((e) => console.warn('[App] updated 로드 실패', e));
-  }, []);
+  if (!team) return null;
 
-  const updatedLabel = formatUpdatedLabel(updated);
+  const result = teamSeasonResult(team.abbr, season);
+  const nextMatch = matches.find((m) => m.home === team.abbr || m.away === team.abbr);
+  const myPlayoffs = season.playoffs.filter((m) => m.home === team.abbr || m.away === team.abbr);
+  const roster = players.filter((p) => p.team === team.abbr).sort((a, b) => b.games - a.games).slice(0, 7);
+  const inWorlds = worlds.lckTeams.includes(team.abbr);
 
-  const handleSelect = (abbr: string) => {
-    localStorage.setItem('lck_my_team', abbr);
-    setMyTeam(abbr);
-    setShowSelect(false);
+  const champAgg: Record<string, { kor: string; games: number }> = {};
+  for (const p of roster) for (const c of p.champions) {
+    (champAgg[c.eng] ||= { kor: c.kor, games: 0 }).games += c.games;
+  }
+  const topChamps = Object.values(champAgg).sort((a, b) => b.games - a.games).slice(0, 5);
+
+  const share = () => {
+    logEvent('share_click', { team: team.abbr });
+    void shareWithTossLink({
+      path: 'intoss://lck-app',
+      message: `${season.year} LCK ${team.kor} — 정규시즌 ${team.rank}위 (${team.w}승 ${team.l}패)${result ? `, 최종 ${result.replace(/^\S+\s/, '')}` : ''}\nLCK 순위에서 우리 팀 기록 보기`,
+    });
   };
 
-  const handleAdRequest = (purpose: AdPurpose) => {
-    rewardEarnedRef.current = false;
-    setAdPurpose(purpose);
+  return (
+    <div className="page">
+      <div className="page-title">
+        <h1>내 팀</h1>
+        <button className="chip-btn" onClick={onChangeTeam}>팀 바꾸기</button>
+      </div>
+
+      <section className="team-hero" style={{ ['--tc' as string]: team.color }}>
+        <div className="th-top">
+          <span className="th-abbr">{team.abbr}</span>
+          {team.kor !== team.abbr && <span className="th-kor">{team.kor}</span>}
+        </div>
+        {result && <div className="th-result">{season.year} 시즌 최종 {result}</div>}
+        <div className="th-stats">
+          <div><b>{team.rank}위</b><span>{team.group ? `정규 · ${team.group}` : "정규시즌"}</span></div>
+          <div><b>{team.w}승 {team.l}패</b><span>승률 {team.wr}%</span></div>
+          <div><b className={team.gdm >= 0 ? 'pos' : 'neg'}>{team.gdm > 0 ? '+' : ''}{team.gdm}</b><span>세트 득실</span></div>
+        </div>
+        <div className="th-form">
+          <span>최근 5경기</span>
+          <FormDots form={team.form} large />
+        </div>
+        <button className="share-btn" onClick={share}>우리 팀 성적 공유하기</button>
+      </section>
+
+      <h3 className="sec">다음 경기</h3>
+      <div className="card info-card">
+        {nextMatch ? (
+          <>
+            <div className="ic-main">
+              {nextMatch.league === 'WORLDS' ? '월즈 ' : ''}{nextMatch.stage} · {kstLabel(nextMatch.startTime) || `${nextMatch.date} ${nextMatch.time ?? ''}`}
+            </div>
+            <div className="ic-sub">
+              {teamName(teams, nextMatch.home)} vs {teamName(teams, nextMatch.away)}
+            </div>
+          </>
+        ) : inWorlds ? (
+          <div className="ic-main">월즈 다음 경기 일정이 나오면 바로 알려 드려요</div>
+        ) : (
+          <>
+            <div className="ic-main">{season.year} 시즌 일정이 모두 끝났어요</div>
+            <div className="ic-sub">
+              {worlds.status !== 'ended' ? '지금은 월즈가 열리고 있어요. 순위 탭에서 일정을 볼 수 있어요.' : '다음 시즌 일정이 나오면 여기에 표시돼요.'}
+            </div>
+          </>
+        )}
+      </div>
+
+      {myPlayoffs.length > 0 && (
+        <>
+          <h3 className="sec">포스트시즌 기록</h3>
+          <div className="card list-card">
+            {myPlayoffs.map((m) => {
+              const mine = m.home === team.abbr ? m.homeScore : m.awayScore;
+              const opp = m.home === team.abbr ? m.awayScore : m.homeScore;
+              const oppAbbr = m.home === team.abbr ? m.away : m.home;
+              return (
+                <div className="po-row" key={m.startTime}>
+                  <span className="po-date">{m.date}</span>
+                  <span className="po-stage">{m.stage}</span>
+                  <span className="po-vs">vs {teamName(teams, oppAbbr)}</span>
+                  <span className={`po-score ${mine > opp ? 'win' : 'loss'}`}>{mine}:{opp} {mine > opp ? '승' : '패'}</span>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      <BannerAd />
+
+      <h3 className="sec">우리 팀 선수 기록</h3>
+      <div className="card list-card lockable">
+        {roster.length === 0 && <div className="empty">선수 기록을 준비하고 있어요</div>}
+        {roster.map((p, i) => {
+          const locked = !reportUnlocked && i >= 1;
+          return (
+            <div className={`pl-row ${locked ? 'blur' : ''}`} key={p.name} aria-hidden={locked}>
+              <span className="pl-pos">{p.pos}</span>
+              <span className="pl-name">{p.kor !== p.name ? `${p.kor}` : p.name}<small>{p.kor !== p.name ? p.name : ''}</small></span>
+              <span className="pl-stat"><b>KDA {p.kda}</b><small>{p.games}세트 · 승률 {p.wr}%</small></span>
+              <span className="pl-champ">{p.champions[0]?.kor ?? ''}</span>
+            </div>
+          );
+        })}
+        {!reportUnlocked && roster.length > 1 && (
+          <div className="lock-box">
+            <div className="lock-title">주전 {roster.length}명 전체 기록과 주력 챔피언</div>
+            <button className="ad-btn" onClick={() => onAdRequest('report')}>광고 보고 전체 보기</button>
+            <div className="ad-note">한 번 보면 24시간 동안 열려 있어요</div>
+          </div>
+        )}
+      </div>
+
+      {reportUnlocked && topChamps.length > 0 && (
+        <>
+          <h3 className="sec">우리 팀이 많이 고른 챔피언</h3>
+          <div className="champ-chips">
+            {topChamps.map((c) => (
+              <span className="champ-chip" key={c.kor}>{c.kor} <small>{c.games}</small></span>
+            ))}
+          </div>
+        </>
+      )}
+      <p className="foot-note">{season.year} 정규시즌·플레이오프 경기 기록으로 계산했어요.</p>
+    </div>
+  );
+}
+
+/* ───────────── 선수 탭 ───────────── */
+const POS_FILTER = ['전체', 'TOP', 'JGL', 'MID', 'AD', 'SPT'] as const;
+const FREE_PLAYERS = 10;
+
+function PlayersPage({ players, teams, unlocked, onAdRequest }: {
+  players: PlayerStat[]; teams: TeamStanding[]; unlocked: boolean; onAdRequest: (p: AdPurpose) => void;
+}) {
+  const [pos, setPos] = useState<(typeof POS_FILTER)[number]>('전체');
+  const [open, setOpen] = useState<string | null>(null);
+  useEffect(() => {
+    if (!unlocked) preloadReportAd();
+  }, [unlocked]);
+
+  const faker = players.find((p) => p.name.toLowerCase() === 'faker');
+  const list = players.filter((p) => pos === '전체' || p.pos === pos);
+
+  return (
+    <div className="page">
+      <div className="page-title">
+        <h1>선수 기록</h1>
+        <span className="updated">KDA 순 · 10세트 이상</span>
+      </div>
+
+      {faker && (
+        <section className="faker-card">
+          <div className="fk-label">페이커 {new Date().getFullYear()} 시즌</div>
+          <div className="fk-stats">
+            <div><b>{faker.games}</b><span>세트</span></div>
+            <div><b>{faker.wr}%</b><span>승률</span></div>
+            <div><b>{faker.kda}</b><span>KDA</span></div>
+            <div><b>{Math.round(faker.kpRate * 100)}%</b><span>킬 관여</span></div>
+          </div>
+          <div className="fk-champs">
+            {faker.champions.slice(0, 3).map((c) => (
+              <span key={c.eng}>{c.kor} {c.games}판 {c.wr}%</span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <div className="chips" role="tablist" aria-label="포지션">
+        {POS_FILTER.map((p) => (
+          <button key={p} role="tab" aria-selected={pos === p} className={`chip ${pos === p ? 'on' : ''}`} onClick={() => setPos(p)}>
+            {p}
+          </button>
+        ))}
+      </div>
+
+      <div className="card list-card">
+        {list.map((p, i) => {
+          const locked = !unlocked && i >= FREE_PLAYERS;
+          if (locked && i > FREE_PLAYERS + 2) return null;
+          const isOpen = open === p.name && !locked;
+          return (
+            <div key={p.name} className={`pr ${locked ? 'blur' : ''}`} aria-hidden={locked}>
+              <button className="pr-row" onClick={() => !locked && setOpen(isOpen ? null : p.name)} disabled={locked}>
+                <span className="pr-rank">{i + 1}</span>
+                <span className="pr-bar" style={{ background: teamColor(teams, p.team) }} />
+                <span className="pr-name">
+                  {p.kor}
+                  <small>{p.team} · {p.pos}</small>
+                </span>
+                <span className="pr-kda">
+                  <b>{p.kda}</b>
+                  <small>승률 {p.wr}%</small>
+                </span>
+              </button>
+              {isOpen && (
+                <div className="pr-detail">
+                  <div>{p.games}세트 {p.wins}승 · K/D/A {p.kills}/{p.deaths}/{p.assists} · 킬 관여 {Math.round(p.kpRate * 100)}%</div>
+                  <div className="pr-champs">
+                    {p.champions.map((c) => (
+                      <span key={c.eng}>{c.kor} {c.games}판 · {c.wr}% · KDA {c.kda}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+        {!unlocked && list.length > FREE_PLAYERS && (
+          <div className="lock-box">
+            <div className="lock-title">{list.length - FREE_PLAYERS}명 더 있어요</div>
+            <button className="ad-btn" onClick={() => onAdRequest('players')}>광고 보고 전체 순위 보기</button>
+            <div className="ad-note">한 번 보면 24시간 동안 열려 있어요</div>
+          </div>
+        )}
+      </div>
+      <BannerAd />
+      <p className="foot-note">선수를 누르면 많이 쓴 챔피언이 보여요. 정규시즌·플레이오프 기록 기준이에요.</p>
+    </div>
+  );
+}
+
+/* ───────────── 메타 탭 ───────────── */
+function MetaPage({ meta }: { meta: MetaChamp[] }) {
+  const [sortBy, setSortBy] = useState<'pick' | 'wr'>('pick');
+  const sorted = [...meta].sort((a, b) => (sortBy === 'pick' ? b.picks - a.picks : b.wr - a.wr || b.picks - a.picks));
+  const maxPick = Math.max(1, ...meta.map((m) => m.pickRate));
+  return (
+    <div className="page">
+      <div className="page-title">
+        <h1>많이 쓴 챔피언</h1>
+      </div>
+      <div className="chips" role="tablist" aria-label="정렬">
+        <button role="tab" aria-selected={sortBy === 'pick'} className={`chip ${sortBy === 'pick' ? 'on' : ''}`} onClick={() => setSortBy('pick')}>많이 고른 순</button>
+        <button role="tab" aria-selected={sortBy === 'wr'} className={`chip ${sortBy === 'wr' ? 'on' : ''}`} onClick={() => setSortBy('wr')}>승률 순</button>
+      </div>
+      <div className="card list-card">
+        {sorted.map((c, i) => (
+          <div className="meta-row" key={c.eng}>
+            <span className="mr-rank">{i + 1}</span>
+            <span className="mr-name">{c.kor}<small>{c.picks}번 선택</small></span>
+            <span className="mr-bars">
+              <span className="mr-line"><em>선택</em><span className="bar"><span style={{ width: `${(c.pickRate / maxPick) * 100}%` }} /></span><b>{c.pickRate}%</b></span>
+              <span className="mr-line"><em>승률</em><span className="bar"><span className={c.wr >= 50 ? 'good' : 'bad'} style={{ width: `${c.wr}%` }} /></span><b>{c.wr}%</b></span>
+            </span>
+          </div>
+        ))}
+      </div>
+      <BannerAd />
+      <p className="foot-note">선택률 = 전체 세트 중 그 챔피언이 나온 비율이에요. 5번 이상 나온 챔피언만 보여요.</p>
+    </div>
+  );
+}
+
+/* ───────────── 앱 ───────────── */
+function App() {
+  const [myTeam, setMyTeam] = useState<string>(() => {
+    try {
+      return localStorage.getItem('lck_my_team') || '';
+    } catch {
+      return '';
+    }
+  });
+  const [tab, setTab] = useState<Tab>('rank');
+  const [picking, setPicking] = useState(false);
+
+  const [teams, setTeams] = useState<TeamStanding[]>(FALLBACK_STANDINGS);
+  const [players, setPlayers] = useState<PlayerStat[]>(FALLBACK_PLAYERS);
+  const [meta, setMeta] = useState<MetaChamp[]>(FALLBACK_META);
+  const [matches, setMatches] = useState<UpcomingMatch[]>(FALLBACK_MATCHES);
+  const [updated, setUpdated] = useState<UpdatedMeta | null>(FALLBACK_UPDATED);
+  const [season, setSeason] = useState<SeasonSummary>(FALLBACK_SEASON);
+  const [worlds, setWorlds] = useState<WorldsInfo>(FALLBACK_WORLDS);
+
+  const [reportUnlocked, setReportUnlocked] = useState(() => isUnlocked('lck_unlock_report'));
+  const [playersUnlocked, setPlayersUnlocked] = useState(() => isUnlocked('lck_unlock_players'));
+  const [adPurpose, setAdPurpose] = useState<AdPurpose>(null);
+
+  useEffect(() => {
+    // 새 형식(setW 포함)일 때만 반영 — CDN에 남은 예전 형식 데이터로 덮어쓰지 않도록
+    api.standings().then((d) => Array.isArray(d) && d.length >= 8 && typeof d[0]?.setW === 'number' && setTeams(d)).catch(() => {});
+    api.players().then((d) => Array.isArray(d) && d.length && Array.isArray(d[0]?.champions) && setPlayers(d)).catch(() => {});
+    api.meta().then((d) => Array.isArray(d) && d.length && typeof d[0]?.picks === 'number' && setMeta(d)).catch(() => {});
+    api.matches().then((d) => Array.isArray(d) && setMatches(d)).catch(() => {});
+    api.updated().then(setUpdated).catch(() => {});
+    api.season().then((d) => d?.year && Array.isArray(d.playoffs) && setSeason(d)).catch(() => {});
+    api.worlds().then((d) => d?.year && Array.isArray(d.stages) && setWorlds(d)).catch(() => {});
+  }, []);
+
+  // 탭 이동 기록 — 뒤로가기 시 이전 탭으로
+  const historyRef = useRef<Tab[]>([]);
+  const goTab = (next: Tab) => {
+    if (next === tab) return;
+    historyRef.current.push(tab);
+    setTab(next);
+    window.scrollTo(0, 0);
+  };
+
+  // 토스 내비게이션 바 뒤로가기 / 안드로이드 뒤로가기
+  useTossBackEvent(() => {
+    if (adPurpose) return true; // 광고 진행 중에는 무시
+    if (picking) {
+      setPicking(false);
+      return true;
+    }
+    const prev = historyRef.current.pop();
+    if (prev) {
+      setTab(prev);
+      return true;
+    }
+    return false; // 첫 화면 → 미니앱 종료
+  });
+
+  const selectTeam = (abbr: string) => {
+    try {
+      localStorage.setItem('lck_my_team', abbr);
+    } catch {
+      /* noop */
+    }
+    setMyTeam(abbr);
+    setPicking(false);
+    logEvent('team_selected', { team: abbr });
+    if (tab !== 'myteam') goTab('myteam');
   };
 
   const handleReward = () => {
-    rewardEarnedRef.current = true;
-    if (adPurpose === 'ai') setAiUnlocked(true);
-    if (adPurpose === 'players') setPlayersUnlocked(true);
-    if (adPurpose === 'report') setReportUnlocked(true);
+    if (adPurpose === 'report') {
+      saveUnlock('lck_unlock_report');
+      setReportUnlocked(true);
+      logEvent('report_unlocked', { team: myTeam });
+    }
+    if (adPurpose === 'players') {
+      saveUnlock('lck_unlock_players');
+      setPlayersUnlocked(true);
+      logEvent('report_unlocked', { kind: 'players' });
+    }
+    setTimeout(() => requestReviewOnce('lck-review-asked'), 4000);
   };
 
-  const handleAdClose = () => {
-    setAdPurpose(null);
-  };
-
-  if (showSelect) {
-    return <TeamSelect teams={teams} onSelect={handleSelect} />;
-  }
+  const showPicker = picking || (tab === 'myteam' && !myTeam);
 
   return (
     <div className="app">
-      {tab === 'myteam' && (
-        <MyTeamPage
-          teams={teams}
-          matches={matches}
-          myTeam={myTeam || ''}
-          onChange={() => setShowSelect(true)}
-          aiUnlocked={aiUnlocked}
-          onAdRequest={handleAdRequest}
-        />
+      {showPicker ? (
+        <TeamPicker teams={teams} current={myTeam} onSelect={selectTeam} onClose={picking ? () => setPicking(false) : undefined} />
+      ) : (
+        <>
+          {tab === 'rank' && (
+            <RankPage teams={teams} season={season} worlds={worlds} updated={updated} myTeam={myTeam} onPickTeam={() => setPicking(true)} />
+          )}
+          {tab === 'myteam' && (
+            <MyTeamPage
+              teams={teams}
+              players={players}
+              season={season}
+              worlds={worlds}
+              matches={matches}
+              myTeam={myTeam}
+              reportUnlocked={reportUnlocked}
+              onChangeTeam={() => setPicking(true)}
+              onAdRequest={setAdPurpose}
+            />
+          )}
+          {tab === 'players' && <PlayersPage players={players} teams={teams} unlocked={playersUnlocked} onAdRequest={setAdPurpose} />}
+          {tab === 'meta' && <MetaPage meta={meta} />}
+        </>
       )}
-      {tab === 'home' && <HomePage teams={teams} updatedLabel={updatedLabel} />}
-      {tab === 'stars' && (
-        <StarsPage
-          faker={faker}
-          players={players}
-          playersUnlocked={playersUnlocked}
-          onAdRequest={handleAdRequest}
-        />
-      )}
-      {tab === 'meta' && <MetaPage metaChamps={metaChamps} />}
-      {tab === 'report' && (
-        <ReportPage
-          teams={teams}
-          metaChamps={metaChamps}
-          reportUnlocked={reportUnlocked}
-          onAdRequest={handleAdRequest}
-        />
-      )}
-      <nav className="tabbar">
-        <button className={tab === 'myteam' ? 'tab active' : 'tab'} onClick={() => setTab('myteam')}>내 팀</button>
-        <button className={tab === 'home' ? 'tab active' : 'tab'} onClick={() => setTab('home')}>순위</button>
-        <button className={tab === 'stars' ? 'tab active' : 'tab'} onClick={() => setTab('stars')}>선수</button>
-        <button className={tab === 'meta' ? 'tab active' : 'tab'} onClick={() => setTab('meta')}>메타</button>
-        <button className={tab === 'report' ? 'tab active' : 'tab'} onClick={() => setTab('report')}>분석</button>
+
+      <nav className="tabbar" aria-label="메뉴">
+        {([
+          ['rank', '순위'],
+          ['myteam', '내 팀'],
+          ['players', '선수'],
+          ['meta', '챔피언'],
+        ] as [Tab, string][]).map(([k, label]) => (
+          <button
+            key={k}
+            className={tab === k && !picking ? 'tab active' : 'tab'}
+            aria-current={tab === k ? 'page' : undefined}
+            onClick={() => {
+              setPicking(false);
+              goTab(k);
+            }}
+          >
+            {label}
+          </button>
+        ))}
       </nav>
 
-      {adPurpose !== null && (
-        <RewardedAd
-          onReward={handleReward}
-          onClose={handleAdClose}
-        />
-      )}
+      {adPurpose !== null && <RewardedAd onReward={handleReward} onClose={() => setAdPurpose(null)} />}
     </div>
   );
 }

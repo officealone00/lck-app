@@ -65,7 +65,7 @@ export default function BannerAd({ style, className = '' }: BannerAdProps) {
       try {
         const { TossAds } = await import('@apps-in-toss/web-framework');
         TossAds.attachBanner(BANNER_AD_ID, el, {
-          theme: 'auto',
+          theme: 'dark',
           tone: 'grey',
           variant: 'card',
           callbacks: {

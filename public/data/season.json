@@ -1,0 +1,129 @@
+{
+  "year": 2026,
+  "title": "2026 LCK",
+  "status": "ended",
+  "champion": "GEN",
+  "runnerUp": "HLE",
+  "third": "T1",
+  "finalScore": "3:1",
+  "regularFirst": "GEN",
+  "playoffs": [
+    {
+      "date": "8/26(수)",
+      "startTime": "2026-08-26T08:00:00.000Z",
+      "stage": "플레이-인",
+      "home": "BRO",
+      "away": "KT",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "date": "8/27(목)",
+      "startTime": "2026-08-27T08:00:00.000Z",
+      "stage": "플레이-인",
+      "home": "BFX",
+      "away": "NS",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "date": "8/28(금)",
+      "startTime": "2026-08-28T08:00:00.000Z",
+      "stage": "플레이-인",
+      "home": "BFX",
+      "away": "BRO",
+      "homeScore": 3,
+      "awayScore": 2
+    },
+    {
+      "date": "8/29(토)",
+      "startTime": "2026-08-29T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "BFX",
+      "away": "T1",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "date": "8/30(일)",
+      "startTime": "2026-08-30T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "KT",
+      "away": "DK",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "date": "9/1(화)",
+      "startTime": "2026-09-01T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "GEN",
+      "away": "KT",
+      "homeScore": 3,
+      "awayScore": 0
+    },
+    {
+      "date": "9/2(수)",
+      "startTime": "2026-09-02T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "T1",
+      "away": "HLE",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "date": "9/3(목)",
+      "startTime": "2026-09-03T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "BFX",
+      "away": "DK",
+      "homeScore": 2,
+      "awayScore": 3
+    },
+    {
+      "date": "9/4(금)",
+      "startTime": "2026-09-04T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "KT",
+      "away": "DK",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "date": "9/5(토)",
+      "startTime": "2026-09-05T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "HLE",
+      "away": "GEN",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "date": "9/6(일)",
+      "startTime": "2026-09-06T08:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "DK",
+      "away": "T1",
+      "homeScore": 1,
+      "awayScore": 3
+    },
+    {
+      "date": "9/12(토)",
+      "startTime": "2026-09-12T05:00:00.000Z",
+      "stage": "플레이오프",
+      "home": "HLE",
+      "away": "T1",
+      "homeScore": 3,
+      "awayScore": 1
+    },
+    {
+      "date": "9/13(일)",
+      "startTime": "2026-09-13T05:00:00.000Z",
+      "stage": "결승",
+      "home": "GEN",
+      "away": "HLE",
+      "homeScore": 3,
+      "awayScore": 1
+    }
+  ]
+}

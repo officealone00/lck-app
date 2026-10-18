@@ -10,3 +10,4 @@ build
 .idea
 *.tsbuildinfo
 .ait
+*.ait

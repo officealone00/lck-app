@@ -1,0 +1,3023 @@
+[
+  {
+    "rank": 1,
+    "name": "Zeka",
+    "kor": "제카",
+    "team": "HLE",
+    "pos": "MID",
+    "games": 83,
+    "wins": 52,
+    "losses": 31,
+    "wr": 63,
+    "kda": 5.5,
+    "kills": 394,
+    "deaths": 171,
+    "assists": 547,
+    "kpRate": 0.69,
+    "champions": [
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 11,
+        "wr": 73,
+        "kda": 4.77
+      },
+      {
+        "kor": "오로라",
+        "eng": "Aurora",
+        "games": 10,
+        "wr": 70,
+        "kda": 7.67
+      },
+      {
+        "kor": "아리",
+        "eng": "Ahri",
+        "games": 10,
+        "wr": 70,
+        "kda": 8.62
+      },
+      {
+        "kor": "오리아나",
+        "eng": "Orianna",
+        "games": 9,
+        "wr": 78,
+        "kda": 7.29
+      },
+      {
+        "kor": "카시오페아",
+        "eng": "Cassiopeia",
+        "games": 6,
+        "wr": 67,
+        "kda": 4.92
+      }
+    ]
+  },
+  {
+    "rank": 2,
+    "name": "Chovy",
+    "kor": "쵸비",
+    "team": "GEN",
+    "pos": "MID",
+    "games": 76,
+    "wins": 53,
+    "losses": 23,
+    "wr": 70,
+    "kda": 5.38,
+    "kills": 330,
+    "deaths": 161,
+    "assists": 536,
+    "kpRate": 0.68,
+    "champions": [
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 11,
+        "wr": 64,
+        "kda": 3.83
+      },
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 10,
+        "wr": 60,
+        "kda": 4.72
+      },
+      {
+        "kor": "애니비아",
+        "eng": "Anivia",
+        "games": 9,
+        "wr": 67,
+        "kda": 5.25
+      },
+      {
+        "kor": "갈리오",
+        "eng": "Galio",
+        "games": 7,
+        "wr": 86,
+        "kda": 5.13
+      },
+      {
+        "kor": "아칼리",
+        "eng": "Akali",
+        "games": 5,
+        "wr": 60,
+        "kda": 4.82
+      }
+    ]
+  },
+  {
+    "rank": 3,
+    "name": "Duro",
+    "kor": "듀로",
+    "team": "GEN",
+    "pos": "SPT",
+    "games": 76,
+    "wins": 53,
+    "losses": 23,
+    "wr": 70,
+    "kda": 5.27,
+    "kills": 63,
+    "deaths": 184,
+    "assists": 907,
+    "kpRate": 0.76,
+    "champions": [
+      {
+        "kor": "세라핀",
+        "eng": "Seraphine",
+        "games": 12,
+        "wr": 67,
+        "kda": 5.11
+      },
+      {
+        "kor": "카르마",
+        "eng": "Karma",
+        "games": 11,
+        "wr": 73,
+        "kda": 8.63
+      },
+      {
+        "kor": "바드",
+        "eng": "Bard",
+        "games": 9,
+        "wr": 78,
+        "kda": 5.45
+      },
+      {
+        "kor": "니코",
+        "eng": "Neeko",
+        "games": 5,
+        "wr": 80,
+        "kda": 4.21
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 5,
+        "wr": 80,
+        "kda": 13
+      }
+    ]
+  },
+  {
+    "rank": 4,
+    "name": "Ruler",
+    "kor": "룰러",
+    "team": "GEN",
+    "pos": "AD",
+    "games": 76,
+    "wins": 53,
+    "losses": 23,
+    "wr": 70,
+    "kda": 5.19,
+    "kills": 394,
+    "deaths": 166,
+    "assists": 467,
+    "kpRate": 0.68,
+    "champions": [
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 13,
+        "wr": 77,
+        "kda": 7.12
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 11,
+        "wr": 73,
+        "kda": 5.14
+      },
+      {
+        "kor": "애쉬",
+        "eng": "Ashe",
+        "games": 8,
+        "wr": 63,
+        "kda": 4.5
+      },
+      {
+        "kor": "케이틀린",
+        "eng": "Caitlyn",
+        "games": 8,
+        "wr": 75,
+        "kda": 4.38
+      },
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 8,
+        "wr": 75,
+        "kda": 6
+      }
+    ]
+  },
+  {
+    "rank": 5,
+    "name": "Aiming",
+    "kor": "에이밍",
+    "team": "KRX",
+    "pos": "AD",
+    "games": 63,
+    "wins": 33,
+    "losses": 30,
+    "wr": 52,
+    "kda": 4.63,
+    "kills": 291,
+    "deaths": 139,
+    "assists": 352,
+    "kpRate": 0.71,
+    "champions": [
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 11,
+        "wr": 55,
+        "kda": 4.85
+      },
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 10,
+        "wr": 40,
+        "kda": 5.16
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 8,
+        "wr": 50,
+        "kda": 2.35
+      },
+      {
+        "kor": "애쉬",
+        "eng": "Ashe",
+        "games": 7,
+        "wr": 71,
+        "kda": 6.08
+      },
+      {
+        "kor": "시비르",
+        "eng": "Sivir",
+        "games": 7,
+        "wr": 86,
+        "kda": 8.91
+      }
+    ]
+  },
+  {
+    "rank": 6,
+    "name": "Canyon",
+    "kor": "캐니언",
+    "team": "GEN",
+    "pos": "JGL",
+    "games": 76,
+    "wins": 53,
+    "losses": 23,
+    "wr": 70,
+    "kda": 4.61,
+    "kills": 240,
+    "deaths": 196,
+    "assists": 663,
+    "kpRate": 0.71,
+    "champions": [
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 10,
+        "wr": 90,
+        "kda": 7.93
+      },
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 9,
+        "wr": 67,
+        "kda": 2.56
+      },
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 8,
+        "wr": 50,
+        "kda": 3.41
+      },
+      {
+        "kor": "스카너",
+        "eng": "Skarner",
+        "games": 8,
+        "wr": 88,
+        "kda": 6.24
+      },
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 8,
+        "wr": 88,
+        "kda": 5.45
+      }
+    ]
+  },
+  {
+    "rank": 7,
+    "name": "Peyz",
+    "kor": "페이즈",
+    "team": "T1",
+    "pos": "AD",
+    "games": 83,
+    "wins": 49,
+    "losses": 34,
+    "wr": 59,
+    "kda": 4.52,
+    "kills": 436,
+    "deaths": 203,
+    "assists": 481,
+    "kpRate": 0.71,
+    "champions": [
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 12,
+        "wr": 67,
+        "kda": 6.39
+      },
+      {
+        "kor": "케이틀린",
+        "eng": "Caitlyn",
+        "games": 10,
+        "wr": 70,
+        "kda": 5.26
+      },
+      {
+        "kor": "루시안",
+        "eng": "Lucian",
+        "games": 10,
+        "wr": 60,
+        "kda": 3.26
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 9,
+        "wr": 33,
+        "kda": 2.95
+      },
+      {
+        "kor": "애쉬",
+        "eng": "Ashe",
+        "games": 7,
+        "wr": 86,
+        "kda": 5.19
+      }
+    ]
+  },
+  {
+    "rank": 8,
+    "name": "Keria",
+    "kor": "케리아",
+    "team": "T1",
+    "pos": "SPT",
+    "games": 83,
+    "wins": 49,
+    "losses": 34,
+    "wr": 59,
+    "kda": 4.43,
+    "kills": 74,
+    "deaths": 221,
+    "assists": 905,
+    "kpRate": 0.76,
+    "champions": [
+      {
+        "kor": "밀리오",
+        "eng": "Milio",
+        "games": 10,
+        "wr": 60,
+        "kda": 5.3
+      },
+      {
+        "kor": "니코",
+        "eng": "Neeko",
+        "games": 8,
+        "wr": 88,
+        "kda": 3.76
+      },
+      {
+        "kor": "럭스",
+        "eng": "Lux",
+        "games": 7,
+        "wr": 71,
+        "kda": 7.45
+      },
+      {
+        "kor": "세라핀",
+        "eng": "Seraphine",
+        "games": 7,
+        "wr": 86,
+        "kda": 5.88
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 6,
+        "wr": 17,
+        "kda": 4.55
+      }
+    ]
+  },
+  {
+    "rank": 9,
+    "name": "Career",
+    "kor": "Career",
+    "team": "DK",
+    "pos": "SPT",
+    "games": 82,
+    "wins": 45,
+    "losses": 37,
+    "wr": 55,
+    "kda": 4.4,
+    "kills": 63,
+    "deaths": 193,
+    "assists": 787,
+    "kpRate": 0.76,
+    "champions": [
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 12,
+        "wr": 50,
+        "kda": 5.76
+      },
+      {
+        "kor": "카르마",
+        "eng": "Karma",
+        "games": 9,
+        "wr": 78,
+        "kda": 7.31
+      },
+      {
+        "kor": "바드",
+        "eng": "Bard",
+        "games": 9,
+        "wr": 56,
+        "kda": 4.32
+      },
+      {
+        "kor": "세라핀",
+        "eng": "Seraphine",
+        "games": 8,
+        "wr": 25,
+        "kda": 4.22
+      },
+      {
+        "kor": "밀리오",
+        "eng": "Milio",
+        "games": 8,
+        "wr": 50,
+        "kda": 4.89
+      }
+    ]
+  },
+  {
+    "rank": 10,
+    "name": "Smash",
+    "kor": "스매시",
+    "team": "DK",
+    "pos": "AD",
+    "games": 82,
+    "wins": 45,
+    "losses": 37,
+    "wr": 55,
+    "kda": 4.28,
+    "kills": 352,
+    "deaths": 173,
+    "assists": 388,
+    "kpRate": 0.66,
+    "champions": [
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 10,
+        "wr": 70,
+        "kda": 6.71
+      },
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 10,
+        "wr": 50,
+        "kda": 2.93
+      },
+      {
+        "kor": "루시안",
+        "eng": "Lucian",
+        "games": 9,
+        "wr": 44,
+        "kda": 5.06
+      },
+      {
+        "kor": "애쉬",
+        "eng": "Ashe",
+        "games": 8,
+        "wr": 63,
+        "kda": 4.28
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 7,
+        "wr": 29,
+        "kda": 3
+      }
+    ]
+  },
+  {
+    "rank": 11,
+    "name": "Kellin",
+    "kor": "켈린",
+    "team": "BFX",
+    "pos": "SPT",
+    "games": 76,
+    "wins": 34,
+    "losses": 42,
+    "wr": 45,
+    "kda": 4.24,
+    "kills": 53,
+    "deaths": 202,
+    "assists": 803,
+    "kpRate": 0.78,
+    "champions": [
+      {
+        "kor": "바드",
+        "eng": "Bard",
+        "games": 9,
+        "wr": 33,
+        "kda": 3.27
+      },
+      {
+        "kor": "니코",
+        "eng": "Neeko",
+        "games": 9,
+        "wr": 56,
+        "kda": 2.94
+      },
+      {
+        "kor": "밀리오",
+        "eng": "Milio",
+        "games": 9,
+        "wr": 56,
+        "kda": 8.75
+      },
+      {
+        "kor": "쉔",
+        "eng": "Shen",
+        "games": 8,
+        "wr": 63,
+        "kda": 6.53
+      },
+      {
+        "kor": "카르마",
+        "eng": "Karma",
+        "games": 6,
+        "wr": 33,
+        "kda": 5.73
+      }
+    ]
+  },
+  {
+    "rank": 12,
+    "name": "Delight",
+    "kor": "딜라이트",
+    "team": "HLE",
+    "pos": "SPT",
+    "games": 78,
+    "wins": 49,
+    "losses": 29,
+    "wr": 63,
+    "kda": 4.15,
+    "kills": 73,
+    "deaths": 233,
+    "assists": 895,
+    "kpRate": 0.75,
+    "champions": [
+      {
+        "kor": "바드",
+        "eng": "Bard",
+        "games": 12,
+        "wr": 67,
+        "kda": 3.73
+      },
+      {
+        "kor": "세라핀",
+        "eng": "Seraphine",
+        "games": 11,
+        "wr": 64,
+        "kda": 4.94
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 8,
+        "wr": 63,
+        "kda": 4
+      },
+      {
+        "kor": "알리스타",
+        "eng": "Alistar",
+        "games": 8,
+        "wr": 63,
+        "kda": 4.08
+      },
+      {
+        "kor": "밀리오",
+        "eng": "Milio",
+        "games": 6,
+        "wr": 50,
+        "kda": 4.44
+      }
+    ]
+  },
+  {
+    "rank": 13,
+    "name": "Bdd",
+    "kor": "비디디",
+    "team": "KT",
+    "pos": "MID",
+    "games": 84,
+    "wins": 44,
+    "losses": 40,
+    "wr": 52,
+    "kda": 4.04,
+    "kills": 299,
+    "deaths": 206,
+    "assists": 533,
+    "kpRate": 0.7,
+    "champions": [
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 16,
+        "wr": 56,
+        "kda": 4.87
+      },
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 11,
+        "wr": 55,
+        "kda": 3.68
+      },
+      {
+        "kor": "아리",
+        "eng": "Ahri",
+        "games": 10,
+        "wr": 60,
+        "kda": 5
+      },
+      {
+        "kor": "신드라",
+        "eng": "Syndra",
+        "games": 7,
+        "wr": 43,
+        "kda": 3.05
+      },
+      {
+        "kor": "탈리야",
+        "eng": "Taliyah",
+        "games": 6,
+        "wr": 50,
+        "kda": 2.5
+      }
+    ]
+  },
+  {
+    "rank": 14,
+    "name": "GIDEON",
+    "kor": "기드온",
+    "team": "BRO",
+    "pos": "JGL",
+    "games": 72,
+    "wins": 31,
+    "losses": 41,
+    "wr": 43,
+    "kda": 3.88,
+    "kills": 247,
+    "deaths": 191,
+    "assists": 494,
+    "kpRate": 0.75,
+    "champions": [
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 14,
+        "wr": 29,
+        "kda": 2.75
+      },
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 13,
+        "wr": 62,
+        "kda": 5.04
+      },
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 10,
+        "wr": 30,
+        "kda": 3.42
+      },
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 8,
+        "wr": 38,
+        "kda": 4.63
+      },
+      {
+        "kor": "녹턴",
+        "eng": "Nocturne",
+        "games": 7,
+        "wr": 71,
+        "kda": 6.71
+      }
+    ]
+  },
+  {
+    "rank": 15,
+    "name": "Teddy",
+    "kor": "테디",
+    "team": "BRO",
+    "pos": "AD",
+    "games": 72,
+    "wins": 31,
+    "losses": 41,
+    "wr": 43,
+    "kda": 3.85,
+    "kills": 334,
+    "deaths": 169,
+    "assists": 316,
+    "kpRate": 0.66,
+    "champions": [
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 16,
+        "wr": 44,
+        "kda": 6.3
+      },
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 9,
+        "wr": 22,
+        "kda": 3.58
+      },
+      {
+        "kor": "케이틀린",
+        "eng": "Caitlyn",
+        "games": 9,
+        "wr": 56,
+        "kda": 3.41
+      },
+      {
+        "kor": "루시안",
+        "eng": "Lucian",
+        "games": 9,
+        "wr": 44,
+        "kda": 2.34
+      },
+      {
+        "kor": "코르키",
+        "eng": "Corki",
+        "games": 6,
+        "wr": 83,
+        "kda": 11.13
+      }
+    ]
+  },
+  {
+    "rank": 16,
+    "name": "Gumayusi",
+    "kor": "구마유시",
+    "team": "HLE",
+    "pos": "AD",
+    "games": 83,
+    "wins": 52,
+    "losses": 31,
+    "wr": 63,
+    "kda": 3.71,
+    "kills": 340,
+    "deaths": 245,
+    "assists": 570,
+    "kpRate": 0.67,
+    "champions": [
+      {
+        "kor": "애쉬",
+        "eng": "Ashe",
+        "games": 12,
+        "wr": 67,
+        "kda": 3.34
+      },
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 11,
+        "wr": 45,
+        "kda": 5.24
+      },
+      {
+        "kor": "케이틀린",
+        "eng": "Caitlyn",
+        "games": 9,
+        "wr": 89,
+        "kda": 6.28
+      },
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 7,
+        "wr": 43,
+        "kda": 1.97
+      },
+      {
+        "kor": "직스",
+        "eng": "Ziggs",
+        "games": 7,
+        "wr": 86,
+        "kda": 4.29
+      }
+    ]
+  },
+  {
+    "rank": 17,
+    "name": "Ucal",
+    "kor": "유칼",
+    "team": "KRX",
+    "pos": "MID",
+    "games": 62,
+    "wins": 21,
+    "losses": 41,
+    "wr": 34,
+    "kda": 3.69,
+    "kills": 243,
+    "deaths": 146,
+    "assists": 296,
+    "kpRate": 0.67,
+    "champions": [
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 15,
+        "wr": 53,
+        "kda": 6.68
+      },
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 10,
+        "wr": 40,
+        "kda": 3.34
+      },
+      {
+        "kor": "오로라",
+        "eng": "Aurora",
+        "games": 8,
+        "wr": 25,
+        "kda": 3.04
+      },
+      {
+        "kor": "오리아나",
+        "eng": "Orianna",
+        "games": 7,
+        "wr": 29,
+        "kda": 4
+      },
+      {
+        "kor": "카시오페아",
+        "eng": "Cassiopeia",
+        "games": 6,
+        "wr": 17,
+        "kda": 2.63
+      }
+    ]
+  },
+  {
+    "rank": 18,
+    "name": "Sharvel",
+    "kor": "Sharvel",
+    "team": "DNS",
+    "pos": "JGL",
+    "games": 20,
+    "wins": 11,
+    "losses": 9,
+    "wr": 55,
+    "kda": 3.68,
+    "kills": 64,
+    "deaths": 53,
+    "assists": 131,
+    "kpRate": 0.74,
+    "champions": [
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 4,
+        "wr": 75,
+        "kda": 8.14
+      },
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 3,
+        "wr": 33,
+        "kda": 3.57
+      },
+      {
+        "kor": "나피리",
+        "eng": "Naafiri",
+        "games": 3,
+        "wr": 67,
+        "kda": 1.75
+      },
+      {
+        "kor": "스카너",
+        "eng": "Skarner",
+        "games": 3,
+        "wr": 33,
+        "kda": 1.54
+      },
+      {
+        "kor": "키아나",
+        "eng": "Qiyana",
+        "games": 2,
+        "wr": 0,
+        "kda": 0.83
+      }
+    ]
+  },
+  {
+    "rank": 19,
+    "name": "Effort",
+    "kor": "에포트",
+    "team": "KT",
+    "pos": "SPT",
+    "games": 84,
+    "wins": 44,
+    "losses": 40,
+    "wr": 52,
+    "kda": 3.63,
+    "kills": 66,
+    "deaths": 251,
+    "assists": 844,
+    "kpRate": 0.77,
+    "champions": [
+      {
+        "kor": "노틸러스",
+        "eng": "Nautilus",
+        "games": 15,
+        "wr": 40,
+        "kda": 2.32
+      },
+      {
+        "kor": "세라핀",
+        "eng": "Seraphine",
+        "games": 13,
+        "wr": 77,
+        "kda": 6.42
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 11,
+        "wr": 55,
+        "kda": 3.63
+      },
+      {
+        "kor": "카르마",
+        "eng": "Karma",
+        "games": 11,
+        "wr": 73,
+        "kda": 4.57
+      },
+      {
+        "kor": "바드",
+        "eng": "Bard",
+        "games": 8,
+        "wr": 38,
+        "kda": 3.11
+      }
+    ]
+  },
+  {
+    "rank": 20,
+    "name": "ShowMaker",
+    "kor": "쇼메이커",
+    "team": "DK",
+    "pos": "MID",
+    "games": 82,
+    "wins": 45,
+    "losses": 37,
+    "wr": 55,
+    "kda": 3.57,
+    "kills": 282,
+    "deaths": 194,
+    "assists": 411,
+    "kpRate": 0.62,
+    "champions": [
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 12,
+        "wr": 67,
+        "kda": 3.42
+      },
+      {
+        "kor": "오리아나",
+        "eng": "Orianna",
+        "games": 10,
+        "wr": 60,
+        "kda": 5.69
+      },
+      {
+        "kor": "빅토르",
+        "eng": "Viktor",
+        "games": 10,
+        "wr": 60,
+        "kda": 4.58
+      },
+      {
+        "kor": "탈리야",
+        "eng": "Taliyah",
+        "games": 7,
+        "wr": 57,
+        "kda": 4.67
+      },
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 6,
+        "wr": 83,
+        "kda": 5.22
+      }
+    ]
+  },
+  {
+    "rank": 21,
+    "name": "Kiin",
+    "kor": "기인",
+    "team": "GEN",
+    "pos": "TOP",
+    "games": 76,
+    "wins": 53,
+    "losses": 23,
+    "wr": 70,
+    "kda": 3.56,
+    "kills": 243,
+    "deaths": 208,
+    "assists": 498,
+    "kpRate": 0.58,
+    "champions": [
+      {
+        "kor": "사이온",
+        "eng": "Sion",
+        "games": 11,
+        "wr": 91,
+        "kda": 7.35
+      },
+      {
+        "kor": "암베사",
+        "eng": "Ambessa",
+        "games": 10,
+        "wr": 70,
+        "kda": 3.42
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 6,
+        "wr": 67,
+        "kda": 2.39
+      },
+      {
+        "kor": "크산테",
+        "eng": "KSante",
+        "games": 5,
+        "wr": 40,
+        "kda": 2.31
+      },
+      {
+        "kor": "바루스",
+        "eng": "Varus",
+        "games": 5,
+        "wr": 80,
+        "kda": 5
+      }
+    ]
+  },
+  {
+    "rank": 22,
+    "name": "Taeyoon",
+    "kor": "태윤",
+    "team": "BFX",
+    "pos": "AD",
+    "games": 76,
+    "wins": 38,
+    "losses": 38,
+    "wr": 50,
+    "kda": 3.51,
+    "kills": 342,
+    "deaths": 225,
+    "assists": 448,
+    "kpRate": 0.69,
+    "champions": [
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 12,
+        "wr": 50,
+        "kda": 2.95
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 11,
+        "wr": 27,
+        "kda": 2.95
+      },
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 9,
+        "wr": 44,
+        "kda": 5.25
+      },
+      {
+        "kor": "케이틀린",
+        "eng": "Caitlyn",
+        "games": 8,
+        "wr": 63,
+        "kda": 3.33
+      },
+      {
+        "kor": "루시안",
+        "eng": "Lucian",
+        "games": 7,
+        "wr": 57,
+        "kda": 4.33
+      }
+    ]
+  },
+  {
+    "rank": 23,
+    "name": "Scout",
+    "kor": "Scout",
+    "team": "NS",
+    "pos": "MID",
+    "games": 61,
+    "wins": 25,
+    "losses": 36,
+    "wr": 41,
+    "kda": 3.44,
+    "kills": 262,
+    "deaths": 180,
+    "assists": 357,
+    "kpRate": 0.67,
+    "champions": [
+      {
+        "kor": "아지르",
+        "eng": "Azir",
+        "games": 9,
+        "wr": 56,
+        "kda": 3.33
+      },
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 9,
+        "wr": 44,
+        "kda": 3.75
+      },
+      {
+        "kor": "신드라",
+        "eng": "Syndra",
+        "games": 6,
+        "wr": 50,
+        "kda": 4.25
+      },
+      {
+        "kor": "오리아나",
+        "eng": "Orianna",
+        "games": 4,
+        "wr": 75,
+        "kda": 8.29
+      },
+      {
+        "kor": "애니비아",
+        "eng": "Anivia",
+        "games": 4,
+        "wr": 25,
+        "kda": 3.92
+      }
+    ]
+  },
+  {
+    "rank": 24,
+    "name": "Lucid",
+    "kor": "루시드",
+    "team": "DK",
+    "pos": "JGL",
+    "games": 79,
+    "wins": 43,
+    "losses": 36,
+    "wr": 54,
+    "kda": 3.42,
+    "kills": 224,
+    "deaths": 228,
+    "assists": 555,
+    "kpRate": 0.72,
+    "champions": [
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 20,
+        "wr": 70,
+        "kda": 3.51
+      },
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 11,
+        "wr": 36,
+        "kda": 2.69
+      },
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 9,
+        "wr": 67,
+        "kda": 4.65
+      },
+      {
+        "kor": "바이",
+        "eng": "Vi",
+        "games": 8,
+        "wr": 25,
+        "kda": 2.48
+      },
+      {
+        "kor": "오공",
+        "eng": "MonkeyKing",
+        "games": 7,
+        "wr": 86,
+        "kda": 5.36
+      }
+    ]
+  },
+  {
+    "rank": 25,
+    "name": "Oner",
+    "kor": "오너",
+    "team": "T1",
+    "pos": "JGL",
+    "games": 80,
+    "wins": 48,
+    "losses": 32,
+    "wr": 60,
+    "kda": 3.39,
+    "kills": 266,
+    "deaths": 254,
+    "assists": 596,
+    "kpRate": 0.69,
+    "champions": [
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 14,
+        "wr": 79,
+        "kda": 4.85
+      },
+      {
+        "kor": "바이",
+        "eng": "Vi",
+        "games": 12,
+        "wr": 83,
+        "kda": 3.2
+      },
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 8,
+        "wr": 38,
+        "kda": 2.93
+      },
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 8,
+        "wr": 25,
+        "kda": 2.06
+      },
+      {
+        "kor": "녹턴",
+        "eng": "Nocturne",
+        "games": 8,
+        "wr": 50,
+        "kda": 2.81
+      }
+    ]
+  },
+  {
+    "rank": 26,
+    "name": "Roamer",
+    "kor": "Roamer",
+    "team": "BRO",
+    "pos": "MID",
+    "games": 55,
+    "wins": 27,
+    "losses": 28,
+    "wr": 49,
+    "kda": 3.39,
+    "kills": 155,
+    "deaths": 150,
+    "assists": 354,
+    "kpRate": 0.65,
+    "champions": [
+      {
+        "kor": "오로라",
+        "eng": "Aurora",
+        "games": 9,
+        "wr": 56,
+        "kda": 3.75
+      },
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 8,
+        "wr": 50,
+        "kda": 2.48
+      },
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 7,
+        "wr": 43,
+        "kda": 3.19
+      },
+      {
+        "kor": "카시오페아",
+        "eng": "Cassiopeia",
+        "games": 6,
+        "wr": 100,
+        "kda": 4.19
+      },
+      {
+        "kor": "오리아나",
+        "eng": "Orianna",
+        "games": 5,
+        "wr": 20,
+        "kda": 4.2
+      }
+    ]
+  },
+  {
+    "rank": 27,
+    "name": "Cuzz",
+    "kor": "커즈",
+    "team": "KT",
+    "pos": "JGL",
+    "games": 84,
+    "wins": 44,
+    "losses": 40,
+    "wr": 52,
+    "kda": 3.38,
+    "kills": 257,
+    "deaths": 252,
+    "assists": 596,
+    "kpRate": 0.72,
+    "champions": [
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 17,
+        "wr": 59,
+        "kda": 4.24
+      },
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 10,
+        "wr": 70,
+        "kda": 4.41
+      },
+      {
+        "kor": "나피리",
+        "eng": "Naafiri",
+        "games": 9,
+        "wr": 44,
+        "kda": 2.64
+      },
+      {
+        "kor": "녹턴",
+        "eng": "Nocturne",
+        "games": 8,
+        "wr": 75,
+        "kda": 4.8
+      },
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 8,
+        "wr": 50,
+        "kda": 2.75
+      }
+    ]
+  },
+  {
+    "rank": 28,
+    "name": "Zeus",
+    "kor": "제우스",
+    "team": "HLE",
+    "pos": "TOP",
+    "games": 83,
+    "wins": 52,
+    "losses": 31,
+    "wr": 63,
+    "kda": 3.25,
+    "kills": 267,
+    "deaths": 237,
+    "assists": 503,
+    "kpRate": 0.56,
+    "champions": [
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 11,
+        "wr": 91,
+        "kda": 4.31
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 10,
+        "wr": 80,
+        "kda": 4.58
+      },
+      {
+        "kor": "요릭",
+        "eng": "Yorick",
+        "games": 7,
+        "wr": 86,
+        "kda": 3.13
+      },
+      {
+        "kor": "암베사",
+        "eng": "Ambessa",
+        "games": 7,
+        "wr": 57,
+        "kda": 3.26
+      },
+      {
+        "kor": "애니비아",
+        "eng": "Anivia",
+        "games": 6,
+        "wr": 33,
+        "kda": 1.61
+      }
+    ]
+  },
+  {
+    "rank": 29,
+    "name": "FenRir",
+    "kor": "FenRir",
+    "team": "KT",
+    "pos": "AD",
+    "games": 12,
+    "wins": 7,
+    "losses": 5,
+    "wr": 58,
+    "kda": 3.23,
+    "kills": 48,
+    "deaths": 35,
+    "assists": 65,
+    "kpRate": 0.63,
+    "champions": [
+      {
+        "kor": "미스 포츈",
+        "eng": "MissFortune",
+        "games": 3,
+        "wr": 100,
+        "kda": 6.71
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 2,
+        "wr": 100,
+        "kda": 5.75
+      },
+      {
+        "kor": "코르키",
+        "eng": "Corki",
+        "games": 2,
+        "wr": 0,
+        "kda": 1.25
+      },
+      {
+        "kor": "루시안",
+        "eng": "Lucian",
+        "games": 1,
+        "wr": 0,
+        "kda": 0.83
+      },
+      {
+        "kor": "시비르",
+        "eng": "Sivir",
+        "games": 1,
+        "wr": 100,
+        "kda": 5.5
+      }
+    ]
+  },
+  {
+    "rank": 30,
+    "name": "Kanavi",
+    "kor": "카나비",
+    "team": "HLE",
+    "pos": "JGL",
+    "games": 83,
+    "wins": 52,
+    "losses": 31,
+    "wr": 63,
+    "kda": 3.02,
+    "kills": 286,
+    "deaths": 324,
+    "assists": 691,
+    "kpRate": 0.72,
+    "champions": [
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 16,
+        "wr": 50,
+        "kda": 3.21
+      },
+      {
+        "kor": "바이",
+        "eng": "Vi",
+        "games": 13,
+        "wr": 77,
+        "kda": 3.71
+      },
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 11,
+        "wr": 64,
+        "kda": 2.82
+      },
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 10,
+        "wr": 60,
+        "kda": 3.03
+      },
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 7,
+        "wr": 71,
+        "kda": 4.42
+      }
+    ]
+  },
+  {
+    "rank": 31,
+    "name": "Casting",
+    "kor": "Casting",
+    "team": "BRO",
+    "pos": "TOP",
+    "games": 72,
+    "wins": 31,
+    "losses": 41,
+    "wr": 43,
+    "kda": 2.99,
+    "kills": 156,
+    "deaths": 178,
+    "assists": 377,
+    "kpRate": 0.54,
+    "champions": [
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 12,
+        "wr": 50,
+        "kda": 3.18
+      },
+      {
+        "kor": "럼블",
+        "eng": "Rumble",
+        "games": 10,
+        "wr": 40,
+        "kda": 2.59
+      },
+      {
+        "kor": "레넥톤",
+        "eng": "Renekton",
+        "games": 8,
+        "wr": 13,
+        "kda": 1.82
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 8,
+        "wr": 50,
+        "kda": 4.29
+      },
+      {
+        "kor": "사이온",
+        "eng": "Sion",
+        "games": 5,
+        "wr": 60,
+        "kda": 2.73
+      }
+    ]
+  },
+  {
+    "rank": 32,
+    "name": "Daystar",
+    "kor": "Daystar",
+    "team": "BFX",
+    "pos": "MID",
+    "games": 10,
+    "wins": 4,
+    "losses": 6,
+    "wr": 40,
+    "kda": 2.97,
+    "kills": 38,
+    "deaths": 32,
+    "assists": 57,
+    "kpRate": 0.61,
+    "champions": [
+      {
+        "kor": "아칼리",
+        "eng": "Akali",
+        "games": 3,
+        "wr": 33,
+        "kda": 2.91
+      },
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 2,
+        "wr": 50,
+        "kda": 2.5
+      },
+      {
+        "kor": "오로라",
+        "eng": "Aurora",
+        "games": 1,
+        "wr": 100,
+        "kda": 7
+      },
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 1,
+        "wr": 100,
+        "kda": 4.33
+      },
+      {
+        "kor": "애니비아",
+        "eng": "Anivia",
+        "games": 1,
+        "wr": 0,
+        "kda": 2.25
+      }
+    ]
+  },
+  {
+    "rank": 33,
+    "name": "Diable",
+    "kor": "Diable",
+    "team": "NS",
+    "pos": "AD",
+    "games": 59,
+    "wins": 21,
+    "losses": 38,
+    "wr": 36,
+    "kda": 2.95,
+    "kills": 251,
+    "deaths": 193,
+    "assists": 318,
+    "kpRate": 0.66,
+    "champions": [
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 16,
+        "wr": 44,
+        "kda": 3.41
+      },
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 6,
+        "wr": 67,
+        "kda": 5.93
+      },
+      {
+        "kor": "루시안",
+        "eng": "Lucian",
+        "games": 6,
+        "wr": 50,
+        "kda": 3.36
+      },
+      {
+        "kor": "애쉬",
+        "eng": "Ashe",
+        "games": 5,
+        "wr": 20,
+        "kda": 2.05
+      },
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 5,
+        "wr": 0,
+        "kda": 1.23
+      }
+    ]
+  },
+  {
+    "rank": 34,
+    "name": "Faker",
+    "kor": "페이커",
+    "team": "T1",
+    "pos": "MID",
+    "games": 83,
+    "wins": 49,
+    "losses": 34,
+    "wr": 59,
+    "kda": 2.94,
+    "kills": 275,
+    "deaths": 260,
+    "assists": 489,
+    "kpRate": 0.59,
+    "champions": [
+      {
+        "kor": "애니비아",
+        "eng": "Anivia",
+        "games": 12,
+        "wr": 83,
+        "kda": 4.76
+      },
+      {
+        "kor": "오리아나",
+        "eng": "Orianna",
+        "games": 10,
+        "wr": 50,
+        "kda": 3.73
+      },
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 10,
+        "wr": 50,
+        "kda": 2.39
+      },
+      {
+        "kor": "아지르",
+        "eng": "Azir",
+        "games": 8,
+        "wr": 75,
+        "kda": 2.48
+      },
+      {
+        "kor": "아칼리",
+        "eng": "Akali",
+        "games": 7,
+        "wr": 71,
+        "kda": 2.64
+      }
+    ]
+  },
+  {
+    "rank": 35,
+    "name": "Namgung",
+    "kor": "Namgung",
+    "team": "BRO",
+    "pos": "SPT",
+    "games": 72,
+    "wins": 31,
+    "losses": 41,
+    "wr": 43,
+    "kda": 2.92,
+    "kills": 52,
+    "deaths": 218,
+    "assists": 585,
+    "kpRate": 0.65,
+    "champions": [
+      {
+        "kor": "니코",
+        "eng": "Neeko",
+        "games": 16,
+        "wr": 50,
+        "kda": 3.31
+      },
+      {
+        "kor": "밀리오",
+        "eng": "Milio",
+        "games": 9,
+        "wr": 44,
+        "kda": 4.87
+      },
+      {
+        "kor": "노틸러스",
+        "eng": "Nautilus",
+        "games": 6,
+        "wr": 33,
+        "kda": 2.14
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 6,
+        "wr": 17,
+        "kda": 2.26
+      },
+      {
+        "kor": "엘리스",
+        "eng": "Elise",
+        "games": 5,
+        "wr": 80,
+        "kda": 3.19
+      }
+    ]
+  },
+  {
+    "rank": 36,
+    "name": "Raptor",
+    "kor": "Raptor",
+    "team": "BFX",
+    "pos": "JGL",
+    "games": 76,
+    "wins": 34,
+    "losses": 42,
+    "wr": 45,
+    "kda": 2.88,
+    "kills": 262,
+    "deaths": 279,
+    "assists": 541,
+    "kpRate": 0.74,
+    "champions": [
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 13,
+        "wr": 46,
+        "kda": 3.6
+      },
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 10,
+        "wr": 40,
+        "kda": 2.13
+      },
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 10,
+        "wr": 70,
+        "kda": 4.77
+      },
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 10,
+        "wr": 60,
+        "kda": 3.29
+      },
+      {
+        "kor": "나피리",
+        "eng": "Naafiri",
+        "games": 9,
+        "wr": 22,
+        "kda": 2.13
+      }
+    ]
+  },
+  {
+    "rank": 37,
+    "name": "Jiwoo",
+    "kor": "지우",
+    "team": "KT",
+    "pos": "AD",
+    "games": 31,
+    "wins": 11,
+    "losses": 20,
+    "wr": 35,
+    "kda": 2.82,
+    "kills": 107,
+    "deaths": 84,
+    "assists": 130,
+    "kpRate": 0.68,
+    "champions": [
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 8,
+        "wr": 63,
+        "kda": 3.79
+      },
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 4,
+        "wr": 25,
+        "kda": 2.89
+      },
+      {
+        "kor": "칼리스타",
+        "eng": "Kalista",
+        "games": 4,
+        "wr": 25,
+        "kda": 2.71
+      },
+      {
+        "kor": "바루스",
+        "eng": "Varus",
+        "games": 3,
+        "wr": 0,
+        "kda": 1.6
+      },
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 3,
+        "wr": 0,
+        "kda": 0.89
+      }
+    ]
+  },
+  {
+    "rank": 38,
+    "name": "Sponge",
+    "kor": "Sponge",
+    "team": "NS",
+    "pos": "JGL",
+    "games": 61,
+    "wins": 25,
+    "losses": 36,
+    "wr": 41,
+    "kda": 2.8,
+    "kills": 180,
+    "deaths": 239,
+    "assists": 489,
+    "kpRate": 0.72,
+    "champions": [
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 14,
+        "wr": 57,
+        "kda": 4.49
+      },
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 11,
+        "wr": 18,
+        "kda": 1.72
+      },
+      {
+        "kor": "녹턴",
+        "eng": "Nocturne",
+        "games": 9,
+        "wr": 33,
+        "kda": 2.5
+      },
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 6,
+        "wr": 50,
+        "kda": 3.2
+      },
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 5,
+        "wr": 20,
+        "kda": 1.57
+      }
+    ]
+  },
+  {
+    "rank": 39,
+    "name": "PerfecT",
+    "kor": "퍼펙트",
+    "team": "KT",
+    "pos": "TOP",
+    "games": 84,
+    "wins": 44,
+    "losses": 40,
+    "wr": 52,
+    "kda": 2.78,
+    "kills": 194,
+    "deaths": 212,
+    "assists": 396,
+    "kpRate": 0.5,
+    "champions": [
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 13,
+        "wr": 46,
+        "kda": 2.45
+      },
+      {
+        "kor": "자헨",
+        "eng": "Zaahen",
+        "games": 9,
+        "wr": 89,
+        "kda": 6.64
+      },
+      {
+        "kor": "크산테",
+        "eng": "KSante",
+        "games": 9,
+        "wr": 56,
+        "kda": 2.76
+      },
+      {
+        "kor": "레넥톤",
+        "eng": "Renekton",
+        "games": 8,
+        "wr": 38,
+        "kda": 1.6
+      },
+      {
+        "kor": "럼블",
+        "eng": "Rumble",
+        "games": 8,
+        "wr": 50,
+        "kda": 2.95
+      }
+    ]
+  },
+  {
+    "rank": 40,
+    "name": "VicLa",
+    "kor": "VicLa",
+    "team": "BFX",
+    "pos": "MID",
+    "games": 66,
+    "wins": 30,
+    "losses": 36,
+    "wr": 45,
+    "kda": 2.76,
+    "kills": 198,
+    "deaths": 221,
+    "assists": 411,
+    "kpRate": 0.65,
+    "champions": [
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 8,
+        "wr": 38,
+        "kda": 2
+      },
+      {
+        "kor": "빅토르",
+        "eng": "Viktor",
+        "games": 7,
+        "wr": 43,
+        "kda": 3.39
+      },
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 6,
+        "wr": 67,
+        "kda": 1.96
+      },
+      {
+        "kor": "아리",
+        "eng": "Ahri",
+        "games": 6,
+        "wr": 83,
+        "kda": 11.88
+      },
+      {
+        "kor": "갈리오",
+        "eng": "Galio",
+        "games": 5,
+        "wr": 0,
+        "kda": 0.54
+      }
+    ]
+  },
+  {
+    "rank": 41,
+    "name": "Peter",
+    "kor": "Peter",
+    "team": "DNS",
+    "pos": "SPT",
+    "games": 34,
+    "wins": 12,
+    "losses": 22,
+    "wr": 35,
+    "kda": 2.74,
+    "kills": 19,
+    "deaths": 119,
+    "assists": 307,
+    "kpRate": 0.79,
+    "champions": [
+      {
+        "kor": "바드",
+        "eng": "Bard",
+        "games": 7,
+        "wr": 57,
+        "kda": 3.95
+      },
+      {
+        "kor": "노틸러스",
+        "eng": "Nautilus",
+        "games": 5,
+        "wr": 0,
+        "kda": 1.44
+      },
+      {
+        "kor": "렐",
+        "eng": "Rell",
+        "games": 4,
+        "wr": 25,
+        "kda": 3.5
+      },
+      {
+        "kor": "카르마",
+        "eng": "Karma",
+        "games": 3,
+        "wr": 33,
+        "kda": 3.2
+      },
+      {
+        "kor": "니코",
+        "eng": "Neeko",
+        "games": 2,
+        "wr": 0,
+        "kda": 0.75
+      }
+    ]
+  },
+  {
+    "rank": 42,
+    "name": "Willer",
+    "kor": "윌러",
+    "team": "KRX",
+    "pos": "JGL",
+    "games": 62,
+    "wins": 21,
+    "losses": 41,
+    "wr": 34,
+    "kda": 2.71,
+    "kills": 182,
+    "deaths": 213,
+    "assists": 395,
+    "kpRate": 0.71,
+    "champions": [
+      {
+        "kor": "신 짜오",
+        "eng": "XinZhao",
+        "games": 11,
+        "wr": 18,
+        "kda": 2.11
+      },
+      {
+        "kor": "바이",
+        "eng": "Vi",
+        "games": 9,
+        "wr": 44,
+        "kda": 2.75
+      },
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 9,
+        "wr": 33,
+        "kda": 3.42
+      },
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 8,
+        "wr": 50,
+        "kda": 4.58
+      },
+      {
+        "kor": "녹턴",
+        "eng": "Nocturne",
+        "games": 5,
+        "wr": 20,
+        "kda": 1.45
+      }
+    ]
+  },
+  {
+    "rank": 43,
+    "name": "Doran",
+    "kor": "도란",
+    "team": "T1",
+    "pos": "TOP",
+    "games": 83,
+    "wins": 49,
+    "losses": 34,
+    "wr": 59,
+    "kda": 2.64,
+    "kills": 237,
+    "deaths": 258,
+    "assists": 444,
+    "kpRate": 0.53,
+    "champions": [
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 11,
+        "wr": 73,
+        "kda": 3.09
+      },
+      {
+        "kor": "럼블",
+        "eng": "Rumble",
+        "games": 9,
+        "wr": 67,
+        "kda": 2.93
+      },
+      {
+        "kor": "암베사",
+        "eng": "Ambessa",
+        "games": 8,
+        "wr": 38,
+        "kda": 2.05
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 7,
+        "wr": 43,
+        "kda": 1.63
+      },
+      {
+        "kor": "사이온",
+        "eng": "Sion",
+        "games": 7,
+        "wr": 86,
+        "kda": 5.2
+      }
+    ]
+  },
+  {
+    "rank": 44,
+    "name": "Clear",
+    "kor": "Clear",
+    "team": "BFX",
+    "pos": "TOP",
+    "games": 76,
+    "wins": 34,
+    "losses": 42,
+    "wr": 45,
+    "kda": 2.59,
+    "kills": 202,
+    "deaths": 212,
+    "assists": 347,
+    "kpRate": 0.5,
+    "champions": [
+      {
+        "kor": "크산테",
+        "eng": "KSante",
+        "games": 13,
+        "wr": 46,
+        "kda": 3.84
+      },
+      {
+        "kor": "레넥톤",
+        "eng": "Renekton",
+        "games": 9,
+        "wr": 56,
+        "kda": 2.7
+      },
+      {
+        "kor": "럼블",
+        "eng": "Rumble",
+        "games": 8,
+        "wr": 75,
+        "kda": 4.06
+      },
+      {
+        "kor": "요릭",
+        "eng": "Yorick",
+        "games": 6,
+        "wr": 17,
+        "kda": 1.18
+      },
+      {
+        "kor": "올라프",
+        "eng": "Olaf",
+        "games": 5,
+        "wr": 60,
+        "kda": 2.93
+      }
+    ]
+  },
+  {
+    "rank": 45,
+    "name": "Lehends",
+    "kor": "리헨즈",
+    "team": "NS",
+    "pos": "SPT",
+    "games": 54,
+    "wins": 25,
+    "losses": 29,
+    "wr": 46,
+    "kda": 2.56,
+    "kills": 38,
+    "deaths": 240,
+    "assists": 576,
+    "kpRate": 0.73,
+    "champions": [
+      {
+        "kor": "노틸러스",
+        "eng": "Nautilus",
+        "games": 8,
+        "wr": 25,
+        "kda": 1.5
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 7,
+        "wr": 14,
+        "kda": 1.88
+      },
+      {
+        "kor": "니코",
+        "eng": "Neeko",
+        "games": 7,
+        "wr": 14,
+        "kda": 1.37
+      },
+      {
+        "kor": "밀리오",
+        "eng": "Milio",
+        "games": 6,
+        "wr": 50,
+        "kda": 6.85
+      },
+      {
+        "kor": "레오나",
+        "eng": "Leona",
+        "games": 5,
+        "wr": 100,
+        "kda": 3.18
+      }
+    ]
+  },
+  {
+    "rank": 46,
+    "name": "Loki",
+    "kor": "Loki",
+    "team": "BRO",
+    "pos": "MID",
+    "games": 17,
+    "wins": 4,
+    "losses": 13,
+    "wr": 24,
+    "kda": 2.51,
+    "kills": 41,
+    "deaths": 53,
+    "assists": 92,
+    "kpRate": 0.67,
+    "champions": [
+      {
+        "kor": "오로라",
+        "eng": "Aurora",
+        "games": 3,
+        "wr": 33,
+        "kda": 4.44
+      },
+      {
+        "kor": "애니",
+        "eng": "Annie",
+        "games": 2,
+        "wr": 50,
+        "kda": 1.57
+      },
+      {
+        "kor": "오리아나",
+        "eng": "Orianna",
+        "games": 2,
+        "wr": 50,
+        "kda": 4.25
+      },
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 2,
+        "wr": 0,
+        "kda": 3
+      },
+      {
+        "kor": "탈리야",
+        "eng": "Taliyah",
+        "games": 2,
+        "wr": 0,
+        "kda": 1.5
+      }
+    ]
+  },
+  {
+    "rank": 47,
+    "name": "LazyFeel",
+    "kor": "LazyFeel",
+    "team": "KRX",
+    "pos": "AD",
+    "games": 40,
+    "wins": 14,
+    "losses": 26,
+    "wr": 35,
+    "kda": 2.39,
+    "kills": 135,
+    "deaths": 147,
+    "assists": 216,
+    "kpRate": 0.62,
+    "champions": [
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 11,
+        "wr": 36,
+        "kda": 2.26
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 9,
+        "wr": 33,
+        "kda": 2.38
+      },
+      {
+        "kor": "미스 포츈",
+        "eng": "MissFortune",
+        "games": 6,
+        "wr": 50,
+        "kda": 5.21
+      },
+      {
+        "kor": "루시안",
+        "eng": "Lucian",
+        "games": 3,
+        "wr": 33,
+        "kda": 1.35
+      },
+      {
+        "kor": "시비르",
+        "eng": "Sivir",
+        "games": 2,
+        "wr": 0,
+        "kda": 1.36
+      }
+    ]
+  },
+  {
+    "rank": 48,
+    "name": "Frog",
+    "kor": "Frog",
+    "team": "KRX",
+    "pos": "TOP",
+    "games": 19,
+    "wins": 6,
+    "losses": 13,
+    "wr": 32,
+    "kda": 2.38,
+    "kills": 45,
+    "deaths": 53,
+    "assists": 81,
+    "kpRate": 0.56,
+    "champions": [
+      {
+        "kor": "크산테",
+        "eng": "KSante",
+        "games": 4,
+        "wr": 50,
+        "kda": 2.86
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 3,
+        "wr": 33,
+        "kda": 3.33
+      },
+      {
+        "kor": "암베사",
+        "eng": "Ambessa",
+        "games": 3,
+        "wr": 0,
+        "kda": 1
+      },
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 3,
+        "wr": 33,
+        "kda": 3.13
+      },
+      {
+        "kor": "잭스",
+        "eng": "Jax",
+        "games": 2,
+        "wr": 50,
+        "kda": 3.83
+      }
+    ]
+  },
+  {
+    "rank": 49,
+    "name": "Kingen",
+    "kor": "킹겐",
+    "team": "NS",
+    "pos": "TOP",
+    "games": 61,
+    "wins": 25,
+    "losses": 36,
+    "wr": 41,
+    "kda": 2.37,
+    "kills": 173,
+    "deaths": 201,
+    "assists": 304,
+    "kpRate": 0.52,
+    "champions": [
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 10,
+        "wr": 20,
+        "kda": 1.32
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 9,
+        "wr": 56,
+        "kda": 3.09
+      },
+      {
+        "kor": "암베사",
+        "eng": "Ambessa",
+        "games": 8,
+        "wr": 13,
+        "kda": 1.7
+      },
+      {
+        "kor": "사이온",
+        "eng": "Sion",
+        "games": 5,
+        "wr": 20,
+        "kda": 2.89
+      },
+      {
+        "kor": "레넥톤",
+        "eng": "Renekton",
+        "games": 5,
+        "wr": 60,
+        "kda": 2.12
+      }
+    ]
+  },
+  {
+    "rank": 50,
+    "name": "Clozer",
+    "kor": "클로저",
+    "team": "DNS",
+    "pos": "MID",
+    "games": 53,
+    "wins": 12,
+    "losses": 41,
+    "wr": 23,
+    "kda": 2.37,
+    "kills": 151,
+    "deaths": 153,
+    "assists": 211,
+    "kpRate": 0.67,
+    "champions": [
+      {
+        "kor": "카시오페아",
+        "eng": "Cassiopeia",
+        "games": 7,
+        "wr": 43,
+        "kda": 3.3
+      },
+      {
+        "kor": "라이즈",
+        "eng": "Ryze",
+        "games": 7,
+        "wr": 29,
+        "kda": 2.39
+      },
+      {
+        "kor": "오로라",
+        "eng": "Aurora",
+        "games": 5,
+        "wr": 0,
+        "kda": 2.18
+      },
+      {
+        "kor": "아리",
+        "eng": "Ahri",
+        "games": 5,
+        "wr": 20,
+        "kda": 2.17
+      },
+      {
+        "kor": "요네",
+        "eng": "Yone",
+        "games": 4,
+        "wr": 25,
+        "kda": 1.9
+      }
+    ]
+  },
+  {
+    "rank": 51,
+    "name": "Andil",
+    "kor": "안딜",
+    "team": "KRX",
+    "pos": "SPT",
+    "games": 61,
+    "wins": 21,
+    "losses": 40,
+    "wr": 34,
+    "kda": 2.35,
+    "kills": 36,
+    "deaths": 247,
+    "assists": 544,
+    "kpRate": 0.72,
+    "champions": [
+      {
+        "kor": "노틸러스",
+        "eng": "Nautilus",
+        "games": 14,
+        "wr": 29,
+        "kda": 1.94
+      },
+      {
+        "kor": "바드",
+        "eng": "Bard",
+        "games": 9,
+        "wr": 44,
+        "kda": 2.7
+      },
+      {
+        "kor": "카르마",
+        "eng": "Karma",
+        "games": 8,
+        "wr": 50,
+        "kda": 3.74
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 5,
+        "wr": 40,
+        "kda": 5.56
+      },
+      {
+        "kor": "니코",
+        "eng": "Neeko",
+        "games": 4,
+        "wr": 25,
+        "kda": 1.18
+      }
+    ]
+  },
+  {
+    "rank": 52,
+    "name": "Rich",
+    "kor": "Rich",
+    "team": "KRX",
+    "pos": "TOP",
+    "games": 43,
+    "wins": 15,
+    "losses": 28,
+    "wr": 35,
+    "kda": 2.21,
+    "kills": 89,
+    "deaths": 133,
+    "assists": 205,
+    "kpRate": 0.51,
+    "champions": [
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 13,
+        "wr": 54,
+        "kda": 2.44
+      },
+      {
+        "kor": "크산테",
+        "eng": "KSante",
+        "games": 8,
+        "wr": 25,
+        "kda": 3.33
+      },
+      {
+        "kor": "레넥톤",
+        "eng": "Renekton",
+        "games": 6,
+        "wr": 33,
+        "kda": 1.53
+      },
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 4,
+        "wr": 0,
+        "kda": 1
+      },
+      {
+        "kor": "럼블",
+        "eng": "Rumble",
+        "games": 3,
+        "wr": 33,
+        "kda": 2.42
+      }
+    ]
+  },
+  {
+    "rank": 53,
+    "name": "deokdam",
+    "kor": "deokdam",
+    "team": "DNS",
+    "pos": "AD",
+    "games": 49,
+    "wins": 12,
+    "losses": 37,
+    "wr": 24,
+    "kda": 2.14,
+    "kills": 122,
+    "deaths": 162,
+    "assists": 224,
+    "kpRate": 0.66,
+    "champions": [
+      {
+        "kor": "진",
+        "eng": "Jhin",
+        "games": 7,
+        "wr": 14,
+        "kda": 2.48
+      },
+      {
+        "kor": "시비르",
+        "eng": "Sivir",
+        "games": 6,
+        "wr": 33,
+        "kda": 2.83
+      },
+      {
+        "kor": "케이틀린",
+        "eng": "Caitlyn",
+        "games": 6,
+        "wr": 50,
+        "kda": 3.06
+      },
+      {
+        "kor": "유나라",
+        "eng": "Yunara",
+        "games": 4,
+        "wr": 0,
+        "kda": 0.79
+      },
+      {
+        "kor": "이즈리얼",
+        "eng": "Ezreal",
+        "games": 4,
+        "wr": 25,
+        "kda": 1.18
+      }
+    ]
+  },
+  {
+    "rank": 54,
+    "name": "Siwoo",
+    "kor": "시우",
+    "team": "DK",
+    "pos": "TOP",
+    "games": 82,
+    "wins": 45,
+    "losses": 37,
+    "wr": 55,
+    "kda": 1.97,
+    "kills": 189,
+    "deaths": 252,
+    "assists": 308,
+    "kpRate": 0.44,
+    "champions": [
+      {
+        "kor": "제이스",
+        "eng": "Jayce",
+        "games": 16,
+        "wr": 38,
+        "kda": 1.93
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 12,
+        "wr": 75,
+        "kda": 2.85
+      },
+      {
+        "kor": "크산테",
+        "eng": "KSante",
+        "games": 6,
+        "wr": 83,
+        "kda": 2.24
+      },
+      {
+        "kor": "레넥톤",
+        "eng": "Renekton",
+        "games": 5,
+        "wr": 60,
+        "kda": 2.57
+      },
+      {
+        "kor": "암베사",
+        "eng": "Ambessa",
+        "games": 5,
+        "wr": 20,
+        "kda": 1.27
+      }
+    ]
+  },
+  {
+    "rank": 55,
+    "name": "Pyosik",
+    "kor": "표식",
+    "team": "DNS",
+    "pos": "JGL",
+    "games": 34,
+    "wins": 3,
+    "losses": 31,
+    "wr": 9,
+    "kda": 1.7,
+    "kills": 79,
+    "deaths": 132,
+    "assists": 146,
+    "kpRate": 0.72,
+    "champions": [
+      {
+        "kor": "자르반 4세",
+        "eng": "JarvanIV",
+        "games": 6,
+        "wr": 17,
+        "kda": 2
+      },
+      {
+        "kor": "바이",
+        "eng": "Vi",
+        "games": 6,
+        "wr": 0,
+        "kda": 1
+      },
+      {
+        "kor": "리 신",
+        "eng": "LeeSin",
+        "games": 6,
+        "wr": 17,
+        "kda": 1.92
+      },
+      {
+        "kor": "나피리",
+        "eng": "Naafiri",
+        "games": 3,
+        "wr": 33,
+        "kda": 4.71
+      },
+      {
+        "kor": "판테온",
+        "eng": "Pantheon",
+        "games": 3,
+        "wr": 0,
+        "kda": 1.5
+      }
+    ]
+  },
+  {
+    "rank": 56,
+    "name": "DuDu",
+    "kor": "두두",
+    "team": "DNS",
+    "pos": "TOP",
+    "games": 53,
+    "wins": 12,
+    "losses": 41,
+    "wr": 23,
+    "kda": 1.64,
+    "kills": 91,
+    "deaths": 156,
+    "assists": 165,
+    "kpRate": 0.47,
+    "champions": [
+      {
+        "kor": "암베사",
+        "eng": "Ambessa",
+        "games": 8,
+        "wr": 0,
+        "kda": 1.36
+      },
+      {
+        "kor": "요릭",
+        "eng": "Yorick",
+        "games": 6,
+        "wr": 50,
+        "kda": 1.71
+      },
+      {
+        "kor": "레넥톤",
+        "eng": "Renekton",
+        "games": 6,
+        "wr": 0,
+        "kda": 0.89
+      },
+      {
+        "kor": "나르",
+        "eng": "Gnar",
+        "games": 5,
+        "wr": 0,
+        "kda": 1.6
+      },
+      {
+        "kor": "럼블",
+        "eng": "Rumble",
+        "games": 5,
+        "wr": 20,
+        "kda": 1.53
+      }
+    ]
+  },
+  {
+    "rank": 57,
+    "name": "Life",
+    "kor": "라이프",
+    "team": "DNS",
+    "pos": "SPT",
+    "games": 11,
+    "wins": 0,
+    "losses": 11,
+    "wr": 0,
+    "kda": 0.88,
+    "kills": 9,
+    "deaths": 59,
+    "assists": 43,
+    "kpRate": 0.67,
+    "champions": [
+      {
+        "kor": "세라핀",
+        "eng": "Seraphine",
+        "games": 3,
+        "wr": 0,
+        "kda": 0.79
+      },
+      {
+        "kor": "룰루",
+        "eng": "Lulu",
+        "games": 2,
+        "wr": 0,
+        "kda": 1.22
+      },
+      {
+        "kor": "카르마",
+        "eng": "Karma",
+        "games": 1,
+        "wr": 0,
+        "kda": 0.43
+      },
+      {
+        "kor": "노틸러스",
+        "eng": "Nautilus",
+        "games": 1,
+        "wr": 0,
+        "kda": 2.33
+      },
+      {
+        "kor": "카밀",
+        "eng": "Camille",
+        "games": 1,
+        "wr": 0,
+        "kda": 0.43
+      }
+    ]
+  }
+]

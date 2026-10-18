@@ -1,0 +1,142 @@
+[
+  {
+    "kor": "자르반 4세",
+    "eng": "JarvanIV",
+    "picks": 114,
+    "pickRate": 31,
+    "wr": 54
+  },
+  {
+    "kor": "이즈리얼",
+    "eng": "Ezreal",
+    "picks": 105,
+    "pickRate": 29,
+    "wr": 45
+  },
+  {
+    "kor": "라이즈",
+    "eng": "Ryze",
+    "picks": 104,
+    "pickRate": 28,
+    "wr": 53
+  },
+  {
+    "kor": "신 짜오",
+    "eng": "XinZhao",
+    "picks": 96,
+    "pickRate": 26,
+    "wr": 48
+  },
+  {
+    "kor": "판테온",
+    "eng": "Pantheon",
+    "picks": 95,
+    "pickRate": 26,
+    "wr": 44
+  },
+  {
+    "kor": "진",
+    "eng": "Jhin",
+    "picks": 91,
+    "pickRate": 25,
+    "wr": 49
+  },
+  {
+    "kor": "제이스",
+    "eng": "Jayce",
+    "picks": 90,
+    "pickRate": 25,
+    "wr": 46
+  },
+  {
+    "kor": "나르",
+    "eng": "Gnar",
+    "picks": 83,
+    "pickRate": 23,
+    "wr": 57
+  },
+  {
+    "kor": "리 신",
+    "eng": "LeeSin",
+    "picks": 82,
+    "pickRate": 22,
+    "wr": 56
+  },
+  {
+    "kor": "유나라",
+    "eng": "Yunara",
+    "picks": 80,
+    "pickRate": 22,
+    "wr": 41
+  },
+  {
+    "kor": "바드",
+    "eng": "Bard",
+    "picks": 77,
+    "pickRate": 21,
+    "wr": 51
+  },
+  {
+    "kor": "애니",
+    "eng": "Annie",
+    "picks": 74,
+    "pickRate": 20,
+    "wr": 54
+  },
+  {
+    "kor": "룰루",
+    "eng": "Lulu",
+    "picks": 73,
+    "pickRate": 20,
+    "wr": 41
+  },
+  {
+    "kor": "세라핀",
+    "eng": "Seraphine",
+    "picks": 72,
+    "pickRate": 20,
+    "wr": 54
+  },
+  {
+    "kor": "바이",
+    "eng": "Vi",
+    "picks": 72,
+    "pickRate": 20,
+    "wr": 51
+  },
+  {
+    "kor": "카르마",
+    "eng": "Karma",
+    "picks": 72,
+    "pickRate": 20,
+    "wr": 54
+  },
+  {
+    "kor": "암베사",
+    "eng": "Ambessa",
+    "picks": 68,
+    "pickRate": 19,
+    "wr": 31
+  },
+  {
+    "kor": "케이틀린",
+    "eng": "Caitlyn",
+    "picks": 67,
+    "pickRate": 18,
+    "wr": 58
+  },
+  {
+    "kor": "루시안",
+    "eng": "Lucian",
+    "picks": 64,
+    "pickRate": 17,
+    "wr": 47
+  },
+  {
+    "kor": "크산테",
+    "eng": "KSante",
+    "picks": 63,
+    "pickRate": 17,
+    "wr": 48
+  }
+]

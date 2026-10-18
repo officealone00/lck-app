@@ -1,0 +1,42 @@
+{
+  "year": 2026,
+  "title": "2026 월드 챔피언십",
+  "startDate": "2026-10-15",
+  "endDate": "2026-11-15",
+  "status": "ongoing",
+  "stages": [
+    {
+      "name": "플레이-인",
+      "start": "2026-10-15T18:00:00Z"
+    },
+    {
+      "name": "스위스",
+      "start": "2026-10-23T17:00:00Z"
+    },
+    {
+      "name": "8강",
+      "start": "2026-11-03T22:00:00Z"
+    },
+    {
+      "name": "4강",
+      "start": "2026-11-07T22:00:00Z"
+    }
+  ],
+  "next": {
+    "id": "116299649498303884",
+    "startTime": "2026-10-18T18:00:00.000Z",
+    "date": "10/19(월)",
+    "time": "03:00",
+    "stage": "플레이-인",
+    "state": "unstarted",
+    "bestOf": 5,
+    "home": "KC",
+    "away": "MVK",
+    "homeName": "Karmine Corp",
+    "awayName": "MVK Esports",
+    "homeScore": 0,
+    "awayScore": 0
+  },
+  "lckTeams": [],
+  "lckMatches": []
+}
