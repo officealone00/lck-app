@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "league": "WORLDS",
+    "stage": "스위스",
+    "date": "10/24(토)",
+    "time": "02:00",
+    "startTime": "2026-10-23T17:00:00.000Z",
+    "home": "GEN",
+    "away": "IG",
+    "homeColor": "#C8A25B",
+    "awayColor": "#888"
+  },
+  {
+    "league": "WORLDS",
+    "stage": "스위스",
+    "date": "10/24(토)",
+    "time": "05:00",
+    "startTime": "2026-10-23T20:00:00.000Z",
+    "home": "G2",
+    "away": "DK",
+    "homeColor": "#888",
+    "awayColor": "#3FB6D9"
+  },
+  {
+    "league": "WORLDS",
+    "stage": "스위스",
+    "date": "10/24(토)",
+    "time": "06:00",
+    "startTime": "2026-10-23T21:00:00.000Z",
+    "home": "HLE",
+    "away": "TES",
+    "homeColor": "#F37021",
+    "awayColor": "#888"
+  },
+  {
+    "league": "WORLDS",
+    "stage": "스위스",
+    "date": "10/24(토)",
+    "time": "07:00",
+    "startTime": "2026-10-23T22:00:00.000Z",
+    "home": "LOS",
+    "away": "T1",
+    "homeColor": "#888",
+    "awayColor": "#E2012D"
+  }
+]
