@@ -5,10 +5,10 @@
     "date": "10/24(토)",
     "time": "02:00",
     "startTime": "2026-10-23T17:00:00.000Z",
-    "home": "GEN",
-    "away": "IG",
-    "homeColor": "#C8A25B",
-    "awayColor": "#888"
+    "home": "IG",
+    "away": "GEN",
+    "homeColor": "#888",
+    "awayColor": "#C8A25B"
   },
   {
     "league": "WORLDS",
