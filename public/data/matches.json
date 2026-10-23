@@ -3,28 +3,6 @@
     "league": "WORLDS",
     "stage": "스위스",
     "date": "10/24(토)",
-    "time": "02:00",
-    "startTime": "2026-10-23T17:00:00.000Z",
-    "home": "IG",
-    "away": "GEN",
-    "homeColor": "#888",
-    "awayColor": "#C8A25B"
-  },
-  {
-    "league": "WORLDS",
-    "stage": "스위스",
-    "date": "10/24(토)",
-    "time": "03:00",
-    "startTime": "2026-10-23T18:00:00.000Z",
-    "home": "HLE",
-    "away": "TES",
-    "homeColor": "#F37021",
-    "awayColor": "#888"
-  },
-  {
-    "league": "WORLDS",
-    "stage": "스위스",
-    "date": "10/24(토)",
     "time": "06:00",
     "startTime": "2026-10-23T21:00:00.000Z",
     "home": "G2",

@@ -27,17 +27,17 @@
     }
   ],
   "next": {
-    "id": "115660540726095005",
-    "startTime": "2026-10-23T17:00:00.000Z",
+    "id": "115660540726095019",
+    "startTime": "2026-10-23T19:00:00.000Z",
     "date": "10/24(토)",
-    "time": "02:00",
+    "time": "04:00",
     "stage": "스위스",
     "state": "inProgress",
     "bestOf": 1,
-    "home": "IG",
-    "away": "GEN",
-    "homeName": "Invictus Gaming",
-    "awayName": "Gen.G Esports",
+    "home": "MKOI",
+    "away": "BLG",
+    "homeName": "Movistar KOI",
+    "awayName": "BILIBILI GAMING",
     "homeScore": 0,
     "awayScore": 0
   },
@@ -54,14 +54,14 @@
       "date": "10/24(토)",
       "time": "02:00",
       "stage": "스위스",
-      "state": "inProgress",
+      "state": "completed",
       "bestOf": 1,
       "home": "IG",
       "away": "GEN",
       "homeName": "Invictus Gaming",
       "awayName": "Gen.G Esports",
       "homeScore": 0,
-      "awayScore": 0
+      "awayScore": 1
     },
     {
       "id": "115660540726095013",
@@ -69,14 +69,14 @@
       "date": "10/24(토)",
       "time": "03:00",
       "stage": "스위스",
-      "state": "unstarted",
+      "state": "completed",
       "bestOf": 1,
-      "home": "HLE",
-      "away": "TES",
-      "homeName": "Hanwha Life Esports",
-      "awayName": "TOP ESPORTS",
+      "home": "TES",
+      "away": "HLE",
+      "homeName": "TOP ESPORTS",
+      "awayName": "Hanwha Life Esports",
       "homeScore": 0,
-      "awayScore": 0
+      "awayScore": 1
     },
     {
       "id": "115660540726095011",
