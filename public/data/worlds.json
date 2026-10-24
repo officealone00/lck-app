@@ -14,6 +14,10 @@
       "start": "2026-10-23T17:00:00Z"
     },
     {
+      "name": "",
+      "start": "2026-10-24T16:01:54.634Z"
+    },
+    {
       "name": "8강",
       "start": "2026-11-03T22:00:00Z"
     },
@@ -27,19 +31,19 @@
     }
   ],
   "next": {
-    "id": "115660540726095029",
-    "startTime": "2026-10-24T17:00:00.000Z",
+    "id": "",
+    "startTime": "2026-10-24T16:01:54.634Z",
     "date": "10/25(일)",
-    "time": "02:00",
-    "stage": "스위스",
-    "state": "unstarted",
+    "time": "01:01",
+    "stage": "",
+    "state": "inProgress",
     "bestOf": 1,
-    "home": "AL",
-    "away": "TES",
-    "homeName": "Anyone's Legend",
-    "awayName": "TOP ESPORTS",
-    "homeScore": 0,
-    "awayScore": 0
+    "home": "TBD",
+    "away": "TBD",
+    "homeName": "",
+    "awayName": "",
+    "homeScore": null,
+    "awayScore": null
   },
   "lckTeams": [
     "GEN",
