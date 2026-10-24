@@ -14,10 +14,6 @@
       "start": "2026-10-23T17:00:00Z"
     },
     {
-      "name": "",
-      "start": "2026-10-24T16:01:54.634Z"
-    },
-    {
       "name": "8강",
       "start": "2026-11-03T22:00:00Z"
     },
@@ -31,19 +27,19 @@
     }
   ],
   "next": {
-    "id": "",
-    "startTime": "2026-10-24T16:01:54.634Z",
+    "id": "115660540726095021",
+    "startTime": "2026-10-24T18:00:00.000Z",
     "date": "10/25(일)",
-    "time": "01:01",
-    "stage": "",
+    "time": "03:00",
+    "stage": "스위스",
     "state": "inProgress",
     "bestOf": 1,
-    "home": "TBD",
-    "away": "TBD",
-    "homeName": "",
-    "awayName": "",
-    "homeScore": null,
-    "awayScore": null
+    "home": "MKOI",
+    "away": "CFO",
+    "homeName": "Movistar KOI",
+    "awayName": "CTBC Flying Oyster",
+    "homeScore": 0,
+    "awayScore": 0
   },
   "lckTeams": [
     "GEN",
