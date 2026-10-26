@@ -27,19 +27,19 @@
     }
   ],
   "next": {
-    "id": "115660540726095053",
-    "startTime": "2026-10-26T19:00:00.000Z",
+    "id": "115660540726095057",
+    "startTime": "2026-10-26T22:00:00.000Z",
     "date": "10/27(화)",
-    "time": "04:00",
+    "time": "07:00",
     "stage": "스위스",
     "state": "inProgress",
     "bestOf": 3,
-    "home": "TSW",
-    "away": "LOS",
-    "homeName": "Team Secret Whales",
-    "awayName": "LOS",
+    "home": "AL",
+    "away": "TLAW",
+    "homeName": "Anyone's Legend",
+    "awayName": "Team Liquid Alienware",
     "homeScore": 0,
-    "awayScore": 1
+    "awayScore": 0
   },
   "lckTeams": [
     "GEN",
