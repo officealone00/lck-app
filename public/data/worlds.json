@@ -27,17 +27,17 @@
     }
   ],
   "next": {
-    "id": "115660540726095049",
-    "startTime": "2026-10-26T17:00:00.000Z",
+    "id": "115660540726095053",
+    "startTime": "2026-10-26T19:00:00.000Z",
     "date": "10/27(화)",
-    "time": "02:00",
+    "time": "04:00",
     "stage": "스위스",
     "state": "inProgress",
-    "bestOf": 1,
-    "home": "T1",
-    "away": "CFO",
-    "homeName": "T1",
-    "awayName": "CTBC Flying Oyster",
+    "bestOf": 3,
+    "home": "TSW",
+    "away": "LOS",
+    "homeName": "Team Secret Whales",
+    "awayName": "LOS",
     "homeScore": 0,
     "awayScore": 0
   },
@@ -189,13 +189,13 @@
       "date": "10/27(화)",
       "time": "02:00",
       "stage": "스위스",
-      "state": "inProgress",
+      "state": "completed",
       "bestOf": 1,
       "home": "T1",
       "away": "CFO",
       "homeName": "T1",
       "awayName": "CTBC Flying Oyster",
-      "homeScore": 0,
+      "homeScore": 1,
       "awayScore": 0
     }
   ]
