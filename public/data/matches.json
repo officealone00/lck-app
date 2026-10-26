@@ -5,9 +5,9 @@
     "date": "10/27(화)",
     "time": "02:00",
     "startTime": "2026-10-26T17:00:00.000Z",
-    "home": "CFO",
-    "away": "T1",
-    "homeColor": "#888",
-    "awayColor": "#E2012D"
+    "home": "T1",
+    "away": "CFO",
+    "homeColor": "#E2012D",
+    "awayColor": "#888"
   }
 ]
