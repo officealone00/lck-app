@@ -2,17 +2,6 @@
   {
     "league": "WORLDS",
     "stage": "스위스",
-    "date": "10/29(목)",
-    "time": "05:00",
-    "startTime": "2026-10-28T20:00:00.000Z",
-    "home": "T1",
-    "away": "MKOI",
-    "homeColor": "#E2012D",
-    "awayColor": "#888"
-  },
-  {
-    "league": "WORLDS",
-    "stage": "스위스",
     "date": "10/31(토)",
     "time": "08:00",
     "startTime": "2026-10-30T23:00:00.000Z",
