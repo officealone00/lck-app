@@ -14,6 +14,10 @@
       "start": "2026-10-23T17:00:00Z"
     },
     {
+      "name": "",
+      "start": "2026-10-30T18:57:37.531Z"
+    },
+    {
       "name": "8강",
       "start": "2026-11-03T22:00:00Z"
     },
@@ -27,19 +31,19 @@
     }
   ],
   "next": {
-    "id": "115660540726095077",
-    "startTime": "2026-10-30T20:00:00.000Z",
+    "id": "",
+    "startTime": "2026-10-30T18:57:37.531Z",
     "date": "10/31(토)",
-    "time": "05:00",
-    "stage": "스위스",
-    "state": "unstarted",
-    "bestOf": 3,
-    "home": "TLAW",
-    "away": "LOS",
-    "homeName": "Team Liquid Alienware",
-    "awayName": "LOS",
-    "homeScore": 0,
-    "awayScore": 0
+    "time": "03:57",
+    "stage": "",
+    "state": "inProgress",
+    "bestOf": 1,
+    "home": "TBD",
+    "away": "TBD",
+    "homeName": "",
+    "awayName": "",
+    "homeScore": null,
+    "awayScore": null
   },
   "lckTeams": [
     "GEN",
