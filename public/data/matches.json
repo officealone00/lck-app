@@ -2,12 +2,12 @@
   {
     "league": "WORLDS",
     "stage": "스위스",
-    "date": "10/31(토)",
+    "date": "11/1(일)",
     "time": "08:00",
-    "startTime": "2026-10-30T23:00:00.000Z",
-    "home": "G2",
-    "away": "HLE",
-    "homeColor": "#888",
-    "awayColor": "#F37021"
+    "startTime": "2026-10-31T23:00:00.000Z",
+    "home": "HLE",
+    "away": "BLG",
+    "homeColor": "#F37021",
+    "awayColor": "#888"
   }
 ]
