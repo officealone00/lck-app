@@ -1,13 +1,35 @@
 [
   {
     "league": "WORLDS",
-    "stage": "스위스",
-    "date": "11/1(일)",
-    "time": "08:00",
-    "startTime": "2026-10-31T23:00:00.000Z",
-    "home": "HLE",
+    "stage": "8강",
+    "date": "11/5(목)",
+    "time": "07:00",
+    "startTime": "2026-11-04T22:00:00.000Z",
+    "home": "GEN",
+    "away": "LYON",
+    "homeColor": "#C8A25B",
+    "awayColor": "#888"
+  },
+  {
+    "league": "WORLDS",
+    "stage": "8강",
+    "date": "11/6(금)",
+    "time": "07:00",
+    "startTime": "2026-11-05T22:00:00.000Z",
+    "home": "DK",
     "away": "BLG",
-    "homeColor": "#F37021",
+    "homeColor": "#3FB6D9",
+    "awayColor": "#888"
+  },
+  {
+    "league": "WORLDS",
+    "stage": "8강",
+    "date": "11/7(토)",
+    "time": "07:00",
+    "startTime": "2026-11-06T22:00:00.000Z",
+    "home": "T1",
+    "away": "KC",
+    "homeColor": "#E2012D",
     "awayColor": "#888"
   }
 ]
