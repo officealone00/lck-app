@@ -14,10 +14,6 @@
       "start": "2026-10-23T17:00:00Z"
     },
     {
-      "name": "",
-      "start": "2026-11-03T20:45:55.898Z"
-    },
-    {
       "name": "8강",
       "start": "2026-11-03T22:00:00Z"
     },
@@ -31,19 +27,19 @@
     }
   ],
   "next": {
-    "id": "",
-    "startTime": "2026-11-03T20:45:55.898Z",
+    "id": "115660540726095109",
+    "startTime": "2026-11-03T22:00:00.000Z",
     "date": "11/4(수)",
-    "time": "05:45",
-    "stage": "",
+    "time": "07:00",
+    "stage": "8강",
     "state": "inProgress",
-    "bestOf": 1,
-    "home": "TBD",
-    "away": "TBD",
-    "homeName": "",
-    "awayName": "",
-    "homeScore": null,
-    "awayScore": null
+    "bestOf": 5,
+    "home": "IG",
+    "away": "TES",
+    "homeName": "Invictus Gaming",
+    "awayName": "TOP ESPORTS",
+    "homeScore": 0,
+    "awayScore": 0
   },
   "lckTeams": [
     "GEN",
