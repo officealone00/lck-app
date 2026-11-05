@@ -5,10 +5,10 @@
     "date": "11/6(금)",
     "time": "07:00",
     "startTime": "2026-11-05T22:00:00.000Z",
-    "home": "DK",
-    "away": "BLG",
-    "homeColor": "#3FB6D9",
-    "awayColor": "#888"
+    "home": "BLG",
+    "away": "DK",
+    "homeColor": "#888",
+    "awayColor": "#3FB6D9"
   },
   {
     "league": "WORLDS",
