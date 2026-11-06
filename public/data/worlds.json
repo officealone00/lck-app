@@ -18,6 +18,10 @@
       "start": "2026-11-03T22:00:00Z"
     },
     {
+      "name": "",
+      "start": "2026-11-06T20:46:51.820Z"
+    },
+    {
       "name": "4강",
       "start": "2026-11-07T22:00:00Z"
     },
@@ -27,19 +31,19 @@
     }
   ],
   "next": {
-    "id": "115660540726095103",
-    "startTime": "2026-11-06T22:00:00.000Z",
+    "id": "",
+    "startTime": "2026-11-06T20:46:51.820Z",
     "date": "11/7(토)",
-    "time": "07:00",
-    "stage": "8강",
-    "state": "unstarted",
-    "bestOf": 5,
-    "home": "T1",
-    "away": "KC",
-    "homeName": "T1",
-    "awayName": "Karmine Corp",
-    "homeScore": 0,
-    "awayScore": 0
+    "time": "05:46",
+    "stage": "",
+    "state": "inProgress",
+    "bestOf": 1,
+    "home": "TBD",
+    "away": "TBD",
+    "homeName": "",
+    "awayName": "",
+    "homeScore": null,
+    "awayScore": null
   },
   "lckTeams": [
     "GEN",
