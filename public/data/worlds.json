@@ -22,24 +22,28 @@
       "start": "2026-11-07T22:00:00Z"
     },
     {
+      "name": "",
+      "start": "2026-11-08T20:46:16.795Z"
+    },
+    {
       "name": "결승",
       "start": "2026-11-14T19:00:00Z"
     }
   ],
   "next": {
-    "id": "115660540726095121",
-    "startTime": "2026-11-08T22:00:00.000Z",
+    "id": "",
+    "startTime": "2026-11-08T20:46:16.795Z",
     "date": "11/9(월)",
-    "time": "07:00",
-    "stage": "4강",
-    "state": "unstarted",
-    "bestOf": 5,
-    "home": "T1",
-    "away": "BLG",
-    "homeName": "T1",
-    "awayName": "BILIBILI GAMING",
-    "homeScore": 0,
-    "awayScore": 0
+    "time": "05:46",
+    "stage": "",
+    "state": "inProgress",
+    "bestOf": 1,
+    "home": "TBD",
+    "away": "TBD",
+    "homeName": "",
+    "awayName": "",
+    "homeScore": null,
+    "awayScore": null
   },
   "lckTeams": [
     "GEN",
