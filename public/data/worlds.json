@@ -22,28 +22,24 @@
       "start": "2026-11-07T22:00:00Z"
     },
     {
-      "name": "",
-      "start": "2026-11-08T20:46:16.795Z"
-    },
-    {
       "name": "결승",
       "start": "2026-11-14T19:00:00Z"
     }
   ],
   "next": {
-    "id": "",
-    "startTime": "2026-11-08T20:46:16.795Z",
-    "date": "11/9(월)",
-    "time": "05:46",
-    "stage": "",
-    "state": "inProgress",
-    "bestOf": 1,
-    "home": "TBD",
-    "away": "TBD",
-    "homeName": "",
-    "awayName": "",
-    "homeScore": null,
-    "awayScore": null
+    "id": "115660540726095133",
+    "startTime": "2026-11-14T19:00:00.000Z",
+    "date": "11/15(일)",
+    "time": "04:00",
+    "stage": "결승",
+    "state": "unstarted",
+    "bestOf": 5,
+    "home": "GEN",
+    "away": "BLG",
+    "homeName": "Gen.G Esports",
+    "awayName": "BILIBILI GAMING",
+    "homeScore": 0,
+    "awayScore": 0
   },
   "lckTeams": [
     "GEN",
@@ -313,14 +309,14 @@
       "date": "11/9(월)",
       "time": "07:00",
       "stage": "4강",
-      "state": "unstarted",
+      "state": "completed",
       "bestOf": 5,
-      "home": "T1",
-      "away": "BLG",
-      "homeName": "T1",
-      "awayName": "BILIBILI GAMING",
-      "homeScore": 0,
-      "awayScore": 0
+      "home": "BLG",
+      "away": "T1",
+      "homeName": "BILIBILI GAMING",
+      "awayName": "T1",
+      "homeScore": 3,
+      "awayScore": 1
     },
     {
       "id": "115660540726095133",
@@ -330,11 +326,11 @@
       "stage": "결승",
       "state": "unstarted",
       "bestOf": 5,
-      "home": "TBD",
-      "away": "GEN",
-      "homeName": "TBD",
-      "awayName": "Gen.G Esports",
-      "homeScore": null,
+      "home": "GEN",
+      "away": "BLG",
+      "homeName": "Gen.G Esports",
+      "awayName": "BILIBILI GAMING",
+      "homeScore": 0,
       "awayScore": 0
     }
   ]

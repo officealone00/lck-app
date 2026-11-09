@@ -1,24 +1,13 @@
 [
   {
     "league": "WORLDS",
-    "stage": "4강",
-    "date": "11/9(월)",
-    "time": "07:00",
-    "startTime": "2026-11-08T22:00:00.000Z",
-    "home": "T1",
-    "away": "BLG",
-    "homeColor": "#E2012D",
-    "awayColor": "#888"
-  },
-  {
-    "league": "WORLDS",
     "stage": "결승",
     "date": "11/15(일)",
     "time": "04:00",
     "startTime": "2026-11-14T19:00:00.000Z",
-    "home": "TBD",
-    "away": "GEN",
-    "homeColor": "#888",
-    "awayColor": "#C8A25B"
+    "home": "GEN",
+    "away": "BLG",
+    "homeColor": "#C8A25B",
+    "awayColor": "#888"
   }
 ]
