@@ -38,7 +38,7 @@
     "away": "BLG",
     "homeName": "Gen.G Esports",
     "awayName": "BILIBILI GAMING",
-    "homeScore": 0,
+    "homeScore": 1,
     "awayScore": 0
   },
   "lckTeams": [
@@ -330,7 +330,7 @@
       "away": "BLG",
       "homeName": "Gen.G Esports",
       "awayName": "BILIBILI GAMING",
-      "homeScore": 0,
+      "homeScore": 1,
       "awayScore": 0
     }
   ]
